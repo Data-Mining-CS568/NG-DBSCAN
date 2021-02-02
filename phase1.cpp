@@ -2,40 +2,63 @@
 #include "classes.cpp"
 using namespace std;
 
-Parameters p;
+Parameters para;
 
-void Reverse_Map(Node n, Graph& G){
-	// Making the graph undirected
-	for(Node u : G.neighbours(n)){
-		w = distance(v, u);
-		G.add_edge(u, v, w);
+double distance(int u,int v){
+
+}
+
+// Random selection of at most ρk nodes from NG.neighbours(n)
+vector<int> random_selecting_nodes(Graph& NG, int n){
+	vector<int> v = NG.neighbours(n);
+	int threshold = min(para.p * para.k, v.size());
+	vector<int> selected;
+	
+	int count = 0;
+	while(count < threshold){
+		int idx = rand() % v.size();
+		selected.push_back(v[idx]);
+		v.erase(v[idx]);
+		count++;
 	}
+	return selected;
 }
 
 // checking neighbour graph and updating ε graph
-void Check_Neighborhood(Node n, Graph NG, Graph εG) {
-	N = Random selection of at most ρk nodes from NG.neighbours(n)
-	for each vertex v in N {
-		for each vertex u in N\{v} {
-			w = distance(u, v)
-			NG.add_edge(u, v, w)
-			if(w <= ε)
-				εG.add_edge(u, v, w)
+void Check_Neighborhood(int n, Graph& NG, Graph& EG){
+	
+	vector<int> N = random_selecting_nodes(NG,n);
+
+	for(int v = 0; v < N.size(); v++){
+		for(int u = 0; u < N.size(); u++){
+			if(u == v){
+				continue;
+			}
+			double w = distance(u, v);
+			NG.add_edge(u, v);
+			if(w <= para.epsilon){
+				EG.add_edge(u, v);
+			}
 		}
 	}
 }
 
 // reducing neighbour graph
-void Reduce_NG(Node u, Graph& NG, Graph& EG, int& delta){
-	if(EG.neighbours(u).size() >= p.Mmax){
+void Reduce_NG(int u, Graph& NG, Graph& EG, int& delta){
+	if(EG.edges[u].size() >= para.Mmax){
 		NG.remove_node(u);
-		delta = delta + 1;
+		delta++;
 	}
-	vector<Node> l = NG.neighbours(u);
-	// remove from l the k edges with smallest weights using priority queue
+	vector<int> l = NG.neighbours(u);
 	
-	for(auto {u,v,w} : l){
-		NG.delete_edge(u, v, w);
+	priority_queue<pair<int,int>> pq;
+	for(auto v:l){
+		pq.insert({distance(u,v),v});
+	}
+	while(pq.size() > para.k){
+		pair<int,int> curr = pq.top();
+		pq.pop();
+		NG.delete_edge(u, curr.second);
 	}
 }
 
@@ -43,11 +66,18 @@ void Reduce_NG(Node u, Graph& NG, Graph& EG, int& delta){
 bool Terminate(Graph& NG, int delta){
 	int no_of_nodes = NG.active.size();
 
-	if(no_of_nodes < p.Tn && delta < p.Tr){
+	if(no_of_nodes < para.Tn && delta < para.Tr){
 		return 1;
 	}
 	else {
 		return 0;
+	}
+}
+
+// Making the graph undirected
+void Reverse_Map(int v, Graph& G){
+	for(int u : G.neighbours(v)){
+		G.add_edge(u, v);
 	}
 }
 
@@ -58,7 +88,7 @@ void Random_Initialisation(Graph& NG){
 		set<int> visited;
 		visited.insert(u);
 		int count = 0;
-		while(count < p.k){
+		while(count < para.k){
 			int v = rand() % NG.N;
 			if(visited.find(v) != visited.end()){
 				NG.edges[u].insert(v);
@@ -69,6 +99,7 @@ void Random_Initialisation(Graph& NG){
 	}
 }
 
+// creating epsilon graph
 Graph epsilon_graph_construction(int total_points){
 	Graph EG(total_points);		// epsilon graph 
 	Graph NG(total_points);		// neighbour graph
@@ -80,23 +111,17 @@ Graph epsilon_graph_construction(int total_points){
 	int delta = 0;
 	
 	int i = 0;
-	while(i < p.iter && !Terminate(NG, delta)){
-		for(Node u : NG.active){
+	while(i < para.iter && !Terminate(NG, delta)){
+		for(int u : NG.active){
 			Reverse_Map(u, NG);
 		}
-		for(Node u : NG.active){
+		for(int u : NG.active){
 			Check_Neighborhood(u, NG, EG);	
 		}
-		for(Node u : NG.active){
+		for(int u : NG.active){
 			Reduce_NG(u, NG, EG, delta);
 		}
 		i++;
 	}
 	return EG;
-}
-
-int main()
-{
-
-	return 0;
 }
