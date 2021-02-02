@@ -6,10 +6,10 @@ class Node
 	int coreness;
 	string coordinates;
 	string type;
-	Node(id){
-		this.id = id;
-		this.type = "none";
-		this.degree = 0;
+	Node(int id){
+		this->id = id;
+		this->type = "none";
+		this->degree = 0;
 	}
 };
 
@@ -18,20 +18,21 @@ class Graph
 	public:
 	int N;
 	set<int> active;
-	set<int> edges[N];
-	map<int,Node> node_from_id;
+	vector<set<int>> edges;
+	map<int,Node*> node_from_id;
 
 	void add_node(int id){
 		active.insert(id);
-		Node n(id);
+		Node* n = new Node(id);
 		node_from_id[id] = n;
 	}
 
 	Graph(int total_nodes){
+		edges.resize(total_nodes,set<int>());
 		for(int i = 0;i < total_nodes; i++){
 			add_node(i);
 		}
-		this.N = total_nodes;
+		this->N = total_nodes;
 	}
 	
 	void remove_node(int id){
@@ -61,6 +62,8 @@ class Graph
 };
 
 class Parameters {
+	public:
+	int epsilon;	// minimum distance b/w nodes 
 	int k;			// represents degree of each node in neighbour graph
 	int Minpts; 	// each core node is having degree at least Minpts − 1
 	int Tn;			// limits number of nodes in NG for termination
@@ -71,4 +74,4 @@ class Parameters {
 	Parameters() {
 		// initialise all with default values unless explicit values are given
 	}
-}
+};

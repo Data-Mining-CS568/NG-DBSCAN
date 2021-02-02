@@ -1,24 +1,25 @@
 #include <bits/stdc++.h>
-#include "classes.cpp"
 using namespace std;
+
+#include "classes.h"
 
 Parameters para;
 
 double distance(int u,int v){
-
+	return 0.0;
 }
 
 // Random selection of at most ρk nodes from NG.neighbours(n)
 vector<int> random_selecting_nodes(Graph& NG, int n){
 	vector<int> v = NG.neighbours(n);
-	int threshold = min(para.p * para.k, v.size());
+	int threshold = min(para.p * para.k, (int)v.size());
 	vector<int> selected;
 	
 	int count = 0;
 	while(count < threshold){
 		int idx = rand() % v.size();
 		selected.push_back(v[idx]);
-		v.erase(v[idx]);
+		v.erase(v.begin() + idx);
 		count++;
 	}
 	return selected;
@@ -53,12 +54,12 @@ void Reduce_NG(int u, Graph& NG, Graph& EG, int& delta){
 	
 	priority_queue<pair<int,int>> pq;
 	for(auto v:l){
-		pq.insert({distance(u,v),v});
+		pq.push({distance(u,v),v});
 	}
 	while(pq.size() > para.k){
 		pair<int,int> curr = pq.top();
 		pq.pop();
-		NG.delete_edge(u, curr.second);
+		NG.remove_edge(u, curr.second);
 	}
 }
 
@@ -124,4 +125,8 @@ Graph epsilon_graph_construction(int total_points){
 		i++;
 	}
 	return EG;
+}
+
+int main(){
+
 }
