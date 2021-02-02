@@ -1,0 +1,16 @@
+Respected sir,
+
+This is Samay Varshney, an undergraduate student from India. I am currently pursuing undergraduate studies(Computer Science) in the "Indian Institute of Technology, Guwahati", which is a reputed university in India.
+
+The purpose of contacting you is my requirement of the algorithm code which you have mentioned in the research paper on NG-DBSCAN. Sir, I would like you to know that it is a part of one of our university courses to choose a research paper and understand it. As part of this project, me and my team has chosen your paper on NG-DBSCAN as we have found it very interesting and eagerly wanted to know how you were going to tackle the scalability issue of DBSCAN. To implement the algorithm, we couldn't find any existing code for NG-DBSCAN. We are facing some conceptual difficulties in understanding the algorithm and also not able to create the code on our own. Can you share with us the code that you have used for NG-DBSCAN (preferably in either C++, Python or Java)? Also sir, we would be extremely grateful to you if you could give us a short live online lecture on NG-DBSCAN algorithm in depth. If such a lecture is possible from your side, then not just our team, but I would call upon the entire class to attend it and many can benefit from that. I know that I am asking too much of a help, especially given the constraints brought about by the Covid-19 Pandemic, but in case you find it possible, then giving us a short live lecture would be amazing and we would find it extremely helpful!
+
+To be more clear, I am also attaching the research paper which I am referring to. To validate the details of my undergraduate study, I am also specifying my student ID of the university.
+
+My name: Samay Varshney.
+University name: Indian Institute of Technology, Guwahati
+Student ID: 180101097(Undergraduate 3rd year)
+Department: Computer Science and Engineering.
+University location: Guwahati, India.
+
+Thanking you sir,
+Samay Varshney
