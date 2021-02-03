@@ -6,7 +6,7 @@ using namespace std;
 Parameters para;
 
 double distance(int u,int v){
-	return 0.0;
+	return sqrtf((double)pow(coordinates[u].first - coordinates[v].first,2) + pow(coordinates[u].second - coordinates[v].second,2));
 }
 
 // Random selection of at most ρk nodes from NG.neighbours(n)
@@ -52,12 +52,12 @@ void Reduce_NG(int u, Graph& NG, Graph& EG, int& delta){
 	}
 	vector<int> l = NG.neighbours(u);
 	
-	priority_queue<pair<int,int>> pq;
+	priority_queue<pair<double,int>> pq;
 	for(auto v:l){
 		pq.push({distance(u,v),v});
 	}
 	while(pq.size() > para.k){
-		pair<int,int> curr = pq.top();
+		pair<double,int> curr = pq.top();
 		pq.pop();
 		NG.remove_edge(u, curr.second);
 	}
@@ -91,12 +91,22 @@ void Random_Initialisation(Graph& NG){
 		int count = 0;
 		while(count < para.k){
 			int v = rand() % NG.N;
-			if(visited.find(v) != visited.end()){
+			if(visited.find(v) == visited.end()){
 				NG.edges[u].insert(v);
 				visited.insert(v);
 				count++;
 			} 
 		}
+	}
+}
+
+void print_graph(Graph& G, int total_points){
+	for(int i = 0; i < total_points; i++){
+		cout << i << ": ";
+		for(auto u : G.edges[i]){
+			cout << u << " ";
+		}
+		cout<<'\n';
 	}
 }
 
@@ -108,21 +118,48 @@ Graph epsilon_graph_construction(int total_points){
 	// initialising each node with k random edges
 	Random_Initialisation(NG);
 	
+	// printing after NG after random initialisation
+	print_graph(NG,total_points);
+	cout<< '\n';
+
 	// number of nodes removed in current iteration
 	int delta = 0;
 	
 	int i = 0;
-	while(i < para.iter && !Terminate(NG, delta)){
+	while(i < para.iter && !Terminate(NG, delta))
+	{
+		delta = 0;
 		for(int u : NG.active){
 			Reverse_Map(u, NG);
 		}
+
 		for(int u : NG.active){
 			Check_Neighborhood(u, NG, EG);	
 		}
-		for(int u : NG.active){
+
+		set<int> c;
+		for(auto it:NG.active){
+			c.insert(it);
+		}
+		for(int u : c){
 			Reduce_NG(u, NG, EG, delta);
 		}
 		i++;
 	}
+	// printing EG
+	print_graph(EG,total_points);
+	cout<<'\n';
+	
 	return EG;
+}
+
+int main(){
+	int n;
+	cin>>n;
+	coordinates.resize(n);
+	for(int i = 0; i < n; i++){
+		cin >> coordinates[i].first >> coordinates[i].second;
+	}
+	Graph g = epsilon_graph_construction(n);
+	return 0;
 }
