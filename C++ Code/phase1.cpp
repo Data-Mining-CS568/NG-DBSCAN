@@ -26,19 +26,19 @@ vector<int> random_selecting_nodes(Graph& NG, int n){
 }
 
 // checking neighbour graph and updating ε graph
-void Check_Neighborhood(int n, Graph& NG, Graph& EG){
+void Check_Neighborhood(int n, Graph& NG, Graph& EG, set<int>* temp){
 	
 	vector<int> N = random_selecting_nodes(NG,n);
 
 	for(int v = 0; v < N.size(); v++){
 		for(int u = 0; u < N.size(); u++){
-			if(u == v){
+			if(N[u] == N[v]){
 				continue;
 			}
-			double w = distance(u, v);
-			NG.add_edge(u, v);
+			double w = distance(N[u], N[v]);
+			temp[N[u]].insert(N[v]);
 			if(w <= para.epsilon){
-				EG.add_edge(u, v);
+				EG.add_edge(N[u], N[v]);
 			}
 		}
 	}
@@ -108,6 +108,7 @@ void print_graph(Graph& G, int total_points){
 		}
 		cout<<'\n';
 	}
+	cout<<'\n';
 }
 
 // creating epsilon graph
@@ -133,8 +134,15 @@ Graph epsilon_graph_construction(int total_points){
 			Reverse_Map(u, NG);
 		}
 
+		// do in parallel
+		set<int> temp[total_points];
 		for(int u : NG.active){
-			Check_Neighborhood(u, NG, EG);	
+			Check_Neighborhood(u, NG, EG, temp);	
+		}
+		for(int i = 0; i < total_points; i++){
+			for(int u : temp[i]){
+				NG.add_edge(i, u);
+			}
 		}
 
 		set<int> c;
@@ -144,6 +152,15 @@ Graph epsilon_graph_construction(int total_points){
 		for(int u : c){
 			Reduce_NG(u, NG, EG, delta);
 		}
+		// remove the unnecessary edges
+		for(int u : NG.active){
+			vector<int> temp = NG.neighbours(u);
+			for(int v : temp){
+				if(NG.active.find(v) == NG.end()){
+					NG.edges[u].erase(v);
+				}
+			}
+		}
 		i++;
 	}
 	// printing EG
@@ -151,15 +168,4 @@ Graph epsilon_graph_construction(int total_points){
 	cout<<'\n';
 	
 	return EG;
-}
-
-int main(){
-	int n;
-	cin>>n;
-	coordinates.resize(n);
-	for(int i = 0; i < n; i++){
-		cin >> coordinates[i].first >> coordinates[i].second;
-	}
-	Graph g = epsilon_graph_construction(n);
-	return 0;
 }

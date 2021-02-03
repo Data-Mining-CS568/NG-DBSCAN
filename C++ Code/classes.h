@@ -2,17 +2,15 @@ class Node
 {
 	public:
 	int id;
-	int degree;
-	int coreness;
 	string type;
 	Node(int id){
 		this->id = id;
 		this->type = "none";
-		this->degree = 0;
 	}
 };
 
 vector<pair<int,int>> coordinates;
+map<int,Node*> node_from_id;
 
 class Graph 
 {
@@ -21,11 +19,9 @@ class Graph
 	set<int> active;
 	vector<set<int>> edges;
 	vector<set<int>> reverse_edges;
-	map<int,Node*> node_from_id;
 
 	void add_node(int id){
 		active.insert(id);
-		node_from_id[id] = new Node(id);
 	}
 
 	Graph(int total_nodes){
@@ -39,24 +35,24 @@ class Graph
 	
 	void remove_node(int id){
 		active.erase(id);
-		for(auto v : edges[id]){
-			reverse_edges[v].erase(id);
-		}
+		// for(auto v : edges[id]){
+			// reverse_edges[v].erase(id);
+		// }
 		edges[id].clear();
-		for(auto v : reverse_edges[id]){
-			edges[v].erase(id);
-		}
-		reverse_edges[id].clear();
+		// for(auto v : reverse_edges[id]){
+			// edges[v].erase(id);
+		// }
+		// reverse_edges[id].clear();
 	}
 	
 	void remove_edge(int x, int y){
 		edges[x].erase(y);
-		reverse_edges[y].erase(x);
+		// reverse_edges[y].erase(x);
 	}
 
 	void add_edge(int x, int y){
 		edges[x].insert(y);
-		reverse_edges[y].insert(x);
+		// reverse_edges[y].insert(x);
 	};
 	
 	vector<int> neighbours(int x){
@@ -83,11 +79,11 @@ class Parameters {
 		Tn = 2;
 		Tr = 0.01;
 		k = 3;
-		Mmax = 2;
+		Mmax = 3;
 		p = 3;
 		iter = 5;
-		epsilon = 1;
-		Minpts = 3;
+		epsilon = 1.1;
+		Minpts = 4;
 	}
 };
 
