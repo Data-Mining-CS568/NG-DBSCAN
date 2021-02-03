@@ -96,12 +96,32 @@ void Pruning_Step(int u, Graph& T, Graph& H, Graph& G)
 	}
 }
 
-Graph Seed_Propagation(Graph T){
-	// a = List of all seeds
-	// for all nodes v in a {
-		// Perform Depth First Search on graph T with v as input.
-		// Here we will get all the nodes belonging to the cluster of v
-	// }
+void dfs(int curr, Graph& T, vector<bool>& visited, vector<int>& v){
+	if(visited[curr]){
+		return;
+	}
+	v.push_back(curr);
+	visited[curr] = 1;
+	for(auto it:T.edges[curr]){
+		dfs(it,T,visited,v);
+	}
+}
+
+Graph Seed_Propagation(set<int> seeds, Graph T)
+{
+	vector<bool> visited(T.N,0);
+	vector<vector<int>> list;
+	for(auto it:seeds){
+		vector<int> v;
+		dfs(it,T,visited,v);
+		list.push_back(v);
+	}
+	for(int i = 0; i < list.size(); i++){
+		for(auto it:list[i]){
+			cout<<it<<" ";
+		}
+		cout<<'\n';
+	}
 	// The final output will be a list of lists where each list corresponds to a separate cluster
 	return T;
 }
@@ -119,10 +139,6 @@ void print_node_type(int total_nodes){
 	cout<<'\n';
 }
 
-void deactivate(Graph& H){
-	H.active.clear();
-}
-
 // finding all the clusters
 Graph Discovering_Dense_Regions(Graph EG, int total_nodes)
 {
@@ -136,7 +152,7 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes)
 	while(i < para.iter && G.active.size() > 0)
 	{
 		Graph H(total_nodes);
-		deactivate(H);
+		H.active.clear();
 
 		// Seed identification process
 		for(auto n : G.active){
@@ -156,7 +172,7 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes)
 		i++;
 	}
 	print_graph(T, total_nodes);
-	return Seed_Propagation(T);
+	return Seed_Propagation(G.active, T);
 }
 
 int main()
