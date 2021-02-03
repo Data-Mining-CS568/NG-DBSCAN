@@ -23,7 +23,6 @@ class Graph
 	void add_node(int id){
 		active.insert(id);
 	}
-
 	Graph(int total_nodes){
 		edges.resize(total_nodes,set<int>());
 		reverse_edges.resize(total_nodes,set<int>());
@@ -32,7 +31,6 @@ class Graph
 		}
 		this->N = total_nodes;
 	}
-	
 	void remove_node(int id){
 		active.erase(id);
 		// for(auto v : edges[id]){
@@ -44,23 +42,25 @@ class Graph
 		// }
 		// reverse_edges[id].clear();
 	}
-	
 	void remove_edge(int x, int y){
 		edges[x].erase(y);
 		// reverse_edges[y].erase(x);
 	}
-
 	void add_edge(int x, int y){
 		edges[x].insert(y);
 		// reverse_edges[y].insert(x);
 	};
-	
 	vector<int> neighbours(int x){
 		vector<int> n;
 		for(auto u : edges[x]){
 			n.push_back(u);
 		}
 		return n;
+	}
+	void clean_graph(){
+		for(int i = 0; i < N; i++){
+			edges[i].clear();
+		}
 	}
 };
 

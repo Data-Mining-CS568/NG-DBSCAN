@@ -28,7 +28,7 @@ Graph Coreness_Dissemination(Graph EG, int total_nodes)
 		if(node_from_id[v]->type != "core"){
 			for(auto u : EG.neighbours(v)){
 				if(node_from_id[u]->type == "core"){
-					node_from_id[v]->type = "border"; 				// Make it a border node
+					node_from_id[v]->type = "border"; 					// Make it a border node
 				}
 			}	
 		}
@@ -51,15 +51,19 @@ void Max_Selection_Step(int u, Graph& G, Graph& H){
 	NNg.push_back(u);
 	
 	int umax = Max_Core_Node(NNg,G);
+	// cout << u << " " << node_from_id[u]->type << " " << umax << '\n';
 
 	if(node_from_id[u]->type != "core"){
+		H.active.insert(u);
 		H.add_edge(u, umax);
 	}
 	else {
 		for(auto v : NNg){
+			H.active.insert(v);
 			H.add_edge(v, umax);
 		}
 	}
+	H.active.insert(umax);
 	H.add_edge(umax, umax);
 }
 
@@ -68,6 +72,7 @@ void Pruning_Step(int u, Graph& T, Graph& H, Graph& G)
 {
 	vector<int> NNh = H.neighbours(u);
 	int umax = Max_Core_Node(NNh, H);
+	
 	if(node_from_id[u]->type != "core"){
 		G.remove_node(u);
 		T.add_edge(umax, u);
@@ -114,6 +119,10 @@ void print_node_type(int total_nodes){
 	cout<<'\n';
 }
 
+void deactivate(Graph& H){
+	H.active.clear();
+}
+
 // finding all the clusters
 Graph Discovering_Dense_Regions(Graph EG, int total_nodes)
 {
@@ -121,31 +130,44 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes)
 
 	Graph T(total_nodes);
 	Graph G = Coreness_Dissemination(EG, total_nodes);
-	print_node_type(total_nodes);
+	print_graph(G, total_nodes);
 
 	int i = 0;
-	while(i < para.iter && G.active.size() > 0){
+	while(i < para.iter && G.active.size() > 0)
+	{
 		Graph H(total_nodes);
+		deactivate(H);
 
-	// 	// Seed identification process
-	// 	for(auto n : G.active){
-	// 		Max_Selection_Step(n, G, H);	
-	// 	}
-	// 	for(auto n : H.active){
-	// 		Pruning_Step(n, T, H, G);	
-	// 	}
+		// Seed identification process
+		for(auto n : G.active){
+			Max_Selection_Step(n, G, H);	
+		}
+		
+		G.clean_graph();
+
+		// do in parallel
+		set<int> s;
+		for(auto n : H.active){
+			s.insert(n);
+		}
+		for(auto n : s){
+			Pruning_Step(n, T, H, G);	
+		}
 		i++;
 	}
+	print_graph(T, total_nodes);
 	return Seed_Propagation(T);
 }
 
-int main(){
+int main()
+{
 	int n;
 	cin>>n;
 	coordinates.resize(n);
 	for(int i = 0; i < n; i++){
 		cin >> coordinates[i].first >> coordinates[i].second;
 	}
+	cout << '\n';
 	Graph EG = epsilon_graph_construction(n);
 	Graph T = Discovering_Dense_Regions(EG,n);
 	return 0;

@@ -120,8 +120,8 @@ Graph epsilon_graph_construction(int total_points){
 	Random_Initialisation(NG);
 	
 	// printing after NG after random initialisation
-	print_graph(NG,total_points);
-	cout<< '\n';
+	// print_graph(NG,total_points);
+	// cout<< '\n';
 
 	// number of nodes removed in current iteration
 	int delta = 0;
@@ -156,7 +156,7 @@ Graph epsilon_graph_construction(int total_points){
 		for(int u : NG.active){
 			vector<int> temp = NG.neighbours(u);
 			for(int v : temp){
-				if(NG.active.find(v) == NG.end()){
+				if(NG.active.find(v) == NG.active.end()){
 					NG.edges[u].erase(v);
 				}
 			}
@@ -164,8 +164,8 @@ Graph epsilon_graph_construction(int total_points){
 		i++;
 	}
 	// printing EG
-	print_graph(EG,total_points);
-	cout<<'\n';
-	
+	// print_graph(EG,total_points);
+	// cout<<'\n';
+
 	return EG;
 }
