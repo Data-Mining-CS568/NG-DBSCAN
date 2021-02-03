@@ -19,12 +19,12 @@ class Graph
 	int N;
 	set<int> active;
 	vector<set<int>> edges;
+	vector<set<int>> reverse_edges;
 	map<int,Node*> node_from_id;
 
 	void add_node(int id){
 		active.insert(id);
-		Node* n = new Node(id);
-		node_from_id[id] = n;
+		node_from_id[id] = new Node(id);
 	}
 
 	Graph(int total_nodes){
@@ -37,20 +37,21 @@ class Graph
 	
 	void remove_node(int id){
 		active.erase(id);
-		node_from_id.erase(id);
+		for(auto v : reverse_edges[id]){
+			reverse_edges[id].erase(v);
+			edges[v].erase(id);
+		}
 	}
-	
-	void remove_edge(int x, int y, double w);
 	
 	void remove_edge(int x, int y){
 		edges[x].erase(y);
+		reverse_edges[y].erase(x);
 	}
 
 	void add_edge(int x, int y){
 		edges[x].insert(y);
+		reverse_edges[y].insert(x);
 	};
-
-	void add_edge(int x, int y, double w);
 	
 	vector<int> neighbours(int x){
 		vector<int> n;

@@ -126,7 +126,3 @@ Graph epsilon_graph_construction(int total_points){
 	}
 	return EG;
 }
-
-int main(){
-
-}
