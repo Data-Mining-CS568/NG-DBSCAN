@@ -204,6 +204,8 @@ int main()
 	f.open("points.txt",ios::in);
 	int n;
 	f >> n;
+	para.Tn = 0.01*n;
+	para.Tr = 0.001*n;
 	coordinates.resize(n);
 	for(int i = 0; i < n; i++){
 		f >> coordinates[i].first >> coordinates[i].second;

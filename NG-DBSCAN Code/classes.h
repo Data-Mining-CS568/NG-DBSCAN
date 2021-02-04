@@ -74,16 +74,16 @@ class Parameters {
 	int Mmax;		// used to reduce NG in phase-1 to reduce computation
 	int p;			// limits nodes for which 2 hop distance is calculated in NG
 	int iter;		// used to achieve convergence condition
-	Parameters() {
+	Parameters(){
 		// initialise all with default values unless explicit values are given
-		Tn = 2;
+		Tn = 1;
 		Tr = 1;
-		k = 3;
-		Mmax = 3;
-		p = 3;
+		k = 20;
+		Mmax = 20;
+		p = 2;
 		iter = 10;
-		epsilon = 1.5;
-		Minpts = 3;
+		epsilon = 10;
+		Minpts = 10;
 	}
 };
 
