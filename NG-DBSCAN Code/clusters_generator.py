@@ -1,3 +1,29 @@
+import math
+
+l = []
+noise = []
+input_file = open("clusters.txt","r")
+x = input_file.readline()
+a = x.split()
+n = int(a[0])
+#print(n)
+for i in range(n):
+	lst = []
+	x = input_file.readline()
+	a = x.split()
+	m = int(a[0])            
+	for j in range(m):
+		x = input_file.readline()
+		#print(x)
+		x = x.split(' ')
+		p = [float(x[0]),float(x[1])]
+		if(x[2]=="noise\n"):
+			noise.append(p)
+		else:
+			lst.append(p)
+	l.append(lst)	
+
+
 import matplotlib.pyplot as plt
 clr=["green","blue","red","orange","yellow","violet","black","pink"]
 i=0

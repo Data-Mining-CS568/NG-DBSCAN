@@ -33,22 +33,13 @@ class Graph
 	}
 	void remove_node(int id){
 		active.erase(id);
-		// for(auto v : edges[id]){
-			// reverse_edges[v].erase(id);
-		// }
 		edges[id].clear();
-		// for(auto v : reverse_edges[id]){
-			// edges[v].erase(id);
-		// }
-		// reverse_edges[id].clear();
 	}
 	void remove_edge(int x, int y){
 		edges[x].erase(y);
-		// reverse_edges[y].erase(x);
 	}
 	void add_edge(int x, int y){
 		edges[x].insert(y);
-		// reverse_edges[y].insert(x);
 	};
 	vector<int> neighbours(int x){
 		vector<int> n;
@@ -76,13 +67,13 @@ class Parameters {
 	int iter;		// used to achieve convergence condition
 	Parameters(){
 		// initialise all with default values unless explicit values are given
-		Tn = 1;
-		Tr = 1;
+		Tn = 10;
+		Tr = 5;
 		k = 20;
-		Mmax = 20;
+		Mmax = 10;
 		p = 2;
 		iter = 10;
-		epsilon = 10;
+		epsilon = 12;
 		Minpts = 10;
 	}
 };
