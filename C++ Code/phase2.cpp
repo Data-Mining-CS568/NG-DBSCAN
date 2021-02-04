@@ -125,12 +125,11 @@ Graph Seed_Propagation(set<int> seeds, Graph T)
 		for(auto it:list[i]){ 
 			out << coordinates[it].first << " " << coordinates[it].second << " " << node_from_id[it]->type << '\n';
 		}
-		out<<"\n";
 	}
 	for(int i = 0; i < T.N; i++){
 		if(node_from_id[i]->type == "noise"){
 			out << 1 << "\n";
-			out << coordinates[i].first << " " << coordinates[i].second << " " << node_from_id[i]->type << "\n\n\n";	
+			out << coordinates[i].first << " " << coordinates[i].second << " " << node_from_id[i]->type << "\n";	
 		}
 	}
 	// The final output will be a list of lists where each list corresponds to a separate cluster
