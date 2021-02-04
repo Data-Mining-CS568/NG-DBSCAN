@@ -9,7 +9,7 @@ start_r = 5
 circle_x = 5
 circle_y = 7
 
-points = 100
+points = int(input())
 
 circledata = []
 

@@ -100,15 +100,15 @@ void Random_Initialisation(Graph& NG){
 	}
 }
 
-void print_graph(Graph& G, int total_points){
+void print_graph(Graph& G, int total_points, fstream& out){
 	for(int i = 0; i < total_points; i++){
-		cout << i << ": ";
+		out << i << ": ";
 		for(auto u : G.edges[i]){
-			cout << u << " ";
+			out << u << " ";
 		}
-		cout<<'\n';
+		out<<'\n';
 	}
-	cout<<'\n';
+	out<<'\n';
 }
 
 // creating epsilon graph
@@ -121,7 +121,6 @@ Graph epsilon_graph_construction(int total_points){
 	
 	// printing after NG after random initialisation
 	// print_graph(NG,total_points);
-	// cout<< '\n';
 
 	// number of nodes removed in current iteration
 	int delta = 0;
@@ -165,7 +164,6 @@ Graph epsilon_graph_construction(int total_points){
 	}
 	// printing EG
 	// print_graph(EG,total_points);
-	// cout<<'\n';
 
 	return EG;
 }

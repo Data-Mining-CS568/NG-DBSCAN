@@ -1,3 +1,9 @@
+#pragma GCC optimize("Ofast")
+#pragma GCC optimization("unroll-loops")
+#pragma GCC optimize("unroll-loops")
+#pragma GCC optimize("fast-math")
+#pragma GCC optimize("no-stack-protector")
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -156,7 +162,11 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes)
 
 	Graph T(total_nodes);
 	Graph G = Coreness_Dissemination(EG, total_nodes);
-	print_graph(G, total_nodes);
+
+	fstream f;
+	f.open("epsilon_graph.txt",ios::out);
+	print_graph(G, total_nodes, f);
+	f.close();
 
 	int i = 0;
 	while(i < para.iter && G.active.size() > 0)
@@ -181,12 +191,15 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes)
 		}
 		i++;
 	}
-	print_graph(T, total_nodes);
+	f.open("propagation_tree.txt",ios::out);
+	print_graph(T, total_nodes, f);
+	f.close();
 	return Seed_Propagation(G.active, T);
 }
 
 int main()
 {
+	ios::sync_with_stdio(0);  cin.tie(0);  cout.tie(0);
 	fstream f;
 	f.open("points.txt",ios::in);
 	int n;
