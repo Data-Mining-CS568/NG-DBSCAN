@@ -51,7 +51,6 @@ void Max_Selection_Step(int u, Graph& G, Graph& H){
 	NNg.push_back(u);
 	
 	int umax = Max_Core_Node(NNg,G);
-	// cout << u << " " << node_from_id[u]->type << " " << umax << '\n';
 
 	if(node_from_id[u]->type != "core"){
 		H.active.insert(u);
@@ -109,6 +108,9 @@ void dfs(int curr, Graph& T, vector<bool>& visited, vector<int>& v){
 
 Graph Seed_Propagation(set<int> seeds, Graph T)
 {
+	fstream out;
+	out.open("clusters.txt",ios::out);
+
 	vector<bool> visited(T.N,0);
 	vector<vector<int>> list;
 	for(auto it:seeds){
@@ -116,11 +118,20 @@ Graph Seed_Propagation(set<int> seeds, Graph T)
 		dfs(it,T,visited,v);
 		list.push_back(v);
 	}
+
+	out<<list.size()<<'\n';
 	for(int i = 0; i < list.size(); i++){
-		for(auto it:list[i]){
-			cout<<it<<" ";
+		out << list[i].size() << "\n";
+		for(auto it:list[i]){ 
+			out << coordinates[it].first << " " << coordinates[it].second << " " << node_from_id[it]->type << '\n';
 		}
-		cout<<'\n';
+		out<<"\n";
+	}
+	for(int i = 0; i < T.N; i++){
+		if(node_from_id[i]->type == "noise"){
+			out << 1 << "\n";
+			out << coordinates[i].first << " " << coordinates[i].second << " " << node_from_id[i]->type << "\n\n\n";	
+		}
 	}
 	// The final output will be a list of lists where each list corresponds to a separate cluster
 	return T;
@@ -177,13 +188,14 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes)
 
 int main()
 {
+	fstream f;
+	f.open("points.txt",ios::in);
 	int n;
-	cin>>n;
+	f >> n;
 	coordinates.resize(n);
 	for(int i = 0; i < n; i++){
-		cin >> coordinates[i].first >> coordinates[i].second;
+		f >> coordinates[i].first >> coordinates[i].second;
 	}
-	cout << '\n';
 	Graph EG = epsilon_graph_construction(n);
 	Graph T = Discovering_Dense_Regions(EG,n);
 	return 0;

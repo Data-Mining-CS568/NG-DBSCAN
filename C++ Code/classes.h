@@ -9,7 +9,7 @@ class Node
 	}
 };
 
-vector<pair<int,int>> coordinates;
+vector<pair<double,double>> coordinates;
 map<int,Node*> node_from_id;
 
 class Graph 
@@ -77,13 +77,13 @@ class Parameters {
 	Parameters() {
 		// initialise all with default values unless explicit values are given
 		Tn = 2;
-		Tr = 0.01;
+		Tr = 1;
 		k = 3;
 		Mmax = 3;
 		p = 3;
-		iter = 5;
-		epsilon = 1.1;
-		Minpts = 4;
+		iter = 10;
+		epsilon = 1.5;
+		Minpts = 3;
 	}
 };
 

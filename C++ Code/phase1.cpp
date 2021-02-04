@@ -6,7 +6,7 @@ using namespace std;
 Parameters para;
 
 double distance(int u,int v){
-	return sqrtf((double)pow(coordinates[u].first - coordinates[v].first,2) + pow(coordinates[u].second - coordinates[v].second,2));
+	return sqrtf((double)powf(coordinates[u].first - coordinates[v].first,2) + powf(coordinates[u].second - coordinates[v].second,2));
 }
 
 // Random selection of at most ρk nodes from NG.neighbours(n)

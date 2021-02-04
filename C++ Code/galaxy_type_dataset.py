@@ -9,23 +9,23 @@ start_r = 5
 circle_x = 5
 circle_y = 7
 
-points=10
+points = 100
 
-circledata=[]
+circledata = []
 
-outputfile = open("outputfile.txt","a")
+outputfile = open("points.txt","w")
+outputfile.write(str(points) + '\n')
 
-while(points>0):
+while(points > 0):
     # random angle
     alpha = 2 * math.pi * random.random()
     # random radius
-    r = (circle_r-start_r) * math.sqrt(random.random())+start_r
+    r = (circle_r - start_r) * math.sqrt(random.random()) + start_r
     # calculating coordinates
     x = r * math.cos(alpha) + circle_x
     y = r * math.sin(alpha) + circle_y
-    print("Random point", (x, y))
     circledata.append((x,y))
-    outputfile.write(str(x)+" "+str(y)+'\n')
-    points=points-1
-print(circledata[1])
+    outputfile.write(str(x) + " " + str(y) + '\n')
+    points = points - 1
+
 outputfile.close()
