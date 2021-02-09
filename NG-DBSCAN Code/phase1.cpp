@@ -13,7 +13,7 @@ double distance(int u, int v){
 }
 
 // Random selection of at most ρk nodes from NG.neighbours(n)
-vector<int> random_selecting_nodes(Graph& NG, int n){
+vector<int> random_selecting_nodes(Graph& NG, int n, Parameters parameter){
 	vector<int> v = NG.neighbours(n);
 	int threshold = min(parameter.p * parameter.k, (int)v.size());
 	vector<int> selected;
@@ -29,9 +29,9 @@ vector<int> random_selecting_nodes(Graph& NG, int n){
 }
 
 // checking neighbour graph and updating ε graph
-void Check_Neighborhood(int n, Graph& NG, Graph& EG, set<int>* temp){
+void Check_Neighborhood(int n, Graph& NG, Graph& EG, set<int>* temp, Parameters parameter){
 	
-	vector<int> N = random_selecting_nodes(NG,n);
+	vector<int> N = random_selecting_nodes(NG,n, parameter);
 
 	for(int v = 0; v < N.size(); v++){
 		for(int u = 0; u < N.size(); u++){
@@ -48,7 +48,7 @@ void Check_Neighborhood(int n, Graph& NG, Graph& EG, set<int>* temp){
 }
 
 // reducing neighbour graph
-void Reduce_NG(int u, Graph& NG, Graph& EG, int& delta){
+void Reduce_NG(int u, Graph& NG, Graph& EG, int& delta, Parameters parameter){
 	if(EG.edges[u].size() >= parameter.Mmax){
 		NG.remove_node(u);
 		delta++;
@@ -67,7 +67,7 @@ void Reduce_NG(int u, Graph& NG, Graph& EG, int& delta){
 }
 
 // checking termination condition
-bool Terminate(Graph& NG, int delta){
+bool Terminate(Graph& NG, int delta, Parameters parameter){
 	int no_of_nodes = NG.active.size();
 
 	if(no_of_nodes < parameter.Tn && delta < parameter.Tr){
@@ -86,7 +86,7 @@ void Reverse_Map(int v, Graph& G){
 }
 
 // initializing each node with k random edges
-void Random_Initialisation(Graph& NG){
+void Random_Initialisation(Graph& NG , Parameters parameter){
 	for(int u = 0; u < NG.N; u++)
 	{
 		set<int> visited;
@@ -115,18 +115,18 @@ void print_graph(Graph& G, int total_points, fstream& out){
 }
 
 // creating epsilon graph
-Graph epsilon_graph_construction(int total_points){
+Graph epsilon_graph_construction(int total_points, Parameters parameter){
 	Graph EG(total_points);		// epsilon graph 
 	Graph NG(total_points);		// neighbour graph
 	
 	// initialising each node with k random edges
-	Random_Initialisation(NG);
+	Random_Initialisation(NG, parameter);
 
 	// number of nodes removed in current iteration
 	int delta = 0;
 	
 	int i = 0;
-	while(i < parameter.iter && !Terminate(NG, delta))
+	while(i < parameter.iter && !Terminate(NG, delta, parameter))
 	{
 		delta = 0;
 		for(int u : NG.active){
@@ -136,7 +136,7 @@ Graph epsilon_graph_construction(int total_points){
 		// do in parallel
 		set<int> temp[total_points];
 		for(int u : NG.active){
-			Check_Neighborhood(u, NG, EG, temp);	
+			Check_Neighborhood(u, NG, EG, temp, parameter);	
 		}
 		for(int i = 0; i < total_points; i++){
 			for(int u : temp[i]){
@@ -149,7 +149,7 @@ Graph epsilon_graph_construction(int total_points){
 			c.insert(it);
 		}
 		for(int u : c){
-			Reduce_NG(u, NG, EG, delta);
+			Reduce_NG(u, NG, EG, delta, parameter);
 		}
 		// remove the unnecessary edges
 		for(int u : NG.active){

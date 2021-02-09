@@ -19,7 +19,7 @@ int Max_Core_Node(vector<int> list, Graph& G)
 }
 
 // convert graph to identify all nodes and return it
-Graph Coreness_Dissemination(Graph EG, int total_nodes)
+Graph Coreness_Dissemination(Graph EG, int total_nodes, Parameters parameter)
 {
 	// Here we identify the core, boundary and noise points of the input ε-graph.
 	for(auto v : EG.active){
@@ -161,7 +161,7 @@ void print_node_type(int total_nodes){
 }
 
 // finding all the clusters
-Graph Discovering_Dense_Regions(Graph EG, int total_nodes)
+Graph Discovering_Dense_Regions(Graph EG, int total_nodes, Parameters parameter)
 {
 	// writing epsilong graph in file epsilon_graph.txt
 	fstream f;
@@ -172,7 +172,7 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes)
 	initialize_nodes(total_nodes);
 
 	Graph T(total_nodes);
-	Graph G = Coreness_Dissemination(EG, total_nodes);
+	Graph G = Coreness_Dissemination(EG, total_nodes, parameter);
 
 	int i = 0;
 	while(i < parameter.iter && G.active.size() > 0)
@@ -208,21 +208,56 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes)
 
 int main()
 {
-	ios::sync_with_stdio(0);  cin.tie(0);  cout.tie(0);
+	//ios::sync_with_stdio(0);  cin.tie(0);  cout.tie(0);
+	
+	cout<<"Want to change the default Parameters: Enter 1 for Yes, 0 for No\n";
+	
+	int parameterChange;
+	cin>>parameterChange;
+	double xTn = 0.001;			// limits number of nodes in NG for termination
+	double xTr = 0.0001;		// limits number of removed nodes in current iteration in NG
+	int k = 20;			// represents degree of each node in neighbour graph
+	int Mmax = 20;		// used to reduce NG in phase-1 to reduce computation
+	int p = 2;			// limits nodes for which 2 hop distance is calculated in NG
+	int iter = 10;
+	double epsilon = 8;	// minimum distance b/w nodes 
+	int Minpts  = 10; 	// each core node is having degree at least Minpts − 1
+	
+
+	if(parameterChange==1){
+	cout<<"Enter Parameters:";
+	cout<<"\n Enter x for Tn(Tn = x*n):"; cin>>xTn;
+	cout<<"\n Enter x for Tr(Tr = x*n):"; cin>>xTr;
+	cout<<"\n Enter k:"; cin>>k;
+	cout<<"\n Enter Mmax:"; cin>>Mmax;
+	cout<<"\n Enter p:"; cin>>p;
+	cout<<"\n Enter iter:"; cin>>iter;
+	cout<<"\n Enter epsilon:"; cin>>epsilon;
+	cout<<"\n Enter Minpts:"; cin>>Minpts;
+
+	}
+
+
 	fstream f;
 	f.open("points.txt",ios::in);
 
 	int n;
 	f >> n >> dimensions;
-	parameter.Tn = 0.001*n;
-	parameter.Tr = 0.0001*n;
+	
+	Parameters parameter(xTn*n, xTr*n, k, Mmax, p, iter, epsilon, Minpts);
+	
+
+
+
+
 	coordinates.resize(n,vector<double>(dimensions));
 	for(int i = 0; i < n; i++){
 		for(int j = 0; j < dimensions; j++){
 			f >> coordinates[i][j];
 		}
 	}
-	Graph EG = epsilon_graph_construction(n);
-	Graph T = Discovering_Dense_Regions(EG, n);
+	Graph EG = epsilon_graph_construction(n, parameter);
+	Graph T = Discovering_Dense_Regions(EG, n, parameter);
+	f.close();
 	return 0;
 }
