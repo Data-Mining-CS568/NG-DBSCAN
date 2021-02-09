@@ -123,7 +123,7 @@ Graph Seed_Propagation(set<int> seeds, Graph T)
 	}
 
 	// printing all clusters in clusters.txt
-	out<<list.size()<<'\n';
+	out << list.size() << " " << dimensions << '\n';
 
 	for(int i = 0; i < list.size(); i++){
 		out << list[i].size() << "\n";
