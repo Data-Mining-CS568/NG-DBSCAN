@@ -12,7 +12,7 @@ for i in range(n):
 	lst = []
 	x = input_file.readline()
 	a = x.split()
-	m = int(a[0])            
+	m = int(a[0])
 	for j in range(m):
 		x = input_file.readline()
 		x = x.split(' ')
