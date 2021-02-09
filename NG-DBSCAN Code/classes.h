@@ -52,8 +52,8 @@ class Graph
 
 class Parameters {
 	public:
-	double Tn;			// limits number of nodes in NG for termination
-	double Tr;			// limits number of removed nodes in current iteration in NG
+	double Tn;		// limits number of nodes in NG for termination
+	double Tr;		// limits number of removed nodes in current iteration in NG
 	int k;			// represents degree of each node in neighbour graph
 	int Mmax;		// used to reduce NG in phase-1 to reduce computation
 	int p;			// limits nodes for which 2 hop distance is calculated in NG
@@ -61,7 +61,7 @@ class Parameters {
 	double epsilon;	// minimum distance b/w nodes 
 	int Minpts; 	// each core node is having degree at least Minpts − 1
 
-	Parameters(double Tn = 10, double Tr = 5, int k = 20, int Mmax = 20, int p = 2, int iter = 10, double epsilon = 8, int Minpts = 10 ){
+	Parameters(double Tn = 10, double Tr = 5, int k = 20, int Mmax = 20, int p = 2, int iter = 10, double epsilon = 8, int Minpts = 10){
 		// initialise all with values
 		this->Tn = Tn;
 		this->Tr = Tr;
@@ -76,5 +76,4 @@ class Parameters {
 
 vector<vector<double>> coordinates;
 map<int, Node*> node_from_id;
-//Parameters parameter;
 int dimensions;

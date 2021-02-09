@@ -208,35 +208,30 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes, Parameters parameter)
 
 int main()
 {
-	//ios::sync_with_stdio(0);  cin.tie(0);  cout.tie(0);
-	
-	cout<<"Want to change the default Parameters: Enter 1 for Yes, 0 for No\n";
-	
+	cout << "Want to change the default parameters?\nEnter 1 for Yes and 0 for No\n";
+
 	int parameterChange;
-	cin>>parameterChange;
+	cin >> parameterChange;
 	double xTn = 0.001;			// limits number of nodes in NG for termination
 	double xTr = 0.0001;		// limits number of removed nodes in current iteration in NG
-	int k = 20;			// represents degree of each node in neighbour graph
-	int Mmax = 20;		// used to reduce NG in phase-1 to reduce computation
-	int p = 2;			// limits nodes for which 2 hop distance is calculated in NG
+	int k = 20;					// represents degree of each node in neighbour graph
+	int Mmax = 20;				// used to reduce NG in phase-1 to reduce computation
+	int p = 2;					// limits nodes for which 2 hop distance is calculated in NG
 	int iter = 10;
-	double epsilon = 8;	// minimum distance b/w nodes 
-	int Minpts  = 10; 	// each core node is having degree at least Minpts − 1
+	double epsilon = 0.5;		// minimum distance b/w nodes 
+	int Minpts  = 10; 			// each core node is having degree at least Minpts − 1
 	
-
-	if(parameterChange==1){
-	cout<<"Enter Parameters:";
-	cout<<"\n Enter x for Tn(Tn = x*n):"; cin>>xTn;
-	cout<<"\n Enter x for Tr(Tr = x*n):"; cin>>xTr;
-	cout<<"\n Enter k:"; cin>>k;
-	cout<<"\n Enter Mmax:"; cin>>Mmax;
-	cout<<"\n Enter p:"; cin>>p;
-	cout<<"\n Enter iter:"; cin>>iter;
-	cout<<"\n Enter epsilon:"; cin>>epsilon;
-	cout<<"\n Enter Minpts:"; cin>>Minpts;
-
+	if(parameterChange == 1){
+		cout << "Enter Parameters:";
+		cout << "\nEnter x for Tn(Tn = x*n):"; 	cin >> xTn;
+		cout << "\nEnter x for Tr(Tr = x*n):"; 	cin >> xTr;
+		cout << "\nEnter k:"; 					cin >> k;
+		cout << "\nEnter Mmax:"; 				cin >> Mmax;
+		cout << "\nEnter p:"; 					cin >> p;
+		cout << "\nEnter iter:"; 				cin >> iter;
+		cout << "\nEnter epsilon:"; 			cin >> epsilon;
+		cout << "\nEnter Minpts:"; 				cin >> Minpts;
 	}
-
 
 	fstream f;
 	f.open("points.txt",ios::in);
@@ -246,10 +241,6 @@ int main()
 	
 	Parameters parameter(xTn*n, xTr*n, k, Mmax, p, iter, epsilon, Minpts);
 	
-
-
-
-
 	coordinates.resize(n,vector<double>(dimensions));
 	for(int i = 0; i < n; i++){
 		for(int j = 0; j < dimensions; j++){
