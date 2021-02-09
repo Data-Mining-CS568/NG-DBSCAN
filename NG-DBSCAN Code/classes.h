@@ -9,23 +9,18 @@ class Node
 	}
 };
 
-vector<pair<double,double>> coordinates;
-map<int,Node*> node_from_id;
-
 class Graph 
 {
 	public:
 	int N;
 	set<int> active;
 	vector<set<int>> edges;
-	vector<set<int>> reverse_edges;
 
 	void add_node(int id){
 		active.insert(id);
 	}
 	Graph(int total_nodes){
 		edges.resize(total_nodes,set<int>());
-		reverse_edges.resize(total_nodes,set<int>());
 		for(int i = 0;i < total_nodes; i++){
 			add_node(i);
 		}
@@ -70,11 +65,15 @@ class Parameters {
 		Tn = 10;
 		Tr = 5;
 		k = 20;
-		Mmax = 10;
+		Mmax = 20;
 		p = 2;
 		iter = 10;
-		epsilon = 12;
+		epsilon = 8;
 		Minpts = 10;
 	}
 };
 
+vector<vector<double>> coordinates;
+map<int, Node*> node_from_id;
+Parameters parameter;
+int dimensions;

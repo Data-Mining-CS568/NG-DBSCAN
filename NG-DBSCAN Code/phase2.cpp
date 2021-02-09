@@ -4,9 +4,6 @@
 #pragma GCC optimize("fast-math")
 #pragma GCC optimize("no-stack-protector")
 
-#include <bits/stdc++.h>
-using namespace std;
-
 #include "phase1.cpp"
 
 // return maximum core node from the list
@@ -26,7 +23,7 @@ Graph Coreness_Dissemination(Graph EG, int total_nodes)
 {
 	// Here we identify the core, boundary and noise points of the input ε-graph.
 	for(auto v : EG.active){
-		if(EG.edges[v].size() >= para.Minpts - 1){
+		if(EG.edges[v].size() >= parameter.Minpts - 1){
 			node_from_id[v]->type = "core"; 							// Make it a core node
 		}
 	}
@@ -125,17 +122,25 @@ Graph Seed_Propagation(set<int> seeds, Graph T)
 		list.push_back(v);
 	}
 
+	// printing all clusters in clusters.txt
 	out<<list.size()<<'\n';
+
 	for(int i = 0; i < list.size(); i++){
 		out << list[i].size() << "\n";
 		for(auto it:list[i]){ 
-			out << coordinates[it].first << " " << coordinates[it].second << " " << node_from_id[it]->type << '\n';
+			for(int j = 0; j < dimensions; j++){
+				out << coordinates[it][j] << " ";	
+			}
+			out << node_from_id[it]->type << '\n';
 		}
 	}
 	for(int i = 0; i < T.N; i++){
 		if(node_from_id[i]->type == "noise"){
 			out << 1 << "\n";
-			out << coordinates[i].first << " " << coordinates[i].second << " " << node_from_id[i]->type << "\n";	
+			for(int j = 0; j < dimensions; j++){
+				out << coordinates[i][j] << " ";	
+			}
+			out << node_from_id[i]->type << '\n';
 		}
 	}
 	// The final output will be a list of lists where each list corresponds to a separate cluster
@@ -158,18 +163,19 @@ void print_node_type(int total_nodes){
 // finding all the clusters
 Graph Discovering_Dense_Regions(Graph EG, int total_nodes)
 {
+	// writing epsilong graph in file epsilon_graph.txt
+	fstream f;
+	f.open("epsilon_graph.txt",ios::out);
+	print_graph(EG, total_nodes, f);
+	f.close();
+
 	initialize_nodes(total_nodes);
 
 	Graph T(total_nodes);
 	Graph G = Coreness_Dissemination(EG, total_nodes);
 
-	fstream f;
-	f.open("epsilon_graph.txt",ios::out);
-	print_graph(G, total_nodes, f);
-	f.close();
-
 	int i = 0;
-	while(i < para.iter && G.active.size() > 0)
+	while(i < parameter.iter && G.active.size() > 0)
 	{
 		Graph H(total_nodes);
 		H.active.clear();
@@ -191,9 +197,12 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes)
 		}
 		i++;
 	}
+
+	// printing propagation tree in file propagation_tree.txt
 	f.open("propagation_tree.txt",ios::out);
 	print_graph(T, total_nodes, f);
 	f.close();
+	
 	return Seed_Propagation(G.active, T);
 }
 
@@ -202,15 +211,18 @@ int main()
 	ios::sync_with_stdio(0);  cin.tie(0);  cout.tie(0);
 	fstream f;
 	f.open("points.txt",ios::in);
+
 	int n;
-	f >> n;
-	para.Tn = 0.001*n;
-	para.Tr = 0.0001*n;
-	coordinates.resize(n);
+	f >> n >> dimensions;
+	parameter.Tn = 0.001*n;
+	parameter.Tr = 0.0001*n;
+	coordinates.resize(n,vector<double>(dimensions));
 	for(int i = 0; i < n; i++){
-		f >> coordinates[i].first >> coordinates[i].second;
+		for(int j = 0; j < dimensions; j++){
+			f >> coordinates[i][j];
+		}
 	}
 	Graph EG = epsilon_graph_construction(n);
-	Graph T = Discovering_Dense_Regions(EG,n);
+	Graph T = Discovering_Dense_Regions(EG, n);
 	return 0;
 }
