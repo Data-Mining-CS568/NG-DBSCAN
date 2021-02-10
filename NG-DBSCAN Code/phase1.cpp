@@ -2,14 +2,25 @@
 using namespace std;
 
 #include "classes.h"
+#include "JaroWinklerDistance.cpp"
 
 // calculating distance between 2 points
 double distance(int u, int v){
-	double ans = 0;
-	for(int j = 0; j < dimensions; j++){
-		ans += (coordinates[u][j] - coordinates[v][j]) * (coordinates[u][j] - coordinates[v][j]);
-	}	
-	return sqrtf(ans);
+
+	if(datasetType == "text"){
+
+		double ans = jaro_winkler(sentences[u], sentences[v]);
+		return ans;
+	}
+
+	else if(datasetType == "galaxy"){
+
+		double ans = 0;
+		for(int j = 0; j < dimensions; j++){
+			ans += (coordinates[u][j] - coordinates[v][j]) * (coordinates[u][j] - coordinates[v][j]);
+		}	
+		return sqrtf(ans);
+	}
 }
 
 // Random selection of at most ρk nodes from NG.neighbours(n)

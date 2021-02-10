@@ -3,20 +3,30 @@ using namespace std;
 
 vector<vector<vector<double>>> clusters;
 
+void print(vector<double> &d){
+	for(int i=0; i<d.size(); ++i){
+		cout<<d[i]<<" ";
+	}
+	cout<<endl;
+	return;
+}
 double calculateCompactness(int n){
 	double ans = 0; int cnt =0;
 	int size = clusters[n].size();
-	for(int i=0;i<size;++i){
-		for(int j = i+1; j<size; ++j){
-			double temp1 = inner_product(clusters[n][i].begin(), clusters[n][i].end(), clusters[n][j].begin(), 0);
-			double temp2 = inner_product(clusters[n][i].begin(), clusters[n][i].end(), clusters[n][i].begin(), 0);
-			double temp3 = inner_product(clusters[n][j].begin(), clusters[n][j].end(), clusters[n][j].begin(), 0);
+	for(int i=0;i<4;++i){
+		for(int j = i+1; j<4; ++j){
+			//print(clusters[n][i]);
+			//print(clusters[n][j]);
+			double temp1 = inner_product(clusters[n][i].begin(), clusters[n][i].end(), clusters[n][j].begin(), 0.0);
+			double temp2 = inner_product(clusters[n][i].begin(), clusters[n][i].end(), clusters[n][i].begin(), 0.0);
+			double temp3 = inner_product(clusters[n][j].begin(), clusters[n][j].end(), clusters[n][j].begin(), 0.0);
 			double temp4 = temp1/(sqrt(temp2)*sqrt(temp3));
 			ans += temp4;
+			//cout<<temp1<<" "<<temp2<<" "<<temp3<<" "<<temp4<<endl;
 			cnt++;
 		}
 	}
-
+	cout<<n;
 	return (ans/cnt);
 }
 
@@ -28,9 +38,9 @@ double calculateSimilarity(int n, int m){
 
 	for(int i=0;i<sizen;++i){
 		for(int j = 0; j<sizem; ++j){
-			double temp1 = inner_product(clusters[n][i].begin(), clusters[n][i].end(), clusters[m][j].begin(), 0);
-			double temp2 = inner_product(clusters[n][i].begin(), clusters[n][i].end(), clusters[n][i].begin(), 0);
-			double temp3 = inner_product(clusters[m][j].begin(), clusters[m][j].end(), clusters[m][j].begin(), 0);
+			double temp1 = inner_product(clusters[n][i].begin(), clusters[n][i].end(), clusters[m][j].begin(), 0.0);
+			double temp2 = inner_product(clusters[n][i].begin(), clusters[n][i].end(), clusters[n][i].begin(), 0.0);
+			double temp3 = inner_product(clusters[m][j].begin(), clusters[m][j].end(), clusters[m][j].begin(), 0.0);
 			double temp4 = temp1/(sqrt(temp2)*sqrt(temp3));
 			ans += temp4;
 			cnt++;

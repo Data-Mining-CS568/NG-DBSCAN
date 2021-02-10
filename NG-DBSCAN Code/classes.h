@@ -74,6 +74,8 @@ class Parameters {
 	}
 };
 
-vector<vector<double>> coordinates;
-map<int, Node*> node_from_id;
+string datasetType; //type of dataset, it defines the distance function.
 int dimensions;
+vector<vector<double>> coordinates; //for euclidean datasets
+vector<string> sentences; //for text datasets
+map<int, Node*> node_from_id;

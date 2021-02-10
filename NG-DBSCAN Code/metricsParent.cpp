@@ -6,12 +6,11 @@ int main(){
 	int dim = 0;
 	
 	fstream f;
-	f.open("points.txt", ios::in);
-	f>>dim; f>>dim;
-	f.close();
+
 
 	f.open("clusters.txt", ios::in);
-	int n_clusters; f>>n_clusters;
+	int n_clusters; f>>n_clusters>>dim;
+	//cout<<n_clusters<<dim;
 	clusters.resize(n_clusters);
 
 	vector<double> compactness(n_clusters);
@@ -28,12 +27,12 @@ int main(){
 			for(int k=0;k<dim;++k){
 				
 				f>>clusters[i][j][k];
-				//cout<<clusters[i][j][k]<<" ";			
+	//			cout<<clusters[i][j][k]<<" ";			
 			}
 			
 			string temp;
 			f>>temp;
-			//cout<<temp<<"*"<<endl;
+	//		cout<<temp<<"*"<<endl;
 		}
 
 	}

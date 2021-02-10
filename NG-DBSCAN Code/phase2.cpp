@@ -124,24 +124,48 @@ Graph Seed_Propagation(set<int> seeds, Graph T)
 
 	// printing all clusters in clusters.txt
 	out << list.size() << " " << dimensions << '\n';
+	
+	if(datasetType =="galaxy"){
 
-	for(int i = 0; i < list.size(); i++){
-		out << list[i].size() << "\n";
-		for(auto it:list[i]){ 
-			for(int j = 0; j < dimensions; j++){
-				out << coordinates[it][j] << " ";	
+		for(int i = 0; i < list.size(); i++){
+			out << list[i].size() << "\n";
+			for(auto it:list[i]){ 
+				for(int j = 0; j < dimensions; j++){
+					out << coordinates[it][j] << " ";	
+				}
+				out << node_from_id[it]->type << '\n';
 			}
-			out << node_from_id[it]->type << '\n';
 		}
+		for(int i = 0; i < T.N; i++){
+			if(node_from_id[i]->type == "noise"){
+				out << 1 << "\n";
+				for(int j = 0; j < dimensions; j++){
+					out << coordinates[i][j] << " ";	
+				}
+				out << node_from_id[i]->type << '\n';
+			}
+		}
+
 	}
-	for(int i = 0; i < T.N; i++){
-		if(node_from_id[i]->type == "noise"){
-			out << 1 << "\n";
-			for(int j = 0; j < dimensions; j++){
-				out << coordinates[i][j] << " ";	
+
+	else if(datasetType == "text"){
+
+		for(int i = 0; i < list.size(); i++){
+			out << list[i].size() << "\n";
+			for(auto it:list[i]){ 
+				out << sentences[it] << " ";					
+				out << node_from_id[it]->type << '\n';
 			}
-			out << node_from_id[i]->type << '\n';
 		}
+		for(int i = 0; i < T.N; i++){
+			if(node_from_id[i]->type == "noise"){
+				out << 1 << "\n";
+				out << sentences[i]<< " ";	
+				out << node_from_id[i]->type << '\n';
+			}
+		}
+
+
 	}
 	// The final output will be a list of lists where each list corresponds to a separate cluster
 	return T;
@@ -222,8 +246,8 @@ int main()
 	int Minpts  = 10; 			// each core node is having degree at least Minpts − 1
 	
 	if(parameterChange == 1){
-		cout << "Enter Parameters:";
-		cout << "\nEnter x for Tn(Tn = x*n):"; 	cin >> xTn;
+		cout << "Enter Parameters(If you want to keep default value then enter -1:";
+		cout << "\nEnter x for Tn(Tn = x*n):"; 	cin >> xTn; 
 		cout << "\nEnter x for Tr(Tr = x*n):"; 	cin >> xTr;
 		cout << "\nEnter k:"; 					cin >> k;
 		cout << "\nEnter Mmax:"; 				cin >> Mmax;
@@ -235,18 +259,40 @@ int main()
 
 	fstream f;
 	f.open("points.txt",ios::in);
-
-	int n;
-	f >> n >> dimensions;
+	int n; 
 	
+	f >> datasetType >> n >> dimensions;
+	
+
 	Parameters parameter(xTn*n, xTr*n, k, Mmax, p, iter, epsilon, Minpts);
 	
-	coordinates.resize(n,vector<double>(dimensions));
-	for(int i = 0; i < n; i++){
-		for(int j = 0; j < dimensions; j++){
-			f >> coordinates[i][j];
+	if(datasetType == "galaxy"){
+
+		coordinates.resize(n,vector<double>(dimensions));
+		for(int i = 0; i < n; i++){
+			for(int j = 0; j < dimensions; j++){
+				f >> coordinates[i][j];
+			}
 		}
+
+
 	}
+
+	else if(datasetType == "text"){
+
+			sentences.resize(n);
+			for(int i=0;i<n;++i){
+				string temp;
+				getline(f, temp);
+				sentences[i].clear(); sentences[i] = temp;
+				//cout<<sentences[i]<<endl;
+			}
+
+	}
+	int tsize = sentences.size();
+	for(int i=0;i<tsize; ++i) cout<<sentences[i]<<endl;
+	cout<<tsize<<endl;
+
 	Graph EG = epsilon_graph_construction(n, parameter);
 	Graph T = Discovering_Dense_Regions(EG, n, parameter);
 	f.close();
