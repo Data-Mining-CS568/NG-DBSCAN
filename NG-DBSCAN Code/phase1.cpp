@@ -126,7 +126,6 @@ void print_graph(Graph& G, int total_points, fstream& out){
 		}
 		out<<'\n';
 	}
-	out<<'\n';
 }
 
 // creating epsilon graph

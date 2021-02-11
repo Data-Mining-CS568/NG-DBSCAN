@@ -52,6 +52,7 @@ for i in range(noise_p):
 colours = ["green", "blue", "red", "orange", "yellow", "violet", "black", "pink", "grey", "cyan", "dark_green"]
 
 if dimensions == 2:
+	fig, ax = plt.subplots()
 	i = 0
 	for cluster in l:
 	    x = []
@@ -59,10 +60,10 @@ if dimensions == 2:
 	    for point in cluster:
 	        x.append(point[0])
 	        y.append(point[1])
-	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 30)
+	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 100)
 	    i = (i + 1) % 11
 	for item in noise:
-		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 30)
+		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 100)
 
 elif dimensions == 3:
 	ax = plt.axes(projection='3d')
