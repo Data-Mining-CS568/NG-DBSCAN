@@ -23,6 +23,10 @@
 		1. Compile: g++ metric_main.cpp
 		2. Execute: ./a.out
 
+Note: 1) For 3-D dataset try changing epsilon values to get better cluster quality	
+
+
+
 
 # Code Files  
 
@@ -50,8 +54,12 @@
 
 	- metric_calculate.cpp - Contains Functions to contain metrics.
 
-
 	- jaro_winkler_distance.cpp: It calculates Jaro Winkler Distance between two strings
+
+	- health_twitter.txt & sms_spam_collection.txt: Text Datasets 
+
+
+
 
 
 
