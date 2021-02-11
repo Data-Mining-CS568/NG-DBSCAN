@@ -252,7 +252,7 @@ int main()
 	int Mmax = 20;				// used to reduce NG in phase-1 to reduce computation
 	int p = 2;					// limits nodes for which 2 hop distance is calculated in NG
 	int iter = 10;
-	double epsilon = 0.5;		// minimum distance b/w nodes 
+	double epsilon = 1.0;		// minimum distance b/w nodes 
 	int Minpts  = 10; 			// each core node is having degree at least Minpts − 1
 	
 	if(parameterChange == 1){

@@ -5,8 +5,6 @@ from mpl_toolkits import mplot3d
 
 l = []
 noise = []
-core = []
-border = []
 
 input_file = open("clusters.txt","r")
 x = input_file.readline()
@@ -25,9 +23,9 @@ for i in range(n):
 		p = []
 		for item in x:
 			if item == "core\n":
-				core.append(item)
+				pass
 			elif item == "border\n":
-				border.append(item)
+				pass
 			else:
 				p.append(float(item))
 		lst.append(p)
@@ -46,8 +44,6 @@ for i in range(noise_p):
 			noise.append(p)
 		else:
 			p.append(float(item))
-	noise.append(p)
-
 
 colours = ["green", "blue", "red", "orange", "yellow", "violet", "black", "pink", "grey", "cyan", "dark_green"]
 
@@ -78,8 +74,8 @@ elif dimensions == 3:
 	        z.append(point[2])
 	    ax.scatter3D(x, y, z, zdir='z', s = 30, c = colours[i], marker= ".")
 	    i = (i + 1) % 11
-
-
+	for item in noise:
+		ax.scatter3D(item[0], item[1], item[2], zdir='z', s = 30, c = "black", marker = ".")
 
 # x-axis label 
 plt.xlabel('x - axis') 

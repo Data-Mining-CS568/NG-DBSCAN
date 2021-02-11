@@ -558,7 +558,7 @@ In \textit{clusters$\_$generator.py}, we have the code generated for one of the 
 We tried changing the parameters used in the code to see the effect of change on the cluster quality. 
 
 For the following points distributions, we found the cluster for k = 3 and k = 10 respectively. After analysing the plots, we found that with k = 10 we are getting better results.
-\textit{Left Image is with Clusters k = 3 $&$ Right Image is with Clusters k = 10.}
+\textit{Left Image is with Clusters k = 3 and Right Image is with Clusters k = 10.}
 Here $T\textsubscript{n}$, $T\textsubscript{r}$ are very small.
 \begin{figure*} [!h]
         \centering
@@ -585,5 +585,73 @@ For the next week we are planning to generalise the distance computations. We wi
 Apart from these we will think which part of the code needs to be modified to convert it into an incremental algorithm.
 
 
+\newpage
+\section* {\centerline{Section 5: Coding Of Static Algorithm, Part 2} \newline}
+\addcontentsline{toc}{section}{\large Section 5: Coding Of Static Algorithm, Part 2}
+Here is the link to the github repository of the NG-DBSCAN algorithm: \textcolor{blue}{\href{https://github.com/Data-Mining-CS568/NG-DBSCAN}{Link}}.
+
+\section*{Code Walk through}
+
+Our algorithm generates density based clustering for given data set using NG-DBSCAN algorithm. 
+
+In phase2.cpp, the algorithm is running from the main function. First we asked whether user wants to change the default parameters or not. \newline
+
+\includegraphics[width=.60\textwidth]{running_ngDbscan.jpeg}
+\newline \newline
+\textbf{About points.txt: }
+We are assuming that all the input data (textual, dimensional or randomly generated) will be present in points.txt. First line will contain dataset type (text or non-text), total number of points and dimension of the data (we assumed 0 dimension for textual data for simplicity). In rest of the lines, each line will represent a point.\newline
+Then we read all the points from points.txt depending upon whether our dataset is textual or not and call epsilon\_graph\_construction function which will return $\epsilon$-graph using phase1.cpp and we will use this graph as parameter to Dense\_Discovery\_Regions function and it will return propagation forest (T).
+\newline 
+In Seed\_Propagation function, clusters.txt and numbered\_clusters.txt are generated. \newline
+\textbf{About clusters.txt: } All the clusters generated will be present in clusters.txt. First line will contain number of clusters generated and dimension of dataset. Then in further lines, for each cluster, number of clusters present in current cluster is in seperate line followed by each point/sentence of that cluster in seperate lines.  \newline
+\textbf{About numbered\_clusters.txt: } All the clusters with the number/index of each point will be present in numbered\_clusters.txt. 
+\newline
+\textbf{About classes.h: } We defined different important variables for our convinience here. dataset\_type variable will denote the type of dataset taken (textual or non-textual). In case of non-textual dataset, coordinates vector will store all the points. coordinates[i] will denote ith point of our dataset. In case of textual dataset, sentences will store all the sentences. sentences[i] will denote ith point of our dataset. node\_from\_id map will store each index of point to the actual point of Node datatype which contains all information about that point.
+
+\section*{Computations of the algorithm}
+We used matplotlib in generate\_clusters.py to generate the clusters for 2 and 3 dimensional datasets.
+
+Apart from this, we used different metrics of seperation, compactness and recall to calculate how accurate our algorithm is working. metrics\_main.cpp will calculate the seperation, compactness and recall using clusters.txt for the dataset of points present in points.txt. 
+\newline \newline
+For the textual data, we are using jaro winkler's algorithm (as used by the author of the paper) to calculate distance between two points. jaro\_winkler\_distance.cpp contains the code to calculate distance between 2 textual points and it is used in phase2.cpp. \newline
+We have also tried to compare our algorithm with DBSCAN algorithm using the above metrics. We ran the same dataset on both the NG-DBSCAN and DBSCAN and compared their metrics.
+
+\section*{Toy Dataset}
+We have taken 15 two-dimensional points as an input of the toy dataset. These points are present in file named toy\_dataset.txt. \newline
+The points of toy dataset are listed below. First line represents that it is non textual data, has 15 points and is of 2 dimension. We took 2-dimensional for our simplicity in explaining. \newline
+The 1st column represents x-coordinate while 2nd column represents y-coordinate of the points. ith row represents ith point. \newline
+\begin{figure*} [!h]
+    \includegraphics[width=.55\textwidth]{toy_dataset_points.jpeg}
+    \caption{Toy Dataset Points} 
+\end{figure*}
+In phase2.cpp, we entered the following values of parameters for toy dataset. \newline
+\begin{figure*} [!h]
+    \includegraphics[width=.55\textwidth]{toy_dataset_parameters.jpeg}
+    \caption{Toy Dataset Parameters} 
+\end{figure*}
+The red edges between (i,j) indicates the edge between the ith and jth point in the epsilon graph. Each point in the epsilon graph is connected to atleast $M\textsubscript{max}$ more points in their neighbour (as seen in the figure) which are within $\epsilon$ distance here. \newline
+\begin{figure*} [!h]
+    \includegraphics[width=.60\textwidth]{toy_dataset_epsilonG.png}
+    \caption{Toy Dataset Epsilon Graph} 
+\end{figure*}
+The propagation tree is having 2nd, 4th, 6th points as seeds of different clusters and hence 3 clusters are formed. \newline
+We found that the points 0th, 8th and 14th are noise since no core node is present in their neighbour within $\epsilon$ distance, while 1st point is border since only one core node (10th) is present in it's neighbour, while others are core points.
+\begin{figure*} [!h]
+    \includegraphics[width=.60\textwidth]{toy_dataset_prop_tree.png}
+    \caption{Toy Dataset Propagation Tree} 
+\end{figure*}
+\begin{figure*} [!h]
+    \includegraphics[width=.60\textwidth]{toy_dataset_clusters.png}
+    \caption{Toy Dataset Clusters Identification} 
+\end{figure*}
+In the toy dataset identification of clusters, black points refer to the noise points while green points corresponds to 1st cluster and blue corresponds to 2nd cluster and red corresponds to 3rd cluster.
+
+\section*{Text Data Compatibility}
+We have added text data compatibility in the algorithm. For this we are using Jaro-Winkler's Distance Algorithm.
+
+Using Jaro-Winkler's Distance between two strings, we define their distance to generate their epsilon graph. Then with the epsilon graph we generate the clusters for the data set in similar fashion as with Euclidean distance measure.
+
+In dataset\_generator.py we ask user, the type of data to generate. In the points.txt(our dataset file) we are adding "text" or "non\_text" to differentiate between two types of data set.
+We used the fact in comparison of strings that, the lower the Jaro–Winkler distance for two strings is, the more similar the strings are.
 \end{document}
 
