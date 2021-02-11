@@ -1,5 +1,4 @@
 import math
-import numpy as np
 from sklearn.cluster import DBSCAN
 from sklearn import metrics
 from sklearn.datasets import make_blobs
@@ -10,8 +9,7 @@ l = []
 input_file = open("points.txt","r")
 x = input_file.readline()
 a = x.split()
-n = int(a[0])
-#print(n)            
+n = int(a[0])           
 for j in range(n):
 	x = input_file.readline()
 	x = x.split(' ')
@@ -42,7 +40,3 @@ print('Estimated number of noise points: %d' % n_noise_)
 
 print(labels)
 print(l)
-
-
-
-
