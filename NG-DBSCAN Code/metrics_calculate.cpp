@@ -28,8 +28,8 @@ double calculate_compactness(int n)
 	return ans/cnt;
 }
 
-// calculates similarity between different clusters
-double calculate_similarity(int n, int m)
+// calculates separation between different clusters
+double calculate_separation(int n, int m)
 {
 	double ans = 0; 
 	int cnt = 0;

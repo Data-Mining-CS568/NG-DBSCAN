@@ -11,7 +11,7 @@ int main()
 	clusters.resize(n_clusters);
 
 	vector<double> compactness(n_clusters);
-	vector<vector<double>> similarity(n_clusters,vector<double>(n_clusters,0));
+	vector<vector<double>> separation(n_clusters,vector<double>(n_clusters,0));
 
 	// Storing Clusters in an array
 	for(int i = 0; i < n_clusters; ++i){
@@ -34,11 +34,11 @@ int main()
 	}
 	cout << "\n";
 
-	cout << "Printing Similarity Of The Clusters: \n";
+	cout << "Printing separation Of The Clusters: \n";
 	for(int i = 0; i < n_clusters; ++i){
 		for(int j = 0; j < n_clusters; ++j){
-			similarity[i][j] = calculate_similarity(i,j);
-			cout << similarity[i][j] << " ";
+			separation[i][j] = calculate_separation(i,j);
+			cout << separation[i][j] << " ";
 		}
 		cout << "\n";
 	}
