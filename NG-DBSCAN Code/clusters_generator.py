@@ -24,9 +24,7 @@ for i in range(n):
 		x = x.split(' ')
 		p = []
 		for item in x:
-			if item == "noise\n":
-				noise.append(item)
-			elif item == "core\n":
+			if item == "core\n":
 				core.append(item)
 			elif item == "border\n":
 				border.append(item)
@@ -35,7 +33,23 @@ for i in range(n):
 		lst.append(p)
 	l.append(lst)
 
-colours = ["green", "blue", "red", "orange", "yellow", "violet", "black", "pink", "grey", "cyan", "black", "dark_green"]
+x = input_file.readline()
+a = x.split()
+noise_p = int(a[0])
+
+for i in range(noise_p):
+	x = input_file.readline()
+	x = x.split(' ')
+	p = []
+	for item in x:
+		if item == "noise\n":
+			noise.append(p)
+		else:
+			p.append(float(item))
+	noise.append(p)
+
+
+colours = ["green", "blue", "red", "orange", "yellow", "violet", "black", "pink", "grey", "cyan", "dark_green"]
 
 if dimensions == 2:
 	i = 0
@@ -46,7 +60,9 @@ if dimensions == 2:
 	        x.append(point[0])
 	        y.append(point[1])
 	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 30)
-	    i = (i + 1) % 12
+	    i = (i + 1) % 11
+	for item in noise:
+		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 30)
 
 elif dimensions == 3:
 	ax = plt.axes(projection='3d')
@@ -60,7 +76,9 @@ elif dimensions == 3:
 	        y.append(point[1])
 	        z.append(point[2])
 	    ax.scatter3D(x, y, z, zdir='z', s = 30, c = colours[i], marker= ".")
-	    i = (i + 1) % 12
+	    i = (i + 1) % 11
+
+
 
 # x-axis label 
 plt.xlabel('x - axis') 

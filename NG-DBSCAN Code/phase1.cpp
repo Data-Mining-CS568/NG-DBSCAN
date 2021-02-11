@@ -85,7 +85,7 @@ void Reduce_NG(int u, Graph& NG, Graph& EG, int& delta, Parameters parameter){
 bool Terminate(Graph& NG, int delta, Parameters parameter){
 	int no_of_nodes = NG.active.size();
 
-	if(no_of_nodes < parameter.Tn && delta < parameter.Tr){
+	if(no_of_nodes < parameter.Tn && delta <= parameter.Tr){
 		return 1;
 	}
 	else {
@@ -101,7 +101,7 @@ void Reverse_Map(int v, Graph& G){
 }
 
 // initializing each node with k random edges
-void Random_Initialisation(Graph& NG , Parameters parameter){
+void Random_Initialisation(Graph& NG, Parameters parameter){
 	for(int u = 0; u < NG.N; u++)
 	{
 		set<int> visited;

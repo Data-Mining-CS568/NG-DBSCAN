@@ -105,17 +105,18 @@ void dfs(int curr, Graph& T, vector<bool>& visited, vector<int>& v){
 
 Graph Seed_Propagation(set<int> seeds, Graph T, Parameters parameter)
 {
-	fstream out, f;
-	out.open("clusters.txt",ios::out);
-	f.open("numbered_clusters.txt",ios::out);
-
 	vector<bool> visited(T.N,0);
 	vector<vector<int>> list;
+
 	for(auto it:seeds){
 		vector<int> v;
 		dfs(it,T,visited,v);
 		list.push_back(v);
 	}
+
+	fstream out, f;
+	out.open("clusters.txt",ios::out);
+	f.open("numbered_clusters.txt",ios::out);
 
 	// printing clusters using numbering only
 	f << list.size() << " " << parameter.epsilon << '\n';
@@ -124,13 +125,20 @@ Graph Seed_Propagation(set<int> seeds, Graph T, Parameters parameter)
 		for(auto it:list[i]){
 			f << it << " ";
 		}
-		cout<<"\n";
+		f << "\n";
 	}
 
 	// printing all clusters in clusters.txt
 	out << list.size() << " " << dimensions << '\n';
+
+	int noise = 0;
+	for(int i = 0; i < T.N; i++){
+		if(node_from_id[i]->type == "noise"){
+			noise++;
+		}
+	}
 	
-	if(dataset_type =="non_text"){
+	if(dataset_type == "non_text"){
 
 		for(int i = 0; i < list.size(); i++){
 			out << list[i].size() << "\n";
@@ -141,9 +149,9 @@ Graph Seed_Propagation(set<int> seeds, Graph T, Parameters parameter)
 				out << node_from_id[it]->type << '\n';
 			}
 		}
+		out << noise << '\n';
 		for(int i = 0; i < T.N; i++){
 			if(node_from_id[i]->type == "noise"){
-				out << 1 << "\n";
 				for(int j = 0; j < dimensions; j++){
 					out << coordinates[i][j] << " ";	
 				}
@@ -161,9 +169,9 @@ Graph Seed_Propagation(set<int> seeds, Graph T, Parameters parameter)
 				out << node_from_id[it]->type << '\n';
 			}
 		}
+		out << noise << '\n';
 		for(int i = 0; i < T.N; i++){
 			if(node_from_id[i]->type == "noise"){
-				out << 1 << "\n";
 				out << sentences[i]<< " ";	
 				out << node_from_id[i]->type << '\n';
 			}
@@ -248,15 +256,15 @@ int main()
 	int Minpts  = 10; 			// each core node is having degree at least Minpts − 1
 	
 	if(parameterChange == 1){
-		cout << "Enter Parameters(If you want to keep default value then enter -1:";
-		cout << "\nEnter x for Tn(Tn = x*n):"; 	cin >> xTn; 
-		cout << "\nEnter x for Tr(Tr = x*n):"; 	cin >> xTr;
-		cout << "\nEnter k:"; 					cin >> k;
-		cout << "\nEnter Mmax:"; 				cin >> Mmax;
-		cout << "\nEnter p:"; 					cin >> p;
-		cout << "\nEnter iter:"; 				cin >> iter;
-		cout << "\nEnter epsilon:"; 			cin >> epsilon;
-		cout << "\nEnter Minpts:"; 				cin >> Minpts;
+		cout << "Enter Parameters(If you want to keep default value then enter -1\n";
+		cout << "Enter x for Tn(Tn = x*n)\n"; 	cin >> xTn; 
+		cout << "Enter x for Tr(Tr = x*n)\n"; 	cin >> xTr;
+		cout << "Enter k\n"; 					cin >> k;
+		cout << "Enter Mmax\n"; 				cin >> Mmax;
+		cout << "Enter p\n"; 					cin >> p;
+		cout << "Enter iter\n"; 				cin >> iter;
+		cout << "Enter epsilon\n"; 			cin >> epsilon;
+		cout << "Enter Minpts\n"; 				cin >> Minpts;
 	}
 
 	fstream f;
