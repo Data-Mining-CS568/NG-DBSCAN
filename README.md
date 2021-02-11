@@ -14,17 +14,24 @@
 	- Now run the main algorithm (NG-DBSCAN) code using the following command: 
 		1. Compile: g++ phase2.cpp
 		2. Execute: ./a.out
-	- It will create clusters.txt which contains all the clusters 
+	- It will create clusters.txt which contains all the clusters. 
 
 	- Now to plot the clusters (for 2D and 3D dataset), use the following command:
 		1. python3 clusters_generator.py 
 
-	- We calculate the metrics for comparison, compactness, separation, recall
-		1. Compile: g++ metric_main.cpp
+	- We calculated the NG-DBSCAN metrics for comparison with DBSCAN: compactness, separation, recall 
+		1. Compile: g++ metrics_main.cpp
 		2. Execute: ./a.out
 
-Note: 1) For 3-D dataset try changing epsilon values to get better cluster quality	
+	- Ran DBSCAN algorithm (for comparison with NG-DBSCAN) over points.txt using dbscan_code.py using the following command:
+		1. python3 dbscan_code.py
 
+	- We calculated the DBSCAN metrics: compactness, separation, recall 
+		1. Compile: g++ dbscan_metrics_main.cpp
+		2. Execute: ./a.out
+	- Using this we can compare between DBSCAN and NG-DCSCAN.
+
+Note: 1) For 3-D dataset try changing epsilon values to get better cluster quality	
 
 
 
@@ -50,14 +57,19 @@ Note: 1) For 3-D dataset try changing epsilon values to get better cluster quali
 
 	- clusters_generator.py - plots the clusters in 2-dimension in different colours using clusters.
 
-	- metric_main.cpp - Main method to calculate metrics
+	- metric_main.cpp - main method to calculate metrics for NG-DBSCAN.
 
-	- metric_calculate.cpp - Contains Functions to contain metrics.
+	- metric_calculate.cpp - contains Functions to contain metrics.
 
-	- jaro_winkler_distance.cpp: It calculates Jaro Winkler Distance between two strings
+	- dbscan_code.py - main method to create the DBSCAN clusters and numbered_dbscan_clusters.txt file.
 
-	- health_twitter.txt & sms_spam_collection.txt: Text Datasets 
+	- numbered_dbscan_clusters.txt - contains all the points of DBSCAN, where ith point represents in which cluster number it lies.
 
+	- dbscan_metrics_main.cpp - main method to calculate metrics for DBSCAN.
+
+	- jaro_winkler_distance.cpp: it calculates Jaro Winkler Distance between two strings
+
+	- health_twitter.txt & sms_spam_collection.txt: text datasets 
 
 
 

@@ -27,14 +27,14 @@ int main()
 		}
 	}
 
-	cout << "Printing Compactness Of The Clusters: \n";	
+	cout << "Printing compactness of ith clusters: \n";	
 	for(int i = 0; i < n_clusters; ++i){
 		compactness[i] = calculate_compactness(i);
 		cout << compactness[i] << " ";
 	}
 	cout << "\n";
 
-	cout << "Printing separation Of The Clusters: \n";
+	cout << "Printing separation between (i,j)th clusters: \n";
 	for(int i = 0; i < n_clusters; ++i){
 		for(int j = 0; j < n_clusters; ++j){
 			separation[i][j] = calculate_separation(i,j);
