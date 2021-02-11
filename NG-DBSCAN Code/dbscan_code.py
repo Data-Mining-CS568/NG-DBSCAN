@@ -1,29 +1,27 @@
 import math
+import numpy as np
 from sklearn.cluster import DBSCAN
 from sklearn import metrics
 from sklearn.datasets import make_blobs
 from sklearn.preprocessing import StandardScaler
 
-
 l = []
 input_file = open("points.txt","r")
+output_file = open("numbered_dbscan_clusters.txt","w")
 x = input_file.readline()
 a = x.split()
-n = int(a[0])           
+n = int(a[1])
+dim = int(a[2])
 for j in range(n):
 	x = input_file.readline()
+	x = x.strip()
 	x = x.split(' ')
-	p = [float(x[0]),float(x[1])]
+	p = []
+	for item in x:
+		p.append(float(item))
 	l.append(p)
-print(l)
-
-
-
-
-
 l = StandardScaler().fit_transform(l)
 
-# #############################################################################
 # Compute DBSCAN
 db = DBSCAN(eps=0.1, min_samples=10).fit(l)
 core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
@@ -34,9 +32,7 @@ labels = db.labels_
 n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
 n_noise_ = list(labels).count(-1)
 
-print('Estimated number of clusters: %d' % n_clusters_)
-print('Estimated number of noise points: %d' % n_noise_)
-#print("Silhouette Coefficient: %0.3f" % metrics.silhouette_score(X, labels))
-
-print(labels)
-print(l)
+output_file.write(str(n) + "\n")
+for i in labels:
+	output_file.write(str(i) + " ")
+output_file.write("\n")
