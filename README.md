@@ -1,6 +1,9 @@
 # NG-DBSCAN
 
 - Inside "NG-DBSCAN Code" folder, all the files to run are present.
+- While plotting 2-D and 3-D datasets, try changing epsilon values to get better cluster quality.
+- Images folder contains some of the clusters generated. 
+- For synthetic datasets, we used moon, blob and circular datasets.
 
 # Instructions to run the code
 
@@ -30,9 +33,6 @@
 		1. Compile: g++ dbscan_metrics_main.cpp
 		2. Execute: ./a.out
 	- Using this we can compare between DBSCAN and NG-DCSCAN.
-
-Note: 1) For 3-D dataset try changing epsilon values to get better cluster quality	
-
 
 
 # Code Files  
