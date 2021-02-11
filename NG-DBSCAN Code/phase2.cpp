@@ -1,9 +1,3 @@
-#pragma GCC optimize("Ofast")
-#pragma GCC optimization("unroll-loops")
-#pragma GCC optimize("unroll-loops")
-#pragma GCC optimize("fast-math")
-#pragma GCC optimize("no-stack-protector")
-
 #include "phase1.cpp"
 
 // return maximum core node from the list
@@ -109,10 +103,11 @@ void dfs(int curr, Graph& T, vector<bool>& visited, vector<int>& v){
 	}
 }
 
-Graph Seed_Propagation(set<int> seeds, Graph T)
+Graph Seed_Propagation(set<int> seeds, Graph T, Parameters parameter)
 {
-	fstream out;
+	fstream out, f;
 	out.open("clusters.txt",ios::out);
+	f.open("numbered_clusters.txt",ios::out);
 
 	vector<bool> visited(T.N,0);
 	vector<vector<int>> list;
@@ -122,10 +117,20 @@ Graph Seed_Propagation(set<int> seeds, Graph T)
 		list.push_back(v);
 	}
 
+	// printing clusters using numbering only
+	f << list.size() << " " << parameter.epsilon << '\n';
+	for(int i = 0; i < list.size(); i++){
+		f << list[i].size() << '\n';
+		for(auto it:list[i]){
+			f << it << " ";
+		}
+		cout<<"\n";
+	}
+
 	// printing all clusters in clusters.txt
 	out << list.size() << " " << dimensions << '\n';
 	
-	if(datasetType =="galaxy"){
+	if(dataset_type =="non_text"){
 
 		for(int i = 0; i < list.size(); i++){
 			out << list[i].size() << "\n";
@@ -147,8 +152,7 @@ Graph Seed_Propagation(set<int> seeds, Graph T)
 		}
 
 	}
-
-	else if(datasetType == "text"){
+	else if(dataset_type == "text"){
 
 		for(int i = 0; i < list.size(); i++){
 			out << list[i].size() << "\n";
@@ -164,8 +168,6 @@ Graph Seed_Propagation(set<int> seeds, Graph T)
 				out << node_from_id[i]->type << '\n';
 			}
 		}
-
-
 	}
 	// The final output will be a list of lists where each list corresponds to a separate cluster
 	return T;
@@ -227,7 +229,7 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes, Parameters parameter)
 	print_graph(T, total_nodes, f);
 	f.close();
 	
-	return Seed_Propagation(G.active, T);
+	return Seed_Propagation(G.active, T, parameter);
 }
 
 int main()
@@ -261,37 +263,29 @@ int main()
 	f.open("points.txt",ios::in);
 	int n; 
 	
-	f >> datasetType >> n >> dimensions;
+	f >> dataset_type >> n >> dimensions;
 	
-
 	Parameters parameter(xTn*n, xTr*n, k, Mmax, p, iter, epsilon, Minpts);
 	
-	if(datasetType == "galaxy"){
-
+	if(dataset_type == "non_text")
+	{
 		coordinates.resize(n,vector<double>(dimensions));
 		for(int i = 0; i < n; i++){
 			for(int j = 0; j < dimensions; j++){
 				f >> coordinates[i][j];
 			}
 		}
-
-
 	}
-
-	else if(datasetType == "text"){
-
-			sentences.resize(n);
-			for(int i=0;i<n;++i){
-				string temp;
-				getline(f, temp);
-				sentences[i].clear(); sentences[i] = temp;
-				//cout<<sentences[i]<<endl;
-			}
-
+	else if(dataset_type == "text")
+	{
+		sentences.resize(n);
+		for(int i = 0; i < n; ++i){
+			string temp;
+			getline(f, temp);
+			sentences[i].clear(); 
+			sentences[i] = temp;
+		}
 	}
-	int tsize = sentences.size();
-	for(int i=0;i<tsize; ++i) cout<<sentences[i]<<endl;
-	cout<<tsize<<endl;
 
 	Graph EG = epsilon_graph_construction(n, parameter);
 	Graph T = Discovering_Dense_Regions(EG, n, parameter);

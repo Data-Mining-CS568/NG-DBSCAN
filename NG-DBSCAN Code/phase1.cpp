@@ -1,26 +1,30 @@
+#pragma GCC optimize("Ofast")
+#pragma GCC optimization("unroll-loops")
+#pragma GCC optimize("unroll-loops")
+#pragma GCC optimize("fast-math")
+#pragma GCC optimize("no-stack-protector")
+
 #include <bits/stdc++.h>
 using namespace std;
 
 #include "classes.h"
-#include "JaroWinklerDistance.cpp"
+#include "jaro_winkler_distance.cpp"
 
 // calculating distance between 2 points
-double distance(int u, int v){
-
-	if(datasetType == "text"){
-
+double distance(int u, int v)
+{
+	if(dataset_type == "text"){
 		double ans = jaro_winkler(sentences[u], sentences[v]);
 		return ans;
 	}
-
-	else if(datasetType == "galaxy"){
-
+	else if(dataset_type == "non_text"){
 		double ans = 0;
 		for(int j = 0; j < dimensions; j++){
 			ans += (coordinates[u][j] - coordinates[v][j]) * (coordinates[u][j] - coordinates[v][j]);
-		}	
+		}
 		return sqrtf(ans);
 	}
+	return 0.0;
 }
 
 // Random selection of at most ρk nodes from NG.neighbours(n)
