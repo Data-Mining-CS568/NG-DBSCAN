@@ -38,7 +38,7 @@ int main()
 		}
 	}
 
-	cout << "Printing compactness of ith clusters: \n";	
+	cout << "Printing compactness of each cluster: \n";	
 	for(int i = 0; i < n_clusters; ++i){
 		compactness[i] = calculate_compactness(i);
 		cout << compactness[i] << " ";
