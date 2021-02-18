@@ -653,5 +653,132 @@ Using Jaro-Winkler's Distance between two strings, we define their distance to g
 
 In dataset\_generator.py we ask user, the type of data to generate. In the points.txt(our dataset file) we are adding "text" or "non\_text" to differentiate between two types of data set.
 We used the fact in comparison of strings that, the lower the Jaro–Winkler distance for two strings is, the more similar the strings are.
-\end{document}
 
+\newpage 
+\section* {\centerline{Section 5: Proposed Incremental Algorithm, Iteration 1} \newline}
+\addcontentsline{toc}{section}{\large Section 5: Proposed Incremental Algorithm, Iteration 1}
+
+\section*{Introduction}
+Many real-world applications such as search engines and recommender
+systems are expected to work over dynamic datasets. Such datasets undergo
+frequent changes where some points are added and some points are deleted. A
+naive method to get exact clustering over the changed dataset is to run the
+clustering algorithm again. Most of the computation in reclustering is going to be redudant. This problem becomes more severe with increase in frequency of updates to dynamic datasets. 
+
+To overcome this problem, we are proposing an incremental version of NG-DBSCAN algorithm, for which we have proposed static version earlier, the incremental version will process frequent updates to dynamic datasets efficiently by avoiding redundant computation. Our incremental NG-DBSCAN will yield
+significant speed-up factors over NG-DBSCAN even for large numbers of daily updates.
+
+\section*{Description and working of the incremental version}
+Our incremental version will happen in 2-phases like in case of static NG-DBSCAN. Sets of updates are processed one at a time without considering the relationships between the single updates.
+
+\begin{enumerate}
+    \item \textbf{Identification of nodes during addition and deletion:} In the static version of NG-DBSCAN, we identify each node as core and non-core (border and noise points). Here also we will maintain each node coreness with it's degree. To do this, we will maintain a set of points I, which will contain all the points for which we need to gather some information to classify them as core or non-core. This set will change during insertion and deletion of points. Here also we are using the convention that the points having atleast \textit{Minpts} neighbours are core nodes. \newline 
+    \begin{itemize}
+        \item \textbf{Addition of a point:} Denote the point to be added as 'p'. While adding 'p' to our existing dataset, some of the existing points from dataset can change from non-core to core. So we insert 'p' to the set I. Those points which are having their degree as \textit{Minpts-1} are also added to the set since there is a chance that they become core due to the addition of 'p'. \\ \\
+        Our incremental algorithm analyses only the region affected by the insertion of point. The region affected by addition will be $\epsilon$-neighbourhood of point p and all points density reachable from any point in N\textsubscript{$\epsilon$}(p). Here N\textsubscript{$\epsilon$}(p) denotes the $\epsilon$-neighbourhood of p. \\ \\ \textbf{Mathematically:} \textit{Affected}\textsubscript{$D$}(p) = N\textsubscript{$\epsilon$}(p) $\cup$ $\{$ q | $\exists$ o $\in$ N\textsubscript{$\epsilon$}(p) $\land$ q >\textsubscript{D$\cap$p}o $\}$ \\ Here, x >\textsubscript{D} y, denotes y is density reachable from x w.r.t data set D. \\ \\  
+        We generate a set \textit{UpdSeed\textsubscript{Ins}} which contains all core nodes in the epsilon neighbourhood of newly identified core nodes. (As adding point \textit{p} can make some points core nodes).\\ \\ \textbf{Mathematically:} \textit{UpdSeed\textsubscript{Ins}} = \{q | q is a core object in D $\cup$ \{p\}, $\exists$ q’: q’ is core object in D $\cup$ \{p\} but not in D and q $\in$ N\textsubscript{$\epsilon$}(q')\} \\ \\
+        \textbf{Efficient computation of N\textsubscript{$\epsilon$}(p)}:
+        \begin{itemize}
+            \item For all the points 'u' in I, and for each cluster 'c' in the propagation tree, we will randomly assign k edges from 'u' with 'c'. 
+            \item Let all those vertices form a set S. Then for some constant number of iterations and while 'u' is non-core (degree of 'u' < Minpts), for each vertex 'v' in S, we will check distance between 'u' and 'v'. 
+            \item If distance is <= $\epsilon$, edge is created between 'u' and 'v' and degree of 'u' and 'v' both are increased. Then we insert all the neighbours of 'v' in S. 
+    
+            \item Since we only require some number of points \textit{(Minpts)} within $\epsilon$ distance from 'u' to classify it as core, if this vertex is actually a core vertex after addition of it to the data set, then after some number of iterations it will eventually find some vertices of that cluster in the above process that are within $\epsilon$ distance from it. \\
+        \end{itemize} 
+     
+        \textbf{Efficient computation of \textit{UpdSeed\textsubscript{Ins}}}:
+        \begin{itemize}
+            \item While running the main algorithm we store the count of number of neighbours of every point.
+            \item Let denote newly identified core node as q'.
+            
+            \item Then, q' will be change into core node if q' $\in$ N\textsubscript{$\epsilon$}(p) and initial number of neighbours of  q' is \textit{MinPts - 1}.
+            
+            \item Now we need to discover neighbourhood of q' for all q which are core nodes.
+            
+            \item As N\textsubscript{$\epsilon$}(p) is already present in the memory, we search for neighbour of q' first there, then only we query neighbourhood of q’ and perform an additional region query only if there are more objects in the neighborhood of q’ than already contained in N\textsubscript{$\epsilon$}(p). \\ 
+        \end{itemize}
+        
+        \begin{figure}[!h]
+            \centering
+            \includegraphics[width = \textwidth]{UpdSeed Construction Flow chart.png}
+            \caption{UpdSeed Construction}
+            \label{fig:my_label}
+        \end{figure}
+        
+% **************** Deletion Of Point ****************
+        \item \textbf{Deletion of a point:} Denote the point to be deleted as 'p'. While deleting 'p' from our existing dataset, some of the points can have their degree changed to \textit{Minpts-1} due to their loss of connection with 'p'. So we will store all those points in I which were in the $\epsilon$-neighbourhood of 'p' so that we could gather some more information regarding these points whether they can become core or not. \newline
+        Let \textit{Affected}\textsubscript{$D$}(p) is the region affected by the deletion of point. \\ \\
+        We generate a set \textit{UpdSeed\textsubscript{Del}} which contains all core node in $\epsilon$-neighbourhood of newly identified non-core nodes. (As deleting point \textit{p} can make some points non-core from core).\\ \\ \textbf{Mathematically:} \textit{UpdSeed\textsubscript{Del}} = \{q | q is a core object in D\textbackslash \{p\}, $\exists$ q’: q’ is core object in D but not in D\textbackslash \{p\} and q $\in$ N\textsubscript{$\epsilon$}(q')\} \\ \\
+        \textbf{Efficient computation of N\textsubscript{$\epsilon$}(p)}:
+        We already have $\epsilon$-neighbourhood of p as p was present in the data set before deletion.\\ \\
+        \textbf{Efficient computation of \textit{UpdSeed\textsubscript{Del}}}:
+        \begin{itemize}
+            \item While running the main algorithm we store the count of number of neighbours of every point.
+            \item Let denote core node in original clustering as q'.
+            \item Then, q' will be change into non core node if q' $\in$ N\textsubscript{$\epsilon$}(p) and initial number of neighbours of  q' is \textit{MinPts}.
+            \item Now we need to discover neighbourhood of q' for all q which are core nodes.
+            \item As N\textsubscript{$\epsilon$}(p) is already present in the memory, we search for neighbour of q' first there, then only we query neighbourhood of q’ and perform an additional region query only if there are more objects in the neighborhood of q’ than already contained in N\textsubscript{$\epsilon$}(p). \\ \\
+        \end{itemize}
+        
+        
+    \end{itemize}
+
+    \item \textbf{Cluster membership assignment: } Here we perform the merging, seperation of clusters, formation of new clusters due to addition and deletion of points. \newline 
+    
+    \begin{itemize}
+        \item \textbf{Addition of a point: }
+        When inserting a new object p, new density-connections may be established, but none are removed. In this case, it is sufficient to restrict the application of the clustering procedure
+        to the set {UpdSeed\textsubscript{Ins}}. If we have to change cluster membership for an object from C to D we perform the same change of cluster membership for all other objects in C. Changing cluster membership of these objects does not involve the application of the clustering algorithm but can be handled by simply storing the information about which clusters have been merged.
+        When inserting an object p into the database D, we can
+        distinguish the following cases:
+        \\ 
+
+        \begin{enumerate}
+            \item \textbf{Noise: }
+            {UpdSeed\textsubscript{Ins}} is empty, i.e. there are no “new” core objects after insertion of p. Then, p is a noise object and nothing else is changed.
+            \item \textbf{Creation: } {UpdSeed\textsubscript{Ins}} contains only core objects which did not belong to a cluster before the insertion of p, i.e. they were noise objects or equal to p, and a new cluster containing these noise objects as well as p is created.
+            \item \textbf{Absorption: } {UpdSeed\textsubscript{Ins}} contains core objects which were members of exactly one cluster C before the insertion. The object p and possibly some noise objects are absorbed into cluster C.
+            \item \textbf{Merge: } {UpdSeed\textsubscript{Ins}} contains core objects which were members of several clusters before the insertion. All these clusters and the object p are merged into one cluster. \\
+        \end{enumerate}
+        
+        \begin{figure}[!h]
+            \centering
+            \includegraphics[width = \textwidth]{Flowchart Insertion Cluster Assignment.png}
+            \caption{Insertion of point}
+            \label{fig:my_label}
+        \end{figure}
+        
+        \item \textbf{Deletion of a point: }
+        As opposed to an insertion, when deleting an object p, density-connections may be removed, but no new connections are established. The difficult case for deletion occurs when the cluster C of p is no longer density-connected via (previous) core objects in N\textsubscript{$\epsilon$}(p) after deleting p. In this case, we do not know in general how many objects we have to check before it can be determined whether C has to be split or not. In most cases, however, this set of objects is very small because the split of a cluster is not very frequent and in general a non-split situation will be detected in a small neighborhood of the deleted object p. 
+        When deleting an object p from the database D we can distinguish the following cases:
+        \\ 
+        \begin{enumerate}
+            \item \textbf{Removal: } \textit{UpdSeed\textsubscript{Del}} is empty, i.e. there are no core objects in the neighborhood of objects that may have lost their core object property after the deletion of p. Then p is deleted from D and eventually other objects in N\textsubscript{$\epsilon$}(p) change from a former cluster C to noise. If this happens, the cluster C is completely removed because then C cannot have core objects outside of N\textsubscript{$\epsilon$}(p).
+            \item \textbf{Reduction: } All objects in \textit{UpdSeed\textsubscript{Del}} are directly density-reachable
+            from each other. Then p is deleted from D and some objects in N\textsubscript{$\epsilon$}(p) may become noise.
+            \item \textbf{Potential Split: } The objects in \textit{UpdSeed\textsubscript{Del}} are not directly density-reachable from each other. These objects belonged to exactly one cluster C before the deletion of p. Now we have to check whether or not these objects are density-connected by other objects in the former cluster C. Depending on the existence of such density-connections, we can distinguish a split and a non-split situation.
+        \end{enumerate}
+        
+        \begin{figure}[!h]
+            \centering
+            \includegraphics[width = \textwidth]{Flowchart Deletion Cluster Assignment.png}
+            \caption{Deletion of point}
+            \label{fig:my_label}
+        \end{figure}
+    \end{itemize}
+\end{enumerate}
+
+\section*{Intution of the proposed approach}
+Due to the density-based nature of NG-DBSCAN, the insertion or deletion of an object affects the current clustering only in the neighborhood of this object.
+\begin{enumerate}
+    \item \textbf{Intution for node identification: }To classify each node 'p' as core node, we only need to have \textit{Minpts} number of neighbours within $\epsilon$ distance from 'p'. Hence to gather these \textit{Minpts} neighbours for all points in I, then if in reality there are \textit{Minpts} neighbours for current point in the dataset then we will be able to find such set of points in one or more clusters after some iterations. \newline
+    Here we are reducing our computations of finding the $\epsilon$-neighbourhood of whole graph again to only finding it for the points in I. 
+    \item \textbf{Intution for finding cluster membership: }We have proved that only for points inside the \textit{UpdSeed\textsubscript{Ins}} and \textit{UpdSeed\textsubscript{Del}} are the nodes for the update related to changing of cluster memberships. \newline 
+    Here we are reducing our computations by looking over only certain nodes while performing addition and deletion of points instead of looking over and creating the whole propagation tree and clusters again. 
+\end{enumerate}
+
+\section*{Further Work}
+In next week we will work on detailed algorithm of Cluster Membership Assignment for insertion and deletion both. We will further compare the percent of time needed to run the whole NG-DBSCAN algorithm with respect to insertion of new coming data objects and determines which approach takes fewer amounts of time and effort.
+
+
+\end{document}
