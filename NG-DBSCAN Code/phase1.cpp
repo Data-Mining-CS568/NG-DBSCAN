@@ -46,7 +46,7 @@ vector<int> random_selecting_nodes(Graph& NG, int n, Parameters parameter){
 // checking neighbour graph and updating ε graph
 void Check_Neighborhood(int n, Graph& NG, Graph& EG, set<int>* temp, Parameters parameter){
 	
-	vector<int> N = random_selecting_nodes(NG,n, parameter);
+	vector<int> N = random_selecting_nodes(NG, n, parameter);
 
 	for(int v = 0; v < N.size(); v++){
 		for(int u = 0; u < N.size(); u++){
