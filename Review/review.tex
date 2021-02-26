@@ -41,6 +41,7 @@ colorlinks=true,linkcolor=red,citecolor=green,filecolor=magenta,urlcolor=cyan
 \usepackage{fancyhdr}
 \usepackage{textgreek}
 \usepackage{fixltx2e}
+\usepackage[linesnumbered,ruled]{algorithm2e}
 \settopmatter{printacmref=false}
 \setcopyright{none}
 
@@ -238,7 +239,7 @@ We didn't find any incremental versions of NG-DBSCAN. But we have found some oth
     It is also a scalable, density based algorithm to find clusters of arbitrary shapes, size, and as well as filter out noise like NG-DBSCAN does. It also uses the Map Reduce method which NG-DBSCAN follows. 
     \begin{itemize}
         \item \textbf{Intuition of proposed solution:} In this algorithm, new data points which intersect with old data points are determined. For each intersection point, the new dataset uses an incremental DBSCAN algorithm to determine new cluster membership. Cluster memberships of the remaining points are then updated. R*- tree data structure is used in this algorithm.
-        \item \textbf{Results:} Time complexity of this algorithm is less than the original DBSCAN  algorithm and it has also dealt with fault tolerance which makes it to compete with NG-DBSCAN.
+        \item \textbf{Results:} Time complexity of this algorithm is less than the original DBSCAN	algorithm and it has also dealt with fault tolerance which makes it to compete with NG-DBSCAN.
         \item \textbf{Limitations:} In this algorithm it is difficult to delete clusters incrementally from an existing set of clusters.
     \end{itemize}
     \vspace{5pt}
@@ -312,19 +313,19 @@ class Node {
     degree          -   represents number of edges connected to this node
     coreness        -   represents (id, type) of node
     coordinates     -   represents the data point from our dataset
-    type            -   represent whether Node is core, border or noise
-    Node(id){       -   constructor to initialize Node
+    type            - 	represent whether Node is core, border or noise
+    Node(id){       - 	constructor to initialize Node
         this.id = id
         this.type = none
     }
 }
 class Graph { 
-    int N                         - Total number of nodes
-    set<Node> active              -   List of active nodes
-    vector<Node,int> edges[N]        -  Adjacency List
+    int N 					              -	Total number of nodes
+    set<Node> active 			        - 	List of active nodes
+    vector<Node,int> edges[N] 	     -	Adjacency List
     Graph(int total_nodes) {
-      this.active = {$u  \forall u \in N$}                // make all nodes as active
-      this.N = total_nodes
+    	this.active = {$u  \forall u \in N$}                // make all nodes as active
+    	this.N = total_nodes
     }
     void remove_node(Node ID)       // removes node from graph
     void add_node(Node ID)          // adds node in graph
@@ -335,15 +336,15 @@ class Graph {
     vector<Node> neighbours(x)      // returns all neighbours of node x
 }
 class Parameters {
-  $k$        -  represents degree of each node in neighbour graph
-  $Minpts$           -   each core node is having degree at least $Minpts-1$
+	$k$		     -	represents degree of each node in neighbour graph
+	$Minpts$           -   each core node is having degree at least $Minpts-1$
     T$\textsubscript{n}$         -   limits number of nodes in NG for termination
-    T$\textsubscript{r}$          -   limits number of removed nodes in current iteration in NG
-    M$\textsubscript{max}$         -  used to reduce NG in phase-1 to reduce computation
+    T$\textsubscript{r}$	        -   limits number of removed nodes in current iteration in NG
+    M$\textsubscript{max}$         -	used to reduce NG in phase-1 to reduce computation
     $\rho$          -   limits nodes for which 2 hop distance is calculated in NG
-    $iter$          - used to achieve convergence condition
-  Parameters() {
-      // initialise all with default values unless explicit values are given
+    $iter$          -	used to achieve convergence condition
+	Parameters() {
+	    // initialise all with default values unless explicit values are given
     }
 }
 \end{lstlisting}
@@ -356,56 +357,56 @@ In Phase 1, the main function to be called is \textit{$\epsilon$-graph\_construc
 
 // creating $\epsilon$-graph
 Graph $\epsilon$-graph_construction(int total_points){
-  Graph $\epsilon G$(total_points), NG(total_points)
-  Random_Initialisation(NG)       // initialising each node with k random edges
-  delta = 0                       // number of nodes removed in current iteration
-  while(i < iter and not Terminate(NG, delta)){
-      Reverse_Map(u, NG)  $\forall u \in NG$
-      Check_Neighborhood(u, NG, $\epsilon G$)  $\forall u \in NG$
-      Reduce_NG(u, NG, $\epsilon G$)  $\forall u \in NG$
+	Graph $\epsilon G$(total_points), NG(total_points)
+	Random_Initialisation(NG)       // initialising each node with k random edges
+	delta = 0                       // number of nodes removed in current iteration
+	while(i < iter and not Terminate(NG, delta)){
+	    Reverse_Map(u, NG)  $\forall u \in NG$
+	    Check_Neighborhood(u, NG, $\epsilon G$)  $\forall u \in NG$
+	    Reduce_NG(u, NG, $\epsilon G$)  $\forall u \in NG$
         i++
     }
     return $\epsilon G$
 }
 void Reverse_Map(Node n, Graph G) {
     // Making the graph undirected
-  for each u in G.neighbours(G) {
-    w = distance(v, u)
-    G.add_edge(u, v, w)
-  }
+	for each u in G.neighbours(G) {
+		w = distance(v, u)
+		G.add_edge(u, v, w)
+	}
 }
 // checking neighbour graph and updating $\epsilon$ graph
 void Check_Neighborhood(Node n, Graph NG, Graph $\epsilon G$) {
     N = Random selection of at most $\rho k$ nodes from NG.neighbours(n) 
-  for each vertex v in N {
-    for each vertex u in N$\setminus${v} {
-      w = distance(u, v)
-      NG.add_edge(u, v, w)
-      if(w <= $\epsilon$)
-            $\epsilon G$.add_edge(u, v, w)
+	for each vertex v in N {
+		for each vertex u in N$\setminus${v} {
+			w = distance(u, v)
+			NG.add_edge(u, v, w)
+			if(w <= $\epsilon$)
+		        $\epsilon G$.add_edge(u, v, w)
         }
     }
 }
 // checking termination condition
 bool Terminate(Graph NG, int delta){
-  if(|NG.nodes| < $T\textsubscript{n}$ and delta < $T\textsubscript{r}$){
-    return 1
-  } 
-  else {
-    return 0
-  }
+	if(|NG.nodes| < $T\textsubscript{n}$ and delta < $T\textsubscript{r}$){
+		return 1
+	} 
+	else {
+		return 0
+	}
 }
 // reducing neighbour graph
 void Reduce_NG(Node u, Graph NG, Graph $\epsilon G$){
-  if(|$\epsilon G$.neighbours(u)| >= M$\textsubscript{max}$){
-      NG.remove_node(u)
-      delta = delta + 1
-  }
-  vector<Node> l = NG.neighbours(u) 
-  remove from l the k edges with smallest weights using priority queue
+	if(|$\epsilon G$.neighbours(u)| >= M$\textsubscript{max}$){
+	    NG.remove_node(u)
+	    delta = delta + 1
+	}
+	vector<Node> l = NG.neighbours(u) 
+	remove from l the k edges with smallest weights using priority queue
     for(u, v, w) in l {
         NG.delete_edge(u, v, w)
-  }
+	}
 }
 \end{lstlisting}
 
@@ -415,76 +416,76 @@ In Phase 2, main function to be called is \textit{Discovering\_Dense\_Regions} w
 \begin{lstlisting}
 // finding all the clusters
 Graph Discovering_Dense_Regions(Graph $\epsilon$-NN, int total_nodes){
-  // Make all nodes active
-  Graph T(total_nodes)
-  G = Coreness_Dissemination($\epsilon$-NN, total_nodes)
-  while G has active nodes { 
-    Graph H(total_nodes) 
-    // Seed identification process
-    Max_Selection_Step(n, G, H) $\forall n \in G$
-    Pruning_Step(n, T, H, G) $\forall n \in H$
-  }
-  return Seed_Propagation(T)
+	// Make all nodes active
+	Graph T(total_nodes)
+	G = Coreness_Dissemination($\epsilon$-NN, total_nodes)
+	while G has active nodes { 
+		Graph H(total_nodes) 
+		// Seed identification process
+		Max_Selection_Step(n, G, H) $\forall n \in G$
+		Pruning_Step(n, T, H, G) $\forall n \in H$
+	}
+	return Seed_Propagation(T)
 }
 // return maximum core node from the list
 int Max_Core_Node(vector<Node> list){
-  // returns node from list having maximum coreness value
+	// returns node from list having maximum coreness value
 }
 void Max_Selection_Step(Node u, Graph G, Graph H){
-  vector<Node> NNg = G.neighbours(u)
-  int u$\textsubscript{max}$ = Max_Core_Node(NNg $\cup$ {u})
-  if(u.type != core){
-      H.add_edge(u, u$\textsubscript{max}$)
+	vector<Node> NNg = G.neighbours(u)
+	int u$\textsubscript{max}$ = Max_Core_Node(NNg $\cup$ {u})
+	if(u.type != core){
+	    H.add_edge(u, u$\textsubscript{max}$)
     } 
     else {
-      for each node v in NNg 
+    	for each node v in NNg 
             H.add_edge(v, u$\textsubscript{max}$)
     }
     H.add_edge(u$\textsubscript{max}$, u$\textsubscript{max}$)
 }
 // in pruning, nodes not proposed as seeds(those with no incoming edges) are deactivated
 void Pruning_Step(Node u, Propagation_Tree T, Graph H, Graph G){
-  vector<Node> NNh = H.neighbours(u)
-  int u$\textsubscript{max}$ = Max_Core_Node(NNh)
-  if(u.type != core){
-      G.remove_node(u)
-      T.add_edge(u$\textsubscript{max}$,u)
+	vector<Node> NNh = H.neighbours(u)
+	int u$\textsubscript{max}$ = Max_Core_Node(NNh)
+	if(u.type != core){
+	    G.remove_node(u)
+	    T.add_edge(u$\textsubscript{max}$,u)
     } 
     else {
-      for each node v in (NNh \ {u$\textsubscript{max}$}){
-          G.add_edge(v, u$\textsubscript{max}$)
-          G.add_edge(u$\textsubscript{max}$, v)
+    	for each node v in (NNh \ {u$\textsubscript{max}$}){
+    	    G.add_edge(v, u$\textsubscript{max}$)
+    	    G.add_edge(u$\textsubscript{max}$, v)
         }
         if u not present in NNh {
-          G.remove_node(u)
-          T.add_edge(u$\textsubscript{max}$,u)
+    	    G.remove_node(u)
+    	    T.add_edge(u$\textsubscript{max}$,u)
         }
     }
 }
 // convert graph to identify all nodes and return it
 Graph Coreness_Dissemination(Graph $\epsilon$-NN, int total_nodes) {
-  // Here we identify the core, boundary and noise points of the input ε-graph.
-  Graph G(total_nodes)
-  G = $\epsilon$-NN
+	// Here we identify the core, boundary and noise points of the input ε-graph.
+	Graph G(total_nodes)
+	G = $\epsilon$-NN
     for each node v in G.nodes {
-    if(|G.neighbours(v)| >= $Minpts-1$)
-      v.type = core   // Make it a core node
-  }
+		if(|G.neighbours(v)| >= $Minpts-1$)
+			v.type = core   // Make it a core node
+	}
     for each node v in G.nodes \ {core nodes} {
-    if there is at least one core node in G.neighbours(v)
-      v.type = border // Make it a border node
-  }
+		if there is at least one core node in G.neighbours(v)
+			v.type = border // Make it a border node
+	}
     for each node v in G.nodes \ {core nodes} \ {border nodes} {
-    v.type = noise      // Mark them as noise points
-    G.remove_node(v)    // We need to remove all the noise points from G
-  }
+		v.type = noise      // Mark them as noise points
+		G.remove_node(v)    // We need to remove all the noise points from G
+	}
     return G;
 }
 Graph Seed_Propagation(Graph T) {
     a = List of all seeds 
     for all nodes v in a {
-      Perform Depth First Search on graph T with v as input. 
-      // Here we will get all the nodes belonging to the cluster of v
+    	Perform Depth First Search on graph T with v as input. 
+    	// Here we will get all the nodes belonging to the cluster of v
     }
     // The final output will be a list of lists where each list corresponds to a separate cluster
 }
@@ -672,15 +673,15 @@ significant speed-up factors over NG-DBSCAN even for large numbers of daily upda
 Our incremental version will happen in 2-phases like in case of static NG-DBSCAN. Sets of updates are processed one at a time without considering the relationships between the single updates.
 
 \begin{enumerate}
-    \item \textbf{Identification of nodes during addition and deletion:} In the static version of NG-DBSCAN, we identify each node as core and non-core (border and noise points). Here also we will maintain each node coreness with it's degree. To do this, we will maintain a set of points I, which will contain all the points for which we need to gather some information to classify them as core or non-core. This set will change during insertion and deletion of points. Here also we are using the convention that the points having atleast \textit{Minpts} neighbours are core nodes. \newline 
+    \item \textbf{Identification of nodes during addition and deletion:} In the static version of NG-DBSCAN, we identify each node as core and non-core (border and noise points). Here also we will maintain each node coreness with it's degree. To do this, we will maintain a set of points I, which will contain all the points for which we need to gather some information to classify them as core or non-core. This set will change during insertion and deletion of points. Here also we are using the convention that the points having atleast \textit{Minpts} neighbours are core nodes. 
     \begin{itemize}
-        \item \textbf{Addition of a point:} Denote the point to be added as 'p'. While adding 'p' to our existing dataset, some of the existing points from dataset can change from non-core to core. So we insert 'p' to the set I. Those points which are having their degree as \textit{Minpts-1} are also added to the set since there is a chance that they become core due to the addition of 'p'. \\ \\
+        \item \textbf{Addition of a point:} Denote the point to be added as 'p'. While adding 'p' to our existing dataset, some of the existing points from dataset can change from non-core to core. So we insert 'p' to the set I. Those points which are having their degree as \textit{Minpts-1} are also added to the set since there is a chance that they become core due to the addition of 'p'. \\
         Our incremental algorithm analyses only the region affected by the insertion of point. The region affected by addition will be $\epsilon$-neighbourhood of point p and all points density reachable from any point in N\textsubscript{$\epsilon$}(p). Here N\textsubscript{$\epsilon$}(p) denotes the $\epsilon$-neighbourhood of p. \\ \\ \textbf{Mathematically:} \textit{Affected}\textsubscript{$D$}(p) = N\textsubscript{$\epsilon$}(p) $\cup$ $\{$ q | $\exists$ o $\in$ N\textsubscript{$\epsilon$}(p) $\land$ q >\textsubscript{D$\cap$p}o $\}$ \\ Here, x >\textsubscript{D} y, denotes y is density reachable from x w.r.t data set D. \\ \\  
         We generate a set \textit{UpdSeed\textsubscript{Ins}} which contains all core nodes in the epsilon neighbourhood of newly identified core nodes. (As adding point \textit{p} can make some points core nodes).\\ \\ \textbf{Mathematically:} \textit{UpdSeed\textsubscript{Ins}} = \{q | q is a core object in D $\cup$ \{p\}, $\exists$ q’: q’ is core object in D $\cup$ \{p\} but not in D and q $\in$ N\textsubscript{$\epsilon$}(q')\} \\ \\
         \textbf{Efficient computation of N\textsubscript{$\epsilon$}(p)}:
         \begin{itemize}
             \item For all the points 'u' in I, and for each cluster 'c' in the propagation tree, we will randomly assign k edges from 'u' with 'c'. 
-            \item Let all those vertices form a set S. Then for some constant number of iterations and while 'u' is non-core (degree of 'u' < Minpts), for each vertex 'v' in S, we will check distance between 'u' and 'v'. 
+            \item Let all those vertices form a set S. Then for some constant number of iterations and while 'u' is non-core (degree of 'u' < \textit{Minpts}), for each vertex 'v' in S, we will check distance between 'u' and 'v'. 
             \item If distance is <= $\epsilon$, edge is created between 'u' and 'v' and degree of 'u' and 'v' both are increased. Then we insert all the neighbours of 'v' in S. 
     
             \item Since we only require some number of points \textit{(Minpts)} within $\epsilon$ distance from 'u' to classify it as core, if this vertex is actually a core vertex after addition of it to the data set, then after some number of iterations it will eventually find some vertices of that cluster in the above process that are within $\epsilon$ distance from it. \\
@@ -706,7 +707,7 @@ Our incremental version will happen in 2-phases like in case of static NG-DBSCAN
         \end{figure}
         
 % **************** Deletion Of Point ****************
-        \item \textbf{Deletion of a point:} Denote the point to be deleted as 'p'. While deleting 'p' from our existing dataset, some of the points can have their degree changed to \textit{Minpts-1} due to their loss of connection with 'p'. So we will store all those points in I which were in the $\epsilon$-neighbourhood of 'p' so that we could gather some more information regarding these points whether they can become core or not. \newline
+        \item \textbf{Deletion of a point:} Denote the point to be deleted as 'p'. While deleting 'p' from our existing dataset, some of the points can have their degree changed to \textit{Minpts-1} due to their loss of connection with 'p'. So we will store all those core points in I which were in the $\epsilon$-neighbourhood of 'p' since they can become non-core and we could gather some more information regarding these points whether they can become core again or not by checking their neighbourhood. \newline
         Let \textit{Affected}\textsubscript{$D$}(p) is the region affected by the deletion of point. \\ \\
         We generate a set \textit{UpdSeed\textsubscript{Del}} which contains all core node in $\epsilon$-neighbourhood of newly identified non-core nodes. (As deleting point \textit{p} can make some points non-core from core).\\ \\ \textbf{Mathematically:} \textit{UpdSeed\textsubscript{Del}} = \{q | q is a core object in D\textbackslash \{p\}, $\exists$ q’: q’ is core object in D but not in D\textbackslash \{p\} and q $\in$ N\textsubscript{$\epsilon$}(q')\} \\ \\
         \textbf{Efficient computation of N\textsubscript{$\epsilon$}(p)}:
@@ -780,5 +781,183 @@ Due to the density-based nature of NG-DBSCAN, the insertion or deletion of an ob
 \section*{Further Work}
 In next week we will work on detailed algorithm of Cluster Membership Assignment for insertion and deletion both. We will further compare the percent of time needed to run the whole NG-DBSCAN algorithm with respect to insertion of new coming data objects and determines which approach takes fewer amounts of time and effort.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage 
+\section* {\centerline{Section 6: Proposed Incremental Algorithm, Iteration 2} \newline}
+\addcontentsline{toc}{section}{\large Section 6: Proposed Incremental Algorithm, Iteration 2}
+
+\section*{Introduction}
+To increase the novelity of NG-DBSCAN incremental algorithm, we have modified some parts of our incremental algorithm. We have make it batch incremental instead of point by point since less computations are expected to occur in that case. Our incremental version, will read an input file consisting of points to add and delete from the existing dataset D and will read another file consisting of current dataset D and it's clusters and after that it will process all the new points in batch mode. After processing of these updates, we will store the updated dataset D' and clusters C' in the same file which we read earlier since it will be further used while processing updates another time.
+
+\section*{Description of Incremental Version}
+Let the dataset of clusters before processing of updates be denoted by D. We have taken the same convention for \textit{Minpts}. A node is core node if it contains more than \textit{Minpts} nodes in it's $\epsilon$-neighbourhood. A node is border node if it has atleast one core node in it's $\epsilon$-neighbourhood. Remaining are noise points. Non-core nodes comprises of border and noise points.
+
+\begin{enumerate}
+
+\item \textbf{Identification of Nodes: }
+Here we will approximately identify each node's type (core or non-core) in the updated dataset D' in batch incremental mode. To prevent going over our whole dataset of points, we will seperately maintain border, core, noise points in different sets.
+
+\begin{algorithm}
+    \SetAlgoLined
+    \KwResult{The updated dataset after addition of points will become labeled with core and non-core points}
+    Let all the points to add into the current dataset form a set 'A'. Let all the points having degree less than \textit{Minpts} form a set 'S'\;
+    \eIf{A.size * S.size < threshold}{
+        For each point in 'S', we will calculate distance with each point in 'A'\;
+    }{
+        Run the random\_neighbour\_search algorithm for all the points in 'S' over the set 'A'\;
+    }
+    To identify the type (core or non-core) of newly added points, store them in \textit{\textbf{I}}\;
+    Run random\_neighbour\_search algorithm to find the approximate $\epsilon$-neighbourhood of the newly added points to label them\;
+    \caption{Node Identification Addition of Points}
+\end{algorithm}
+
+\begin{algorithm}
+    \SetAlgoLined
+    \KwResult{$\epsilon$ Neighbourhood of the given set of points}
+    Let S be the set of points for which we have to find $\epsilon$-neighbourhood over set A\;
+    \eIf{A is Old Cluster Data}{
+        Assign each point u of S with k random points from each cluster C (in old cluster)\;
+    }{
+        Assign each point u of S with k random points in A\;
+    }
+    Store these random points in T\;
+    For each vertex u in S:
+    \While{i < iter}{
+        For each vertex v in T, check distance between u and v\;
+        \eIf{dis(u,v) <= $\epsilon$}{
+            Create an edge between u and v in $\epsilon$ Neighbourhood Graph\;
+            Insert neighbours of v in T\;
+        }{
+            Check for another vertex in T\;
+        }
+        i++\;
+    }
+    \caption{Random Neighbour Search Algorithm}
+\end{algorithm}
+   
+\begin{figure}[H]
+    \centering
+    \includegraphics[height = 0.6\textheight, width = \textwidth, keepaspectratio]{Node_identification.png}
+   \caption{Identifying Affected Nodes in Addition of Points}
+    \label{fig:my_label}
+\end{figure}
+        
+\begin{figure}[H]
+    \centering
+    \includegraphics[height = 0.6\textheight, width = \textwidth, keepaspectratio]{random_search_algorithm.png}
+    \caption{Random Search Algorithm}
+    \label{fig:my_label}
+\end{figure}  
+
+\begin{algorithm}
+    \SetAlgoLined
+    \KwResult{The updated dataset after deletion of points will become labeled with core and non-core points}
+    Let all the points to delete from the current dataset, form a set 'D'. Let all the points having degree more than or equal to \textit{Minpts} form a set 'R'\;
+    For all the points in 'R', calculate which all points will lose their degree to < Minpts after deleting the points present in 'D'. This can be done by going over the neighbour list of each point in 'R'\;
+    Store all these points which will have their final degree < Minpts in 'I'\;
+    Run random\_neighbour\_search algorithm for points in I over dataset D so that we could find whether they can become core or not again\;
+    \caption{Node Identification Deletion of Points}
+\end{algorithm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{deletion OF Node.png}
+    \caption{Deletion Of Points}
+    \label{fig:my_label}
+\end{figure}
+
+\item \textbf{Cluster Membership :}
+In the cluster membership process, each node will get it's label (core or non-core) in the updated dataset D'.
+\begin{algorithm}
+    \SetAlgoLined
+    \KwResult{The updated dataset after addition of points will be clustered}
+    From the identification of nodes section, we can identify which nodes have changed their identity from non-core to core. So, store these points in a set 'Upd\textsubscript{ins}'\;
+    After building this set, Depth First Search will run from all points in 'Upd\textsubscript{ins}' and give each point the cluster number to which it belongs\;
+    In each DFS, unique and same cluster name is given to all points which are reachable from that point\;
+    Each point is visited once only in this process in the updated dataset D'\;
+    \caption{Cluster Membership Addition of Points}
+\end{algorithm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{cluster_membership_addition.png}
+    \caption{Addition Of Points}
+    \label{fig:my_label}
+\end{figure} 
+\begin{algorithm}
+    \KwResult{The updated dataset after deletion of points will be clustered}
+    From the identification of nodes section, we can identify which nodes have changed their identity from core to non-core. So, store these points in a set 'Upd\textsubscript{del}'\;
+    After building this set, run Depth First Search from all points in 'Upd\textsubscript{del}' and give each point the cluster number to which it belongs\;
+    In each DFS, unique and same cluster name is given to all points which are reachable from that point\;
+    Each point is visited once only in this process in the updated dataset D'\;
+    \caption{Cluster Membership Deletion of Points}
+\end{algorithm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \textwidth]{cluster_membership_deletion.png}
+    \caption{Deletion Of Point}
+    \label{fig:my_label}
+\end{figure}
+\end{enumerate}
+
+\section*{Comparison with Static Version}
+In the node identification step, we are continuously updating our $\epsilon$-graph , maintaining the degree of each node, maintaining the $\epsilon$-graph where each node will have maximum $M\textsubscript{max}$ number of neighbours which we also did in the phase 1 of the static version of NG-DBSCAN algorithm. In this step of incremental version of the algorithm we are only traversing the newly added points to find $\epsilon$ neighbourhood of the point thus saving us from large time usage. \newline
+In the cluster membership step, we are running the Depth First Search which we also did in static version to find all the numbered clusters. \newline 
+We didn't use the max selection and pruning step from phase 2 of our static algorithm in the incremental version since they will increase the computational cost by going over the whole dataset for multiple iterations.  
+
+\section*{Complexity of Incremental Version}
+\begin{itemize}
+    \item \textbf{Node Identification Part: } Time complexity will be linear to the number of points in the updated dataset.
+    \vspace{3pt}
+    \begin{itemize}
+        \item \textbf{Addition: }First step of addition will take $O(n*a)$ where 'n' is the number of non-core points in the dataset D before update and 'a' is the number of points to be added in D. Second step of addition will take $O(a*c)$ where 'c' is the constant number of iterations for which we will search for the neighbours for each point in I. 
+        \vspace{3pt}
+        \item \textbf{Deletion: }First step of deletion will take $O(m)$ where 'm' is the number of core points in the dataset D before update. Second step of deletion will take $O(m*c)$ where 'c' is the constant number of iterations for which we will search for the neighbours for each point in I. 
+    \end{itemize}
+    \vspace{4pt}
+    \item \textbf{Cluster Membership: }Both addition and deletion steps will take $O(N*Minpts)$ time in worst case where 'N' is the number of points in the updated dataset.
+\end{itemize}
+
+\section*{Correctness of Algorithm}
+\begin{enumerate}
+    \item \textbf{Identification of nodes: }
+    \vspace{2pt}
+    \begin{itemize}
+        \item \textbf{Addition: }For all the points present in dataset D, we will get it's approximate type whether it is core or non-core. Also for all the new added points, we found it's neighbours in each cluster hence we also get an approximation of the cluster to which it will belong along with it's type. Hence each node will have it's approximate type.
+        \vspace{2pt}
+        \item \textbf{Deletion: }All the points in I will be those which can change from core to non-core. But some of them can still become core by having some connections in the dataset and we found those nodes through random\_neighbour\_search. Hence here also each node will have it's approximate type in the updated dataset.
+    \end{itemize}
+    \vspace{3pt}
+    \item \textbf{Cluster Membership: }Since we are running DFS from all those points which got their type changed, all the reachable nodes from these affected nodes are visited and their cluster numbers are updated. All the other remaining points will have their previous cluster numbers since addition and deletion of points didn't affected them.
+\end{enumerate}
+
+\section*{Code Architecture}
+\begin{enumerate}
+    \item \textbf{Data Structures}
+    \begin{enumerate}
+        \item \textit{Input Data Representation: } The dataset before updates will be stored in prev\_data.txt and the clusters of that dataset will be stored in clusters.txt. The points to be added or deleted will be stored in queries.txt. Each point to be added will be represented by "A point" and to be deleted by "D point" in queries.txt where 'point' is the node to add or delete.
+        \item \textit{Data Generated: } The updated dataset D' will be stored in prev\_data.txt and it's newly identified clustering will be stored in clusters.txt.
+    \end{enumerate}
+    \vspace{3pt}
+    \item \textbf{Class and Methods Overview}
+    \begin{itemize}
+        \item \textit{Class Node: } This class contains all the information regarding the node.
+        \item \textit{Class Parameter:} This class contains all the parameters. \newline Attributes: Minpts, M\textsubscript{max}, threshold, k, iter.
+        \item \textit{Class Graph: } This class represents the whole graph.
+        Attributes: set of ids of present nodes, total no of nodes, edge lists, coordinates of each node, dimension of dataset. 
+        Methods: add\_edge, remove\_edge, insert\_node, delete\_node.
+        \item \textit{points\_addition: }This method is used to classify the type of the updated dataset after insertion. \newline
+        Input Parameters: Set of points to be added.
+        \item \textit{points\_deletion: }This method is used to classify the type of the updated dataset after deletion. \newline
+        Input Parameters: Set of points to be deleted.
+        \item \textit{random\_neighbour\_search: }This method is used to find for each node 'u' in 'S', it's neighbours in 'A' to classify them.
+        Input Parameters: Set 'A', 'S', 'I'.
+        \item \textit{cluster\_assignment: }This method is used to classify all the reachable points from each other the same cluster number.
+        Input Parameters: cluster number, node, $\epsilon$-graph, set of visited nodes.
+    \end{itemize}
+\end{enumerate}
+
+\section*{Further Work}
+In the upcoming weeks, we will implement the incremental version in C++ and will also try to experimentally evaluate it using different metrics of recall, seperation, compactness. We will also compare the static and incremental version in terms of time, space complexity and using different evaluation metrics which we stated earlier in our report. 
 
 \end{document}
