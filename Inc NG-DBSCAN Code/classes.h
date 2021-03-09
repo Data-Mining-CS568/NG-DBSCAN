@@ -12,7 +12,11 @@ class Graph {
 	public:
 	int N;
 	set<int> active;
+	set<int> unused_indices;
 	vector<set<int>> edges;
+	
+	map<int,vector<double>> node_index_to_coordinates;
+	map<vector<double>,int> coordinates_to_node_index;
 
 	void add_node(int id){
 		active.insert(id);
