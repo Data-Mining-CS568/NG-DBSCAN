@@ -2,9 +2,11 @@ class Node {
 	public:
 	int id;
 	string type;
-	Node(int id){
+	vector<double> coordinate;
+	Node(int id, string type, vector<double> d){
 		this->id = id;
-		this->type = "none";
+		this->type = type;
+		this->coordinate = d;
 	}
 };
 
@@ -14,9 +16,13 @@ class Graph {
 	set<int> active;
 	set<int> unused_indices;
 	vector<set<int>> edges;
+	map<int,Node*> id_to_node;
 	
 	map<int,vector<double>> node_index_to_coordinates;
 	map<vector<double>,int> coordinates_to_node_index;
+
+	set<int> core, border, noise;
+	map<int,vector<int>> clusters;
 
 	void add_node(int id){
 		active.insert(id);
