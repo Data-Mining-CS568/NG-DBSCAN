@@ -73,11 +73,8 @@ void points_info(Graph& G)
 		if(type == "core"){
 			G.core.insert(id);
 		}
-		else if(type == "border"){
-			G.border.insert(id);
-		}
 		else {
-			G.noise.insert(id);
+			G.noncore.insert(id);
 		}
 		Node* n = new Node(id, type, v);
 		G.id_to_node[id] = n;
@@ -90,12 +87,27 @@ void clusters_info(Graph& G)
 	f.open("clusters.txt",ios::in);
 	int no_of_clusters, each_cluster;
 	f >> no_of_clusters;
-	
+
 	while(!f.eof()){
 		f >> each_cluster;
 		vector<int> v(each_cluster);
 		for(int i = 0; i < each_cluster; i++){
 			cin >> v[i];
+		}
+	}
+}
+
+void node_identification_addition(Graph& G, vector<int>& A, Parameter& p){
+	if(A.size() * G.noncore.size() <= p.threshold){
+		for(auto u : G.noncore){
+			for(auto v : A){
+				if(G.edges[u].size() > p.epsilon){
+					break;
+				}
+				if(distance(u,v) <= p.epsilon){
+					G.add_edge(u,v);
+				}
+			}
 		}
 	}
 }
