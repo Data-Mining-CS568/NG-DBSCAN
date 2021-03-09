@@ -1,5 +1,6 @@
 #include "phase1.cpp"
 
+// phase 1
 // return maximum core node from the list
 int Max_Core_Node(vector<int> list, Graph& G)
 {
