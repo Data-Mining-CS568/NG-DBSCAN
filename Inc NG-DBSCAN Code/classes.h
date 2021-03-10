@@ -34,6 +34,9 @@ class Graph {
 		}
 		this->N = total_nodes;
 	}
+	int vertices_count(){
+		return edges.size();
+	}
 	void remove_node(int id){
 		active.erase(id);
 		edges[id].clear();
@@ -76,3 +79,5 @@ class Parameters {
 		this->threshold = threshold;
 	}
 };
+
+vector<vector<int>> list;

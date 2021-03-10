@@ -23,9 +23,9 @@ void reading_queries(Graph& G,vector<int>& to_add,vector<int>& to_remove){
 			f >> v[i];
 		}
 		if(type == 'A'){
-			int id = *G.unused.begin();
+			int id = *G.unused_indices.begin();
 			to_add.push_back(id);
-			G.unused.erase(G.unused.begin());
+			G.unused.erase(G.unused_indices.begin());
 			G.node_index_to_coordinates[id] = v;
 			G.coordinates_to_node_index[v] = id;
 		}
@@ -34,6 +34,120 @@ void reading_queries(Graph& G,vector<int>& to_add,vector<int>& to_remove){
 			to_remove.push_back(id);
 		}
 	}
+}
+// Making the graph undirected
+void Reverse_Map(int v, Graph& G){
+	for(int u : G.neighbours(v)){
+		G.add_edge(u, v);
+	}
+}
+
+// reducing neighbour graph
+void Reduce_NG(int u, Graph& NG, Graph& EG, int& delta, Parameters parameter){
+	if(EG.edges[u].size() >= parameter.Mmax){
+		NG.remove_node(u);
+		delta++;
+	}
+	vector<int> l = NG.neighbours(u);
+	
+	priority_queue<pair<double,int>> pq;
+	for(auto v:l){
+		pq.push({distance(u,v),v});
+	}
+	while(pq.size() > parameter.k){
+		pair<double,int> curr = pq.top();
+		pq.pop();
+		NG.remove_edge(u, curr.second);
+	}
+}
+
+
+// checking neighbour graph and updating ε graph
+void Check_Neighborhood(int u, Graph& NG, Graph& EG, set<int>* temp, Parameters parameter){
+	
+vector<int> neighbours = NG.neighbours(u);
+for(auto v : neighbours){
+		double dis = distance(u,v);
+		if(dis<=parameter.epsilon){
+			EG.add_edge(u,v);
+			//Add neighbours of v in NG
+			vector<int> temp1 = EG.neighbours(v);
+			for(auto v1 : temp1){
+				temp1[v].insert(v1);
+			}
+
+		}
+	}
+}
+
+
+void random_neighbour_search(Graph & EG, vector<int> &S, vector<int> &A, int typeA, Parameters parameter)
+{
+	/*
+	!!! Do Resizing of the EG !!!
+	*/
+	int total_nodes = EG.vertices_count();
+	Graph NG(total_nodes);
+	//Random Initialisation
+	if(typeA == 0){ //A is old clustered data (it contains indices of the points)
+		for(auto u : s){
+			for(int it=0; it<list.size();++it)
+			{
+				for(int i=0;i<parameter.k;++i){
+					int ind = rand()%(list[it].size());
+					NG.add_edge(u, list[it][ind]);
+				}
+			}
+		}
+	}
+	else if(typeA == 1){ //A is new added points (it contains indices of the points)
+		for(auto u : s){
+			for(int i=0;i<parameter.k;++i){
+				int ind = rand()%(A.size());
+				NG.add_edge(u, A[ind]);
+			}
+		}
+	}
+
+
+	int i=0;
+	while(i<parameter.iter){
+		for(int u : NG.active){
+				Reverse_Map(u, NG);
+		}
+
+		set<int> temp[total_nodes];
+		for(int u : NG.active){
+			Check_Neighborhood(u, NG, EG, temp, parameter);	
+		}
+		for(int i = 0; i < total_nodes; i++){
+			for(int u : temp[i]){
+				NG.add_edge(i, u);
+			}
+		}
+
+		set<int> c;
+		for(auto it:NG.active){
+			c.insert(it);
+		}
+		
+		for(int u : c){
+			Reduce_NG(u, NG, EG, delta, parameter);
+		}
+		
+		// remove the unnecessary edges
+		for(int u : NG.active){
+			vector<int> temp = NG.neighbours(u);
+			for(int v : temp){
+				if(NG.active.find(v) == NG.active.end()){
+					NG.edges[u].erase(v);
+				}
+			}
+		}
+		i++;
+
+	}
+
 }
 
 void build_epsilon_graph(Graph& G)

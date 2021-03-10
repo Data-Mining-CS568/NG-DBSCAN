@@ -107,7 +107,7 @@ void dfs(int curr, Graph& T, vector<bool>& visited, vector<int>& v){
 Graph Seed_Propagation(set<int> seeds, Graph T, Parameters parameter)
 {
 	vector<bool> visited(T.N,0);
-	vector<vector<int>> list;
+	vector<vector<int>> list; //declared it in classes.h, need to be removed later
 
 	for(auto it:seeds){
 		vector<int> v;
