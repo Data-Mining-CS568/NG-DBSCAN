@@ -60,7 +60,7 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 
 // ------------------------------------------- RANDOM NEIGHBOUR SEARCH -------------------------------------------------------------------
 
-void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_A, Parameters& parameter, vector<int> upd)
+void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_A, Parameters& parameter, vector<int> upd, char ch)
 {
 	map<int, set<int>> mp;
 
@@ -121,7 +121,12 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 			}
 			mp[u] = temp;
 		}
-		if(complete){
+
+		// inserting those into upd who got their type changed from core to noncore or vice versa
+		if(complete && ch == 'A'){
+			upd.push_back(u);
+		}
+		else if(!complete && ch == 'D'){
 			upd.push_back(u);
 		}
 	}
@@ -138,7 +143,7 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameter& parameter
 	vector<int> dataset;
 	for(auto u: G.core) dataset.push_back(u);
 	for(auto u: G.noncore) dataset.push_back(u); 
-	random_neighbour_search(G, A, dataset, 1, parameter, upd_ins);
+	random_neighbour_search(G, A, dataset, 1, parameter, upd_ins, 'A');
 
 	if(A.size() * G.noncore.size() <= parameter.threshold)
 	{
@@ -156,7 +161,7 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameter& parameter
 	else {
 		vector<int> S;
 		for(auto v : G.noncore) S.push_back(v);
-		random_neighbour_search(G, S, A, 0, parameter, upd_ins);
+		random_neighbour_search(G, S, A, 0, parameter, upd_ins, 'A');
 	}
 }
 
@@ -187,7 +192,7 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameter& parameter
 			I.push_back(u);
 		}
 	}
-	random_neighbour_search(G, I, dataset, 1, parameter, upd_del);
+	random_neighbour_search(G, I, dataset, 1, parameter, upd_del, 'D');
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
@@ -351,14 +356,14 @@ void save(Graph& G){
 int main()
 {
 	Graph G;
-	vector<int> to_remove, to_add;
+	vector<int> to_delete, to_add;
 	vector<int> upd_ins, upd_del;
 	
 	// building the graph from static version
 	build_graph();
 
 	// reading the points to add or remove
-	reading_queries(G, to_add, to_remove);
+	reading_queries(G, to_add, to_delete);
 	
 	// identifying added nodes
 	node_identification_addition(G, to_add, parameter, upd_ins);
