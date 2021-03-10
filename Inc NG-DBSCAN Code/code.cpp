@@ -101,71 +101,47 @@ void Check_Neighborhood(int u, Graph& NG, Graph& EG, set<int>* temp, Parameters 
 	}
 }
 
-void random_neighbour_search(Graph& EG, vector<int> &S, vector<int> &A, int typeA, Parameters& parameter)
+void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_A, Parameters& parameter)
 {
-	int total_nodes = EG.vertices_count();
-	Graph NG(total_nodes);
+	map<int, set<int>> v;
 
-	// Random Initialisation
-	if(typeA == 0){ //A is old clustered data (it contains indices of the points)
-		for(auto u : s){
-			for(int it=0; it<list.size();++it)
+	// A is old clustered data (it contains indices of the points)
+	if(type_A == 0)
+	{ 
+		for(int u : S)
+		{
+			for(int v : clusters)
 			{
-				for(int i=0;i<parameter.k;++i){
-					int ind = rand()%(list[it].size());
-					NG.add_edge(u, list[it][ind]);
+				for(int i = 0; i < parameter.k; i++)
+				{
+					int idx = rand() % clusters[v].size();
+					v[u].insert(clusters[v][idx]);
 				}
 			}
 		}
 	}
-	else if(typeA == 1){ //A is new added points (it contains indices of the points)
-		for(auto u : s){
-			for(int i=0;i<parameter.k;++i){
-				int ind = rand()%(A.size());
-				NG.add_edge(u, A[ind]);
+	// A is new added points (it contains indices of the points)
+	else if(type_A == 1)
+	{
+		for(int u : s)
+		{
+			for(int i = 0; i < parameter.k; i++){
+				int idx = rand() % A.size();
+				v[u].insert(A[idx]);
 			}
 		}
 	}
 
-	int i=0;
-	while(i<parameter.iter){
-		for(int u : NG.active){
-				Reverse_Map(u, NG);
+	for(int u : S){
+		int i = 0;
+		while(i < parameter.iter){
+			for(int v : )
 		}
-
-		set<int> temp[total_nodes];
-		for(int u : NG.active){
-			Check_Neighborhood(u, NG, EG, temp, parameter);	
-		}
-		for(int i = 0; i < total_nodes; i++){
-			for(int u : temp[i]){
-				NG.add_edge(i, u);
-			}
-		}
-
-		set<int> c;
-		for(auto it:NG.active){
-			c.insert(it);
-		}
-		
-		for(int u : c){
-			Reduce_NG(u, NG, EG, delta, parameter);
-		}
-		
-		// remove the unnecessary edges
-		for(int u : NG.active){
-			vector<int> temp = NG.neighbours(u);
-			for(int v : temp){
-				if(NG.active.find(v) == NG.active.end()){
-					NG.edges[u].erase(v);
-				}
-			}
-		}
-		i++;
 	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
+
 
 // ---------------------------------------- NODE IDENTIFICATION PART ---------------------------------------------------------------------
 
