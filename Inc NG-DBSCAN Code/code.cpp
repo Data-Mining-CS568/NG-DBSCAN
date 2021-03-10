@@ -5,17 +5,18 @@
 #pragma GCC optimize("no-stack-protector")
 
 #include <bits/stdc++.h>
-#include "classes.h"
 using namespace std;
+
+#include "classes.h"
 
 // ------------------------------------------------- DISTANCE FUNCTION -------------------------------------------------------------------
 
-double distance(int u, int v)
+double distance(int u, int v, Graph& G)
 {
 	double ans = 0;
-	vector<double> coordinates_u = node_index_to_coordinates[u];
-	vector<double> coordinates_v = node_index_to_coordinates[v];
-	for(int j = 0; j < dimensions; j++){
+	vector<double>& coordinates_u = G.node_index_to_coordinates[u];
+	vector<double>& coordinates_v = G.node_index_to_coordinates[v];
+	for(int j = 0; j < G.dimension; j++){
 		ans += (coordinates_u[j] - coordinates_v[j]) * (coordinates_u[j] - coordinates_v[j]);
 	}
 	return sqrt(ans);
@@ -44,7 +45,7 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 		if(type == 'A'){
 			int id = *G.unused_indices.begin();
 			to_add.push_back(id);
-			G.unused.erase(G.unused_indices.begin());
+			G.unused_indices.erase(G.unused_indices.begin());
 			G.node_index_to_coordinates[id] = v;
 			G.coordinates_to_node_index[v] = id;
 		}
@@ -69,12 +70,13 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 	{ 
 		for(int u : S)
 		{
-			for(int v : clusters)
+			for(auto it : G.clusters)
 			{
+				int v = it.first;
 				for(int i = 0; i < parameter.k; i++)
 				{
-					int idx = rand() % clusters[v].size();
-					mp[u].insert(clusters[v][idx]);
+					int idx = rand() % G.clusters[v].size();
+					mp[u].insert(G.clusters[v][idx]);
 				}
 			}
 		}
@@ -82,7 +84,7 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 	// A is new added points (it contains indices of the points)
 	else if(type_A == 1)
 	{
-		for(int u : s)
+		for(int u : S)
 		{
 			for(int i = 0; i < parameter.k; i++){
 				int idx = rand() % A.size();
@@ -94,24 +96,24 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 	for(int u : S)
 	{
 		int i = 0;
-		vector<int> temp;
+		set<int> temp;
 		map<int, int> visited;
 		bool complete = 0;
 		while(i < parameter.iter)
 		{
 			for(int v : mp[u])
 			{
-				if(N.edges[u].size() >= parameter.Minpts){
+				if(G.edges[u].size() >= parameter.Minpts){
 					complete = 1;
 					break;
 				}
-				if(distance(u, v) <= parameter.epsilon){
+				if(distance(u, v, G) <= parameter.epsilon){
 					G.add_edge(u, v);
 				}
 				for(int w : G.neighbours(v)){
 					if(!visited[w]){
 						visited[w] = 1;
-						temp.push_back(w);
+						temp.insert(w);
 					}
 				}
 				i++;
@@ -137,7 +139,7 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 
 // ---------------------------------------- NODE IDENTIFICATION PART ---------------------------------------------------------------------
 
-void node_identification_addition(Graph& G, vector<int>& A, Parameter& parameter, vector<int>& upd_ins)
+void node_identification_addition(Graph& G, vector<int>& A, Parameters& parameter, vector<int>& upd_ins)
 {	
 	// find epsilon neighbourhood of newly added points
 	vector<int> dataset;
@@ -152,7 +154,7 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameter& parameter
 				if(G.edges[u].size() > parameter.epsilon){
 					break;
 				}
-				if(distance(u,v) <= parameter.epsilon){
+				if(distance(u,v,G) <= parameter.epsilon){
 					G.add_edge(u,v);
 				}
 			}
@@ -165,7 +167,7 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameter& parameter
 	}
 }
 
-void node_identification_deletion(Graph& G, vector<int>& D, Parameter& parameter, vector<int>& upd_del)
+void node_identification_deletion(Graph& G, vector<int>& D, Parameters& parameter, vector<int>& upd_del)
 {
 	vector<int> dataset;
 	for(auto u: G.core) dataset.push_back(u);
@@ -204,10 +206,12 @@ void dfs(int u, Graph& G, int cluster_no, vector<int>& visited)
 {
 	visited[u] = 1;
 	int prev_cluster = G.cluster_identification[u];
-	G.cluster[prev_cluster].erase(u);
+	vector<int>& v = G.clusters[prev_cluster];
+	auto it = find(v.begin(),v.end(),u);
+	v.erase(it);
 
 	G.cluster_identification[u] = cluster_no;
-	G.cluster[cluster_no].insert(u);
+	G.clusters[cluster_no].push_back(u);
 
 	for(auto v : G.edges[u]){
 		if(!visited[v]){
@@ -332,8 +336,9 @@ void save_points_info(Graph& G){
 void save_clusters_info(Graph& G){
 	fstream f;
 	f.open("clusters_info.txt",ios::out);
-	f << clusters.size() << "\n";
-	for(vector<int> u : clusters){
+	f << G.clusters.size() << "\n";
+	for(auto it : G.clusters){
+		vector<int>& u = it.second;
 		f << u.size() << "\n";
 		for(int v : u){
 			f << v << " ";
@@ -355,23 +360,24 @@ void save(Graph& G){
 
 int main()
 {
-	Graph G;
+	Graph G(0);
+	Parameters parameter;
 	vector<int> to_delete, to_add;
 	vector<int> upd_ins, upd_del;
 	
 	// building the graph from static version
-	build_graph();
+	build_graph(G);
 
 	// reading the points to add or remove
 	reading_queries(G, to_add, to_delete);
 	
 	// identifying added nodes
 	node_identification_addition(G, to_add, parameter, upd_ins);
-	cluster_membership(upd_ins);
+	cluster_membership(G, upd_ins);
 
 	// identifying deleted nodes
 	node_identification_deletion(G, to_delete, parameter, upd_del);
-	cluster_membership(upd_del);
+	cluster_membership(G, upd_del);
 
 	// saving in the files
 	save(G);
