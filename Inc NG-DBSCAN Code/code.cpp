@@ -8,7 +8,8 @@
 #include "classes.h"
 using namespace std;
 
-// calculating distance between 2 points
+// ------------------------------------------------- DISTANCE FUNCTION -------------------------------------------------------------------
+
 double distance(int u, int v)
 {
 	double ans = 0;
@@ -17,10 +18,15 @@ double distance(int u, int v)
 	for(int j = 0; j < dimensions; j++){
 		ans += (coordinates_u[j] - coordinates_v[j]) * (coordinates_u[j] - coordinates_v[j]);
 	}
-	return sqrtf(ans);
+	return sqrt(ans);
 }
 
-void reading_queries(Graph& G,vector<int>& to_add,vector<int>& to_remove)
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
+
+// ----------------------------------------- FINDING POINTS TO ADD AND DELETE ------------------------------------------------------------
+
+void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 {
 	int dimension;
 	char type;
@@ -49,14 +55,17 @@ void reading_queries(Graph& G,vector<int>& to_add,vector<int>& to_remove)
 	}
 }
 
-// Making the graph undirected
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
+
+// ------------------------------------------- RANDOM NEIGHBOUR SEARCH -------------------------------------------------------------------
+
 void Reverse_Map(int v, Graph& G){
 	for(int u : G.neighbours(v)){
 		G.add_edge(u, v);
 	}
 }
 
-// reducing neighbour graph
 void Reduce_NG(int u, Graph& NG, Graph& EG, int& delta, Parameters parameter){
 	if(EG.edges[u].size() >= parameter.Mmax){
 		NG.remove_node(u);
@@ -75,7 +84,6 @@ void Reduce_NG(int u, Graph& NG, Graph& EG, int& delta, Parameters parameter){
 	}
 }
 
-// checking neighbour graph and updating ε graph
 void Check_Neighborhood(int u, Graph& NG, Graph& EG, set<int>* temp, Parameters parameter)
 {	
 	vector<int> neighbours = NG.neighbours(u);
@@ -119,7 +127,6 @@ void random_neighbour_search(Graph& EG, vector<int> &S, vector<int> &A, int type
 		}
 	}
 
-
 	int i=0;
 	while(i<parameter.iter){
 		for(int u : NG.active){
@@ -157,6 +164,104 @@ void random_neighbour_search(Graph& EG, vector<int> &S, vector<int> &A, int type
 		i++;
 	}
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
+// ---------------------------------------- NODE IDENTIFICATION PART ---------------------------------------------------------------------
+
+void node_identification_addition(Graph& G, vector<int>& A, Parameter& parameter, vector<int>& upd_ins)
+{	
+	// find epsilon neighbourhood of newly added points
+	vector<int> dataset;
+	for(auto u: G.core) dataset.push_back(u);
+	for(auto u: G.noncore) dataset.push_back(u); 
+	random_neighbour_search(G, A, dataset, 1, parameter, upd_ins);
+
+	if(A.size() * G.noncore.size() <= parameter.threshold)
+	{
+		for(auto u : G.noncore){
+			for(auto v : A){
+				if(G.edges[u].size() > parameter.epsilon){
+					break;
+				}
+				if(distance(u,v) <= parameter.epsilon){
+					G.add_edge(u,v);
+				}
+			}
+		}
+	}
+	else {
+		vector<int> S;
+		for(auto v : G.noncore) S.push_back(v);
+		random_neighbour_search(G, S, A, 0, parameter, upd_ins);
+	}
+}
+
+void node_identification_deletion(Graph& G, vector<int>& D, Parameter& parameter, vector<int>& upd_del)
+{
+	vector<int> dataset;
+	for(auto u: G.core) dataset.push_back(u);
+	for(auto u: G.noncore) dataset.push_back(u); 
+
+	set<int>& R = G.core;
+	vector<int> I;
+
+	set<int> d;
+	for(auto u : D){
+		d.insert(u);
+	}
+	for(auto u : R){
+		vector<int> to_remove;
+		for(auto v : G.edges[u]){
+			if(d.find(v) != d.end()){
+				to_remove.push_back(v);
+			}
+		}
+		for(auto v : to_remove){
+			G.edges[u].erase(v);
+		}
+		if(G.edges[u].size() < parameter.Minpts && G.edges[u].size() + to_remove.size() >= parameter.Minpts){
+			I.push_back(u);
+		}
+	}
+	random_neighbour_search(G, I, dataset, 1, parameter, upd_del);
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
+
+// -------------------------------------------- CLUSTER MEMBERSHIP PART ------------------------------------------------------------------
+
+void dfs(int u, Graph& G, int cluster_no, vector<int>& visited)
+{
+	visited[u] = 1;
+	int prev_cluster = G.cluster_identification[u];
+	G.cluster[prev_cluster].erase(u);
+
+	G.cluster_identification[u] = cluster_no;
+	G.cluster[cluster_no].insert(u);
+
+	for(auto v : G.edges[u]){
+		if(!visited[v]){
+			dfs(v, G, cluster_no, visited);
+		}
+	}
+}
+
+void cluster_membership(Graph& G, vector<int>& upd){
+	vector<int> visited(G.N + 1, 0);
+	
+	for(auto u : upd){
+		if(!visited[u]){
+			dfs(u, G, u, visited);
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
+
+// ----------------------------------------- BUILDING THE GRAPH --------------------------------------------------------------------------
 
 void build_epsilon_graph(Graph& G)
 {
@@ -219,89 +324,16 @@ void clusters_info(Graph& G)
 	}
 }
 
-void node_identification_addition(Graph& G, vector<int>& A, Parameter& parameter, vector<int>& upd_ins)
-{	
-	// find epsilon neighbourhood of newly added points
-	vector<int> dataset;
-	for(auto u: G.core) dataset.push_back(u);
-	for(auto u: G.noncore) dataset.push_back(u); 
-	random_neighbour_search(G, A, dataset, 1, parameter, upd_ins);
-
-	if(A.size() * G.noncore.size() <= parameter.threshold)
-	{
-		for(auto u : G.noncore){
-			for(auto v : A){
-				if(G.edges[u].size() > parameter.epsilon){
-					break;
-				}
-				if(distance(u,v) <= parameter.epsilon){
-					G.add_edge(u,v);
-				}
-			}
-		}
-	}
-	else {
-		vector<int> S;
-		for(auto v : G.noncore) S.push_back(v);
-		random_neighbour_search(G, S, A, 0, parameter, upd_ins);
-	}
+void build_graph(Graph& G){
+	build_epsilon_graph(G);
+	points_info(G);
+	clusters_info(G);
 }
 
-void node_identification_deletion(Graph& G, vector<int>& D, Parameter& parameter, vector<int>& upd_del)
-{
-	vector<int> dataset;
-	for(auto u: G.core) dataset.push_back(u);
-	for(auto u: G.noncore) dataset.push_back(u); 
+// ---------------------------------------------------------------------------------------------------------------------------------------
 
-	set<int>& R = G.core;
-	vector<int> I;
 
-	set<int> d;
-	for(auto u : D){
-		d.insert(u);
-	}
-	for(auto u : R){
-		vector<int> to_remove;
-		for(auto v : G.edges[u]){
-			if(d.find(v) != d.end()){
-				to_remove.push_back(v);
-			}
-		}
-		for(auto v : to_remove){
-			G.edges[u].erase(v);
-		}
-		if(G.edges[u].size() < parameter.Minpts && G.edges[u].size() + to_remove.size() >= parameter.Minpts){
-			I.push_back(u);
-		}
-	}
-	random_neighbour_search(G, I, dataset, 1, parameter, upd_del);
-}
-
-void dfs(int u, Graph& G, int cluster_no, vector<int>& visited)
-{
-	visited[u] = 1;
-	int prev_cluster = G.cluster_identification[u];
-	G.cluster[prev_cluster].erase(u);
-
-	G.cluster_identification[u] = cluster_no;
-	G.cluster[cluster_no].insert(u);
-
-	for(auto v : G.edges[u]){
-		if(!visited[v]){
-			dfs(v, G, cluster_no, visited);
-		}
-	}
-}
-
-void cluster_membership(Graph& G, vector<int>& upd){
-	vector<int> visited(G.N + 1, 0);
-	
-	for(auto u : upd){
-		if(!visited[u]){
-			dfs(u, G, u, visited);
-		}
-	}
-}
+// -------------------------------------------- SAVE INFO REGARDING CLUSTERS AND POINTS IN FILES -----------------------------------------
 
 void save_epsilon_graph(Graph& G){
 	fstream f;
@@ -315,11 +347,43 @@ void save_epsilon_graph(Graph& G){
 	}
 }
 
+void save_points_info(Graph& G){
+	fstream f;
+	f.open("points_info.txt",ios::out);
+	f << G.dimension << "\n";
+	for(auto u : G.active){
+		Node* curr = G.id_to_node[u];
+		f << u << " " << curr->type << " ";
+		for(double c : curr->coordinate){
+			f << c << " ";
+		}
+		f << "\n";
+	}
+}
+
+void save_clusters_info(Graph& G){
+	fstream f;
+	f.open("clusters_info.txt",ios::out);
+	f << clusters.size() << "\n";
+	for(vector<int> u : clusters){
+		f << u.size() << "\n";
+		for(int v : u){
+			f << v << " ";
+		}
+		f << "\n";
+	}
+}
+
 void save(Graph& G){
 	save_epsilon_graph(G);
 	save_points_info(G);
 	save_clusters_info(G);
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
+
+// ---------------------------------- MAIN FUNCTION CALLING ALL OTHER FUNCTIONS ----------------------------------------------------------
 
 int main()
 {
@@ -328,9 +392,7 @@ int main()
 	vector<int> upd_ins, upd_del;
 	
 	// building the graph from static version
-	build_epsilon_graph(G);
-	points_info(G);
-	clusters_info(G);
+	build_graph();
 
 	// reading the points to add or remove
 	reading_queries(G, to_add, to_remove);
@@ -343,7 +405,10 @@ int main()
 	node_identification_deletion(G, to_delete, parameter, upd_del);
 	cluster_membership(upd_del);
 
+	// saving in the files
 	save(G);
 
 	return 0;
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------
