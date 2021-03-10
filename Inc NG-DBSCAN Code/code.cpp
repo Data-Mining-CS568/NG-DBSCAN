@@ -8,6 +8,8 @@
 #include "classes.h"
 using namespace std;
 
+
+
 void reading_queries(Graph& G,vector<int>& to_add,vector<int>& to_remove){
 	int dimension;
 	char type;
@@ -83,9 +85,7 @@ for(auto v : neighbours){
 
 void random_neighbour_search(Graph & EG, vector<int> &S, vector<int> &A, int typeA, Parameters parameter)
 {
-	/*
-	!!! Do Resizing of the EG !!!
-	*/
+	
 	int total_nodes = EG.vertices_count();
 	Graph NG(total_nodes);
 	//Random Initialisation
@@ -170,6 +170,8 @@ void build_epsilon_graph(Graph& G)
 	}
 }
 
+
+
 void points_info(Graph& G)
 {
 	fstream f;
@@ -212,6 +214,16 @@ void clusters_info(Graph& G)
 }
 
 void node_identification_addition(Graph& G, vector<int>& A, Parameter& p){
+	
+	Graph EG(G.vertices_count()+A.size());
+	build_epsilon_graph(EG);
+
+	//find epsilon neighbourhood of newly added points
+	vector<int> dataset(A);
+	for(auto u: G.core) dataset.push_back(u);
+	for(auto u: G.noncore) dataset.push_back(u); 
+	random_neighbour_search(EG, A, dataset, 1, p)
+
 	if(A.size() * G.noncore.size() <= p.threshold){
 		for(auto u : G.noncore){
 			for(auto v : A){
@@ -223,6 +235,11 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameter& p){
 				}
 			}
 		}
+	}
+	else{
+		vector<int> S;
+		for(auto v : G.noncore) S.push_back(v);
+		random_neighbour_search(EG,S,A,0, p);
 	}
 }
 
