@@ -279,9 +279,31 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameter& parameter
 	random_neighbour_search(G, I, dataset, 1, parameter, upd_del);
 }
 
-void cluster_membership()
+void dfs(int u, Graph& G, int cluster_no, vector<int>& visited)
 {
-	
+	visited[u] = 1;
+	int prev_cluster = G.cluster_identification[u];
+	G.cluster[prev_cluster].erase(u);
+
+	G.cluster_identification[u] = cluster_no;
+	G.cluster[cluster_no].insert(u);
+
+	for(auto v : G.edges[u]){
+		if(!visited[v]){
+			dfs(v, G, cluster_no, visited);
+		}
+	}
+}
+
+void cluster_membership(Graph& G, vector<int>& upd)
+{
+	vector<int> visited(G.N + 1, 0);
+
+	for(auto u : upd){
+		if(!visited[u]){
+			dfs(u, G, u, visited);
+		}
+	}
 }
 
 int main()
