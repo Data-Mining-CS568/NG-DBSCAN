@@ -8,7 +8,24 @@
 #include "classes.h"
 using namespace std;
 
-
+// calculating distance between 2 points
+double distance(int u, int v)
+{
+	if(dataset_type == "text"){
+		double ans = jaro_winkler(sentences[u], sentences[v]);
+		return ans;
+	}
+	else if(dataset_type == "non_text"){
+		double ans = 0;
+		vector<double> coordinates_u = node_index_to_coordinates[u];
+		vector<double> coordinates_v = node_index_to_coordinates[v];
+		for(int j = 0; j < dimensions; j++){
+			ans += (coordinates_u[j] - coordinates_v[j]) * (coordinates_u[j] - coordinates_v[j]);
+		}
+		return sqrtf(ans);
+	}
+	return 0.0;
+}
 
 void reading_queries(Graph& G,vector<int>& to_add,vector<int>& to_remove){
 	int dimension;
