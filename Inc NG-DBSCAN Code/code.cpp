@@ -75,12 +75,11 @@ void Reduce_NG(int u, Graph& NG, Graph& EG, int& delta, Parameters parameter){
 	}
 }
 
-
 // checking neighbour graph and updating ε graph
-void Check_Neighborhood(int u, Graph& NG, Graph& EG, set<int>* temp, Parameters parameter){
-	
-vector<int> neighbours = NG.neighbours(u);
-for(auto v : neighbours){
+void Check_Neighborhood(int u, Graph& NG, Graph& EG, set<int>* temp, Parameters parameter)
+{	
+	vector<int> neighbours = NG.neighbours(u);
+	for(auto v : neighbours){
 		double dis = distance(u,v);
 		if(dis<=parameter.epsilon){
 			EG.add_edge(u,v);
@@ -93,7 +92,6 @@ for(auto v : neighbours){
 		}
 	}
 }
-
 
 void random_neighbour_search(Graph& EG, vector<int> &S, vector<int> &A, int typeA, Parameters& parameter)
 {
@@ -295,15 +293,32 @@ void dfs(int u, Graph& G, int cluster_no, vector<int>& visited)
 	}
 }
 
-void cluster_membership(Graph& G, vector<int>& upd)
-{
+void cluster_membership(Graph& G, vector<int>& upd){
 	vector<int> visited(G.N + 1, 0);
-
+	
 	for(auto u : upd){
 		if(!visited[u]){
 			dfs(u, G, u, visited);
 		}
 	}
+}
+
+void save_epsilon_graph(Graph& G){
+	fstream f;
+	f.open("epsilon_graph.txt",ios::out);
+	for(auto u : G.active){
+		f << u << "  ";
+		for(auto v : G.edges[u]){
+			f << v << " ";
+		}
+		f << "\n";
+	}
+}
+
+void save(Graph& G){
+	save_epsilon_graph(G);
+	save_points_info(G);
+	save_clusters_info(G);
 }
 
 int main()
@@ -327,6 +342,8 @@ int main()
 	// identifying deleted nodes
 	node_identification_deletion(G, to_delete, parameter, upd_del);
 	cluster_membership(upd_del);
+
+	save(G);
 
 	return 0;
 }

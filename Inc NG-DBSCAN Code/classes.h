@@ -13,6 +13,7 @@ class Node {
 class Graph {
 	public:
 	int N;
+	int dimension;
 	set<int> active;
 	set<int> unused_indices;
 	vector<set<int>> edges;
@@ -23,6 +24,7 @@ class Graph {
 
 	set<int> core, noncore;
 	map<int,vector<int>> clusters;
+	map<int,int> cluster_identification;
 
 	void add_node(int id){
 		active.insert(id);
