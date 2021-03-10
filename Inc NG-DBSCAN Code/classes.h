@@ -82,5 +82,4 @@ class Parameters {
 	}
 };
 
-vector<vector<int>> list;
 vector<vector<double>> coordinates;

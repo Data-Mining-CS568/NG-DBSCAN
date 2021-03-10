@@ -60,50 +60,9 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 
 // ------------------------------------------- RANDOM NEIGHBOUR SEARCH -------------------------------------------------------------------
 
-void Reverse_Map(int v, Graph& G){
-	for(int u : G.neighbours(v)){
-		G.add_edge(u, v);
-	}
-}
-
-void Reduce_NG(int u, Graph& NG, Graph& EG, int& delta, Parameters parameter){
-	if(EG.edges[u].size() >= parameter.Mmax){
-		NG.remove_node(u);
-		delta++;
-	}
-	vector<int> l = NG.neighbours(u);
-	
-	priority_queue<pair<double,int>> pq;
-	for(auto v:l){
-		pq.push({distance(u,v),v});
-	}
-	while(pq.size() > parameter.k){
-		pair<double,int> curr = pq.top();
-		pq.pop();
-		NG.remove_edge(u, curr.second);
-	}
-}
-
-void Check_Neighborhood(int u, Graph& NG, Graph& EG, set<int>* temp, Parameters parameter)
-{	
-	vector<int> neighbours = NG.neighbours(u);
-	for(auto v : neighbours){
-		double dis = distance(u,v);
-		if(dis<=parameter.epsilon){
-			EG.add_edge(u,v);
-			//Add neighbours of v in NG
-			vector<int> temp1 = EG.neighbours(v);
-			for(auto v1 : temp1){
-				temp1[v].insert(v1);
-			}
-
-		}
-	}
-}
-
-void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_A, Parameters& parameter)
+void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_A, Parameters& parameter, vector<int> upd)
 {
-	map<int, set<int>> v;
+	map<int, set<int>> mp;
 
 	// A is old clustered data (it contains indices of the points)
 	if(type_A == 0)
@@ -115,7 +74,7 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 				for(int i = 0; i < parameter.k; i++)
 				{
 					int idx = rand() % clusters[v].size();
-					v[u].insert(clusters[v][idx]);
+					mp[u].insert(clusters[v][idx]);
 				}
 			}
 		}
@@ -127,15 +86,43 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 		{
 			for(int i = 0; i < parameter.k; i++){
 				int idx = rand() % A.size();
-				v[u].insert(A[idx]);
+				mp[u].insert(A[idx]);
 			}
 		}
 	}
 
-	for(int u : S){
+	for(int u : S)
+	{
 		int i = 0;
-		while(i < parameter.iter){
-			for(int v : )
+		vector<int> temp;
+		map<int, int> visited;
+		bool complete = 0;
+		while(i < parameter.iter)
+		{
+			for(int v : mp[u])
+			{
+				if(N.edges[u].size() >= parameter.Minpts){
+					complete = 1;
+					break;
+				}
+				if(distance(u, v) <= parameter.epsilon){
+					G.add_edge(u, v);
+				}
+				for(int w : G.neighbours(v)){
+					if(!visited[w]){
+						visited[w] = 1;
+						temp.push_back(w);
+					}
+				}
+				i++;
+			}
+			if(complete){
+				break;
+			}
+			mp[u] = temp;
+		}
+		if(complete){
+			upd.push_back(u);
 		}
 	}
 }
