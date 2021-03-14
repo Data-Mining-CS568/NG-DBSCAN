@@ -51,7 +51,6 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 		}
 		else {
 			int id = G.coordinates_to_node_index[v];
-			G.unused_indices.insert(id);
 			to_remove.push_back(id);
 		}
 	}
@@ -194,6 +193,7 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 	set<int> d;
 	for(auto u : D){
 		d.insert(u);
+		G.delete_entries(u);
 	}
 	for(auto u : R){
 		vector<int> to_remove;
