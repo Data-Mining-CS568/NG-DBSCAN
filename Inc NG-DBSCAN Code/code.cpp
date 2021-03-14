@@ -61,12 +61,12 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 
 // ------------------------------------------- RANDOM NEIGHBOUR SEARCH -------------------------------------------------------------------
 
-void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_A, Parameters& parameter, vector<int> upd, char ch)
+void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, Parameters& parameter, vector<int> upd, char type)
 {
 	map<int, set<int>> mp;
 
 	// A is old clustered data (it contains indices of the points)
-	if(type_A == 0)
+	if(type == 'A')
 	{ 
 		for(int u : S)
 		{
@@ -82,7 +82,7 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 		}
 	}
 	// A is new added points (it contains indices of the points)
-	else if(type_A == 1)
+	else if(type == 'D')
 	{
 		for(int u : S)
 		{
@@ -125,10 +125,10 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 		}
 
 		// inserting those into upd who got their type changed from core to noncore or vice versa
-		if(complete && ch == 'A'){
+		if(complete && type == 'A'){
 			upd.push_back(u);
 		}
-		else if(!complete && ch == 'D'){
+		else if(!complete && type == 'D'){
 			upd.push_back(u);
 		}
 	}
@@ -145,7 +145,7 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameters& paramete
 	vector<int> dataset;
 	for(auto u: G.core) dataset.push_back(u);
 	for(auto u: G.noncore) dataset.push_back(u); 
-	random_neighbour_search(G, A, dataset, 1, parameter, upd_ins, 'A');
+	random_neighbour_search(G, A, dataset, parameter, upd_ins, 'A');
 
 	if(A.size() * G.noncore.size() <= parameter.threshold)
 	{
@@ -163,7 +163,7 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameters& paramete
 	else {
 		vector<int> S;
 		for(auto v : G.noncore) S.push_back(v);
-		random_neighbour_search(G, S, A, 0, parameter, upd_ins, 'A');
+		random_neighbour_search(G, S, A,  parameter, upd_ins, 'A');
 	}
 }
 
@@ -194,7 +194,7 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 			I.push_back(u);
 		}
 	}
-	random_neighbour_search(G, I, dataset, 1, parameter, upd_del, 'D');
+	random_neighbour_search(G, I, dataset, parameter, upd_del, 'D');
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
@@ -284,7 +284,7 @@ void clusters_info(Graph& G)
 {
 	fstream f;
 	f.open("clusters.txt",ios::in);
-	int no_of_clusters, each_cluster;
+	int no_of_clusters, each_cluster,cluster_id = 0;
 	f >> no_of_clusters;
 
 	while(!f.eof()){
@@ -293,7 +293,9 @@ void clusters_info(Graph& G)
 		for(int i = 0; i < each_cluster; i++){
 			cin >> v[i];
 		}
+
 	}
+
 }
 
 void build_graph(Graph& G){
