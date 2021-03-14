@@ -51,6 +51,7 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 		}
 		else {
 			int id = G.coordinates_to_node_index[v];
+			G.unused_indices.insert(id);
 			to_remove.push_back(id);
 		}
 	}
@@ -61,12 +62,12 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 
 // ------------------------------------------- RANDOM NEIGHBOUR SEARCH -------------------------------------------------------------------
 
-void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, Parameters& parameter, vector<int> upd, char type)
+void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_A, Parameters& parameter, vector<int> upd, char type)
 {
 	map<int, set<int>> mp;
 
 	// A is old clustered data (it contains indices of the points)
-	if(type == 'A')
+	if(type_A == 0)
 	{ 
 		for(int u : S)
 		{
@@ -82,7 +83,7 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, Parameter
 		}
 	}
 	// A is new added points (it contains indices of the points)
-	else if(type == 'D')
+	else if(type_A == 1)
 	{
 		for(int u : S)
 		{
@@ -125,11 +126,25 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, Parameter
 		}
 
 		// inserting those into upd who got their type changed from core to noncore or vice versa
-		if(complete && type == 'A'){
+		if(complete && type == 'A'){ //change4 
 			upd.push_back(u);
+			if(type_A == 1){ //new data
+				G.core.insert(u);
+			}
+			else{
+				G.core.insert(u);
+				G.noncore.erase(u);
+			}
+		}
+
+		else if(!complete && type == 'A' && type_A ==1) //new data to be added in noncore set
+		{	
+			G.noncore.insert(u);
 		}
 		else if(!complete && type == 'D'){
 			upd.push_back(u);
+			G.core.erase(u);
+			G.noncore.erase(u);
 		}
 	}
 }
@@ -145,13 +160,13 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameters& paramete
 	vector<int> dataset;
 	for(auto u: G.core) dataset.push_back(u);
 	for(auto u: G.noncore) dataset.push_back(u); 
-	random_neighbour_search(G, A, dataset, parameter, upd_ins, 'A');
+	random_neighbour_search(G, A, dataset, 1, parameter, upd_ins, 'A');
 
 	if(A.size() * G.noncore.size() <= parameter.threshold)
 	{
 		for(auto u : G.noncore){
 			for(auto v : A){
-				if(G.edges[u].size() > parameter.epsilon){
+				if(G.edges[u].size() > parameter.Minpts){
 					break;
 				}
 				if(distance(u,v,G) <= parameter.epsilon){
@@ -163,7 +178,7 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameters& paramete
 	else {
 		vector<int> S;
 		for(auto v : G.noncore) S.push_back(v);
-		random_neighbour_search(G, S, A,  parameter, upd_ins, 'A');
+		random_neighbour_search(G, S, A, 0, parameter, upd_ins, 'A');
 	}
 }
 
@@ -194,7 +209,7 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 			I.push_back(u);
 		}
 	}
-	random_neighbour_search(G, I, dataset, parameter, upd_del, 'D');
+	random_neighbour_search(G, I, dataset, 1, parameter, upd_del, 'D');
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
