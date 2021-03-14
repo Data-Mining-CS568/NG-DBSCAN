@@ -1,4 +1,4 @@
-#include "phase2.cpp"
+#include "Static/phase2.cpp"
 
 void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, int& p, double& epsilon, int& Minpts)
 {
