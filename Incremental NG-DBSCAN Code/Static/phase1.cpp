@@ -2,7 +2,6 @@
 using namespace std;
 
 #include "static_classes.h"
-#include "jaro_winkler_distance.cpp"
 
 // calculating distance between 2 points
 double distance(int u, int v)

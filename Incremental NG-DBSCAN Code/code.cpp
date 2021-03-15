@@ -1,13 +1,7 @@
-#pragma GCC optimize("Ofast")
-#pragma GCC optimization("unroll-loops")
-#pragma GCC optimize("unroll-loops")
-#pragma GCC optimize("fast-math")
-#pragma GCC optimize("no-stack-protector")
-
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "incre_classes.h"
+#include "incremental_classes.h"
 
 // ------------------------------------------------- DISTANCE FUNCTION -------------------------------------------------------------------
 

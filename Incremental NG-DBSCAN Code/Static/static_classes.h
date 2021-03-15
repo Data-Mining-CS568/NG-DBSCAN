@@ -63,7 +63,6 @@ class Parameters
 	int Minpts; 	// each core node is having degree at least Minpts − 1
 
 	Parameters(double Tn = 10, double Tr = 5, int k = 20, int Mmax = 20, int p = 2, int iter = 10, double epsilon = 8, int Minpts = 10){
-		// initialise all with values
 		this->Tn = Tn;
 		this->Tr = Tr;
 		this->k = k;

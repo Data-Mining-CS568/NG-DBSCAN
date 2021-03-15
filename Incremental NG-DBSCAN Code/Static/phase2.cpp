@@ -171,7 +171,6 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes, Parameters parameter,
 	// printing propagation tree in file propagation_tree.txt
 	f.open("propagation_tree.txt",ios::out);
 	print_graph(T, total_nodes, f);
-	f.close();
 	
 	return Seed_Propagation(G.active, T, parameter);
 }

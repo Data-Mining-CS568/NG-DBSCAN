@@ -1,18 +1,18 @@
 #include "Static/phase2.cpp"
 
-void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, int& p, double& epsilon, int& Minpts)
+void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, int& p, int& iter, double& epsilon, int& Minpts)
 {
 	cout << "Want to change the default parameters?\nEnter 1 for Yes and 0 for No\n";
 
 	int parameterChange;
 	cin >> parameterChange;
 	
+	iter = 10;
 	xTn = 0.001;		// limits number of nodes in NG for termination
 	xTr = 0.0001;		// limits number of removed nodes in current iteration in NG
 	k = 20;				// represents degree of each node in neighbour graph
 	Mmax = 20;			// used to reduce NG in phase-1 to reduce computation
 	p = 2;				// limits nodes for which 2 hop distance is calculated in NG
-	iter = 10;
 	epsilon = 1.0;		// minimum distance b/w nodes 
 	Minpts  = 10; 		// each core node is having degree at least Minpts − 1
 
@@ -34,15 +34,15 @@ void save_clusters_info(Graph& G){
 	f.open("clusters_save.txt",ios::out);
 
 	// number of clusters
-	f << list.size() << "\n";
+	f << clusters.size() << "\n";
 
-	for(int i = 0; i < list.size(); i++){
+	for(int i = 0; i < clusters.size(); i++){
 
 		// cluster number and number of points in each cluster
-		f << i << " " << list[i].size() << '\n';
+		f << i << " " << clusters[i].size() << '\n';
 		
 		// each point id in that cluster
-		for(auto id : list[i]){
+		for(auto id : clusters[i]){
 			f << id << " ";
 		}
 		f << "\n";
@@ -135,7 +135,8 @@ int main()
 	}
 
 	// storing newly added points
-	for(vector<double> v : to_add){
+	for(auto& it : to_add){
+		vector<double> v = it.first;
 		if(!to_delete.count(v)){
 			coordinates.push_back(v);
 			idx++;
