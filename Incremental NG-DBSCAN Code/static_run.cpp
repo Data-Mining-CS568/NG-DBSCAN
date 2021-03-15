@@ -77,32 +77,76 @@ void save_epsilon_graph(Graph& G){
 	}
 }
 
+void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<double>,bool>& to_delete){
+	int dimension;
+	char type;
+
+	fstream f;
+	f.open("queries.txt",ios::in);
+	f >> dimension;
+	while(!f.eof()){
+		f >> type;
+		vector<double> v(dimension);
+		for(int i = 0; i < dimension; i++){
+			f >> v[i];
+		}
+		if(type == 'A'){
+			to_add[v] = 1;
+		}
+		else {
+			to_delete[v] = 1;
+		}
+	}
+}
+
 int main()
 {
 	Graph G(0);
+	fstream f;
 	double xTn, xTr, epsilon;
-	int k, Mmax, p, iter, Minpts;
+	int k, Mmax, p, iter, Minpts, n;
+
+	// deciding parameters
 	parameter_decision_for_static(xTn, xTr, k, Mmax, p, iter, epsilon, Minpts);
 	
-	fstream f;
 	f.open("points.txt",ios::in);
-	
-	int n; 
 	f >> n >> dimensions;
 	
+	// creating parameter
 	Parameters parameter(xTn*n, xTr*n, k, Mmax, p, iter, epsilon, Minpts);
 	
-	coordinates.resize(n, vector<double>(dimensions));
+	// storing queries points
+	map<vector<double>,bool> to_delete, to_add;
+	store_add_and_delete_points(to_add, to_delete);
+
+	coordinates.clear();
+	int idx = 0;
+
+	// storing initial points
 	for(int i = 0; i < n; i++){
+		vector<double> v(dimensions);
 		for(int j = 0; j < dimensions; j++){
-			f >> coordinates[i][j];
+			f >> v[j];
+		}
+		if(!to_delete.count(v)){
+			coordinates.push_back(v);		
+			idx++;
 		}
 	}
-	f.close();
 
+	// storing newly added points
+	for(vector<double> v : to_add){
+		if(!to_delete.count(v)){
+			coordinates.push_back(v);
+			idx++;
+		}
+	}
+
+	n = idx;
 	Graph EG = epsilon_graph_construction(n, parameter);
 	Graph T = Discovering_Dense_Regions(EG, n, parameter, G);
 	
+	// saving data in files
 	save_clusters_info(G);
 	save_points_info(G);
 	save_epsilon_graph(G);
