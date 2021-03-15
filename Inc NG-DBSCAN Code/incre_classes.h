@@ -61,7 +61,7 @@ class Graph {
 			edges[i].clear();
 		}
 	}
-	void delete_entries(int x){ //deletes occurance of node x from graph
+	void delete_entries(int x){ // deletes occurance of node x from graph
 		if(active.find(x) != active.end()) active.erase(x);
 		unused_indices.insert(x);
 		id_to_node.erase(x);

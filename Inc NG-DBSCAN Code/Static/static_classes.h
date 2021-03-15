@@ -50,7 +50,8 @@ class Graph
 	}
 };
 
-class Parameters {
+class Parameters 
+{
 	public:
 	double Tn;		// limits number of nodes in NG for termination
 	double Tr;		// limits number of removed nodes in current iteration in NG
@@ -74,8 +75,7 @@ class Parameters {
 	}
 };
 
-string dataset_type; 				// type of dataset, it defines the distance function.
 int dimensions;
-vector<vector<double>> coordinates; // for euclidean datasets
-vector<string> sentences; 			// for text datasets
+vector<vector<double>> coordinates; 
 map<int, Node*> node_from_id;
+vector<vector<int>> clusters;

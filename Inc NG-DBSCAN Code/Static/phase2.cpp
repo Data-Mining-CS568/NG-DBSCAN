@@ -106,55 +106,12 @@ void dfs(int curr, Graph& T, vector<bool>& visited, vector<int>& v){
 Graph Seed_Propagation(set<int> seeds, Graph T, Parameters parameter)
 {
 	vector<bool> visited(T.N,0);
-	vector<vector<int>> list; 	// declared it in static_classes.h, need to be removed later
+	clusters.clear();
 
 	for(auto it:seeds){
 		vector<int> v;
 		dfs(it,T,visited,v);
-		list.push_back(v);
-	}
-
-	fstream out, f;
-	out.open("clusters.txt",ios::out);
-	f.open("numbered_clusters.txt",ios::out);
-
-	// printing clusters using numbering only
-	f << list.size() << " " << parameter.epsilon << '\n';
-	for(int i = 0; i < list.size(); i++){
-		f << list[i].size() << '\n';
-		for(auto it:list[i]){
-			f << it << " ";
-		}
-		f << "\n";
-	}
-
-	// printing all clusters in clusters.txt
-	out << list.size() << " " << dimensions << '\n';
-
-	int noise = 0;
-	for(int i = 0; i < T.N; i++){
-		if(node_from_id[i]->type == "noise"){
-			noise++;
-		}
-	}
-	
-	for(int i = 0; i < list.size(); i++){
-		out << list[i].size() << "\n";
-		for(auto it:list[i]){ 
-			for(int j = 0; j < dimensions; j++){
-				out << coordinates[it][j] << " ";	
-			}
-			out << node_from_id[it]->type << '\n';
-		}
-	}
-	out << noise << '\n';
-	for(int i = 0; i < T.N; i++){
-		if(node_from_id[i]->type == "noise"){
-			for(int j = 0; j < dimensions; j++){
-				out << coordinates[i][j] << " ";	
-			}
-			out << node_from_id[i]->type << '\n';
-		}
+		clusters.push_back(v);
 	}
 
 	// The final output will be a list of lists where each list corresponds to a separate cluster
@@ -175,7 +132,7 @@ void print_node_type(int total_nodes){
 }
 
 // finding all the clusters
-Graph Discovering_Dense_Regions(Graph EG, int total_nodes, Parameters parameter)
+Graph Discovering_Dense_Regions(Graph EG, int total_nodes, Parameters parameter, Graph& G)
 {
 	// writing epsilong graph in file epsilon_graph.txt
 	fstream f;
@@ -186,7 +143,7 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes, Parameters parameter)
 	initialize_nodes(total_nodes);
 
 	Graph T(total_nodes);
-	Graph G = Coreness_Dissemination(EG, total_nodes, parameter);
+	G = Coreness_Dissemination(EG, total_nodes, parameter);
 
 	int i = 0;
 	while(i < parameter.iter && G.active.size() > 0)

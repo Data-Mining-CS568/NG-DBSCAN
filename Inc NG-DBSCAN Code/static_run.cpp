@@ -29,10 +29,57 @@ void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, 
 	}
 }
 
+void save_clusters_info(Graph& G){
+	fstream f;
+	f.open("clusters_save.txt",ios::out);
 
+	// number of clusters
+	f << list.size() << "\n";
+
+	for(int i = 0; i < list.size(); i++){
+
+		// cluster number and number of points in each cluster
+		f << i << " " << list[i].size() << '\n';
+		
+		// each point id in that cluster
+		for(auto id : list[i]){
+			f << id << " ";
+		}
+		f << "\n";
+	}
+}
+
+void save_points_info(Graph& G){
+	fstream f;
+	f.open("points_save.txt",ios::out);
+
+	f << G.N << "\n";
+
+	for(int i = 0; i < G.N; i++){
+		f << i << " " << node_from_id[i]->type << " ";
+		for(int j = 0; j < dimensions; j++){
+			f << coordinates[i][j] << " ";
+		}
+		f << "\n";
+	}
+}
+
+void save_epsilon_graph(Graph& G){
+	fstream f;
+	f.open("epsilon_graph_save.txt",ios::out);
+
+	for(int i = 0; i < G.N; i++){
+		f << i << " ";
+		for(auto u : G.edges[i]){
+			f << u << " ";
+		}
+		f << "\n";
+	}
+}
 
 int main()
 {
+	Graph G(0);
 	double xTn, xTr, epsilon;
 	int k, Mmax, p, iter, Minpts;
 	parameter_decision_for_static(xTn, xTr, k, Mmax, p, iter, epsilon, Minpts);
@@ -54,7 +101,11 @@ int main()
 	f.close();
 
 	Graph EG = epsilon_graph_construction(n, parameter);
-	Graph T = Discovering_Dense_Regions(EG, n, parameter);
+	Graph T = Discovering_Dense_Regions(EG, n, parameter, G);
 	
+	save_clusters_info(G);
+	save_points_info(G);
+	save_epsilon_graph(G);
+
 	return 0;
 }
