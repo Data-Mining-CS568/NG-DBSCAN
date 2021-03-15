@@ -41,10 +41,9 @@ labels = db.labels_
 
 # number of clusters
 n_clusters_ = len(set(labels))
-print(n_clusters_)
 
-list_of_clusters=[]
-fake_list=[]
+list_of_clusters = []
+fake_list = []
 
 for i in range(n_clusters_):
     list_of_clusters.append(fake_list)
@@ -69,17 +68,14 @@ x2 = 10
 y1 = 4
 y2 = 6
 
-outputfile = open("del.txt","w")
-outputfile.write(str(num) + '\n')
 count = 0
+l = []
 
 for i in range(pts):
     if x1 <= X[i][0] <= x2 and y1 <= X[i][1] <= y2 and count < num:
         count = count + 1
-        # X.remove(i)
-        outputfile.write(str(X[i][0]) + ' ' + str(X[i][1]) + '\n')
+        l.append(('D', X[i][0], X[i][1]))
 
-outputfile.close()
 
 # Adding new points
 num = int(input("Enter number of points to be added: \n"))
@@ -88,12 +84,17 @@ x2 = 4
 y1 = 6
 y2 = 8
 
-outputfile = open("add.txt","w")
-outputfile.write(str(num) +'\n')
-
 for i in range(num):
     x = x1 + (x2-x1) * random.random()
     y = y1 + (y2-y1) * random.random()
-    outputfile.write(str(x) + " " + str(y) + '\n')
+    l.append(('A', x, y))
+
+outputfile = open("queries.txt","w")
+outputfile.write(str(len(l)) + "\n")
+
+random.shuffle(l)
+
+for v in l:
+    outputfile.write(v[0] + " " + str(v[1]) + " " + str(v[2]) + "\n")
 
 outputfile.close()
