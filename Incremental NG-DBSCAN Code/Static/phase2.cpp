@@ -134,16 +134,12 @@ void print_node_type(int total_nodes){
 // finding all the clusters
 Graph Discovering_Dense_Regions(Graph EG, int total_nodes, Parameters parameter, Graph& G)
 {
-	// writing epsilong graph in file epsilon_graph.txt
-	fstream f;
-	f.open("epsilon_graph.txt",ios::out);
-	print_graph(EG, total_nodes, f);
-	f.close();
-
 	initialize_nodes(total_nodes);
 
 	Graph T(total_nodes);
 	G = Coreness_Dissemination(EG, total_nodes, parameter);
+
+	Graph temp = G;
 
 	int i = 0;
 	while(i < parameter.iter && G.active.size() > 0)
@@ -168,9 +164,8 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes, Parameters parameter,
 		i++;
 	}
 
-	// printing propagation tree in file propagation_tree.txt
-	f.open("propagation_tree.txt",ios::out);
-	print_graph(T, total_nodes, f);
+	Graph F = Seed_Propagation(G.active, T, parameter); 
+	G = temp;
 	
-	return Seed_Propagation(G.active, T, parameter);
+	return F;
 }

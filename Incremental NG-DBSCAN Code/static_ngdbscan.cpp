@@ -83,8 +83,11 @@ void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<do
 
 	fstream f;
 	f.open("queries.txt",ios::in);
+	if(!f) return;
+
 	f >> dimension;
-	while(!f.eof()){
+	while(!f.eof())
+	{
 		f >> type;
 		vector<double> v(dimension);
 		for(int i = 0; i < dimension; i++){
