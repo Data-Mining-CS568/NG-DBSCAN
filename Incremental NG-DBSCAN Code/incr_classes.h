@@ -78,6 +78,9 @@ class Graph {
 		if(noncore.find(x) != noncore.end()){
 			noncore.erase(x);
 		} 
+		int cluster_no = cluster_identification[x];
+		auto it = find(clusters[cluster_no].begin(),clusters[cluster_no].end(),x);
+		clusters[cluster_no].erase(it);
 		cluster_identification.erase(x);
 		edges[x].clear();
 	}
@@ -92,7 +95,7 @@ class Parameters {
 	int Minpts; 
 	int threshold;
 
-	Parameters(int k = 20, int Mmax = 20, int iter = 50, double epsilon = 8, int Minpts = 10, int threshold = 1000){
+	Parameters(int k = 20, int Mmax = 20, int iter = 50, double epsilon = 4, int Minpts = 10, int threshold = 1000){
 		this->k = k;
 		this->Mmax = Mmax;
 		this->iter = iter;

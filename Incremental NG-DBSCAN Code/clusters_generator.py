@@ -9,8 +9,8 @@ noise = []
 points_file = open("points_save1.txt", "r")
 x = points_file.readline()
 a = x.split()
-n = int(a[0]) #number of ponts
-dimension = int(a[1]) #dimesnsion of points
+n = int(a[0])			 # number of points
+dimension = int(a[1]) 	 # dimension of points
 
 points = {}
 points_type = {}
@@ -18,25 +18,24 @@ for i in range(n):
 	lst = []
 	x = points_file.readline()
 	a = x.split(' ')
-	pt_id = a[0]
+	pt_id = int(a[0])
 	pt_type = a[1]
-	points_type[i] = pt_type
+	points_type[pt_id] = pt_type
 	for it in range(2, dimension+2):
 		lst.append(float(a[it]))
-	points[i] = lst 
+	points[pt_id] = lst 
 
 cluster_file = open("clusters_save1.txt","r")
 x = cluster_file.readline()
 a = x.split()
-n = int(a[0]) #number of clusters
-
+n = int(a[0]) 			# number of clusters
 
 for i in range(n):
 	lst = []
 	x = cluster_file.readline()
 	a = x.split()
 	cluster_id = int(a[0])
-	m = int(a[1]) #number of points in cluster i
+	m = int(a[1]) 		# number of points in cluster i
 	x = cluster_file.readline()
 	points_id = x.split(' ')
 	for i in range(m):

@@ -57,7 +57,6 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 			if(G.coordinates_to_node_index.count(v)){
 				int id = G.coordinates_to_node_index[v];
 				to_remove.push_back(id);
-				G.active.erase(id);
 			}
 		}
 	}
@@ -158,6 +157,8 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 		for(auto v : found_completed){
 			upd.push_back(v);
 			G.core.insert(v);
+			G.id_to_node[v]->type = "core";
+
 			if(G.noncore.find(v) != G.noncore.end()){
 				G.noncore.erase(v);
 			}
@@ -169,6 +170,7 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 				upd.push_back(v);
 				G.core.erase(v);
 				G.noncore.insert(v);
+				G.id_to_node[v]->type = "noncore";
 			}
 		}
 		for(auto v : found_completed){
@@ -176,6 +178,7 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 				G.noncore.erase(v);
 			}
 			G.core.insert(v);
+			G.id_to_node[v]->type = "core";
 		}
 	}
 }
@@ -210,7 +213,6 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameters& paramete
 		for(auto v : G.noncore) S.push_back(v);
 		random_neighbour_search(G, S, A, 0, parameter, upd_ins, 'A');
 	}
-	
 	cout << A.size() << " " << G.noncore.size() << " " << upd_ins.size() << endl;
 }
 
@@ -402,14 +404,23 @@ void save_points_info(Graph& G){
 void save_clusters_info(Graph& G){
 	fstream f;
 	f.open("clusters_save1.txt",ios::out);
-	f << G.clusters.size() << "\n";
+	int no_of_clusters = 0;
 	for(auto it : G.clusters){
 		vector<int>& u = it.second;
-		f << it.first << " " << u.size() << "\n";
-		for(int v : u){
-			f << v << " ";
+		if(u.size()){
+			no_of_clusters++;
 		}
-		f << "\n";
+	}
+	f << no_of_clusters << "\n";
+	for(auto it : G.clusters){
+		vector<int>& u = it.second;
+		if(u.size()){
+			f << it.first << " " << u.size() << "\n";
+			for(int v : u){
+				f << v << " ";
+			}
+			f << "\n";
+		}
 	}
 }
 
@@ -457,9 +468,9 @@ int main()
 	// identifying deleted nodes
 	node_identification_deletion(G, to_delete, parameter, upd_del);
 
-	// cout << "\nPresent in upd_del: \n";
-	// for(auto u : upd_del) cout << u << " ";
-	// cout << endl;
+	cout << "\nPresent in upd_del: \n";
+	for(auto u : upd_del) cout << u << " ";
+	cout << endl;
 
 	cluster_membership(G, upd_del);
 
