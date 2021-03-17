@@ -36,7 +36,9 @@ class Graph {
 			add_node(i);
 		}
 		this->N = total_nodes;
-		this->last_unused_index = 0;
+		for(int i = 0; i < 10000; i++){
+			this->unused_indices.insert(i);
+		}
 	}
 	int vertices_count(){
 		return edges.size();

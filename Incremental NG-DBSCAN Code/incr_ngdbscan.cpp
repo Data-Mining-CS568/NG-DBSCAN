@@ -1,7 +1,10 @@
+// rename active to dataset_pts in incr_classes.h
+
 #include <bits/stdc++.h>
 using namespace std;
 
 #include "incr_classes.h"
+
 
 // ------------------------------------------------- DISTANCE FUNCTION -------------------------------------------------------------------
 
@@ -38,21 +41,20 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 		}
 		if(type == 'A'){
 			int id;
-			if(G.unused_indices.size() == 0){
-				id = G.last_unused_index;
-				G.last_unused_index++;
-			}
-			else {
-				id = *G.unused_indices.begin();
-				G.unused_indices.erase(G.unused_indices.begin());
-			}
+			id = *G.unused_indices.begin();
+			G.unused_indices.erase(G.unused_indices.begin());
+			G.active.insert(id);
+
 			to_add.push_back(id);
 			G.node_index_to_coordinates[id] = v;
 			G.coordinates_to_node_index[v] = id;
 		}
 		else {
-			int id = G.coordinates_to_node_index[v];
-			to_remove.push_back(id);
+			if(G.coordinates_to_node_index.count(v)){
+				int id = G.coordinates_to_node_index[v];
+				to_remove.push_back(id);
+				G.active.erase(id);
+			}
 		}
 	}
 }
@@ -288,6 +290,9 @@ void points_info(Graph& G)
 		for(int i = 0; i < dimension; i++){
 			f >> v[i];
 		}
+		G.unused_indices.erase(id);
+		G.active.insert(id);
+
 		if(type == "core"){
 			G.core.insert(id);
 		}
@@ -333,7 +338,7 @@ void build_graph(Graph& G){
 
 void save_epsilon_graph(Graph& G){
 	fstream f;
-	f.open("epsilon_graph.txt",ios::out);
+	f.open("epsilon_graph_save1.txt",ios::out);
 	for(auto u : G.active){
 		f << u << "  ";
 		for(auto v : G.edges[u]){
@@ -345,7 +350,7 @@ void save_epsilon_graph(Graph& G){
 
 void save_points_info(Graph& G){
 	fstream f;
-	f.open("points_info.txt",ios::out);
+	f.open("points_save1.txt",ios::out);
 	f << G.dimension << "\n";
 	for(auto u : G.active){
 		Node* curr = G.id_to_node[u];
@@ -359,7 +364,7 @@ void save_points_info(Graph& G){
 
 void save_clusters_info(Graph& G){
 	fstream f;
-	f.open("clusters_info.txt",ios::out);
+	f.open("clusters_save1.txt",ios::out);
 	f << G.clusters.size() << "\n";
 	for(auto it : G.clusters){
 		vector<int>& u = it.second;
@@ -395,6 +400,12 @@ int main()
 	// reading the points to add or remove
 	reading_queries(G, to_add, to_delete);
 	
+	for(auto u : to_add) cout << u << " ";
+	cout << endl;
+
+	for(auto u : to_delete) cout << u << " ";
+	cout << endl;
+
 	// identifying added nodes
 	// node_identification_addition(G, to_add, parameter, upd_ins);
 	// cluster_membership(G, upd_ins);
