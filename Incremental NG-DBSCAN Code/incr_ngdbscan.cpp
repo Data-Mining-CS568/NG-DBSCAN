@@ -422,22 +422,25 @@ int main()
 	// reading the points to add or remove
 	reading_queries(G, to_add, to_delete);
 	
+	cout << "Addition: \n";
 	for(auto u : to_add) cout << u << " ";
 	cout << endl;
 
+	cout << "Deletion: \n";
 	for(auto u : to_delete) cout << u << " ";
 	cout << endl;
 
 	// identifying added nodes
 	node_identification_addition(G, to_add, parameter, upd_ins);
 
+	cout << "Present in upd_ins: \n";
 	for(auto u : upd_ins) cout << u << " ";
 	cout << endl;
 
 	cluster_membership(G, upd_ins);
 
 	// identifying deleted nodes
-	// node_identification_deletion(G, to_delete, parameter, upd_del);
+	// // node_identification_deletion(G, to_delete, parameter, upd_del);
 	cluster_membership(G, upd_del);
 
 	// saving in the files
