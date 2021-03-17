@@ -87,6 +87,9 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 			for(auto it : G.clusters)
 			{
 				int v = it.first;
+				if(!G.clusters[v].size()){
+					continue;
+				}
 				for(int i = 0; i < parameter.k; i++)
 				{
 					int idx = rand() % G.clusters[v].size();
@@ -96,6 +99,9 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 
 			// assign some points from newly added
 			for(int i = 0; i < parameter.k; i++){
+				if(!A.size()){
+					continue;
+				}
 				int z = rand() % A.size();
 				if(u != z){
 					mp[u].insert(z);
@@ -111,6 +117,9 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 		{
 			// find k random neighbours of each point
 			for(int i = 0; i < parameter.k; i++){
+				if(!A.size()){
+					continue;
+				}
 				int idx = rand() % A.size();
 				mp[u].insert(A[idx]);
 			}
@@ -395,7 +404,7 @@ void save_points_info(Graph& G){
 		Node* curr = G.id_to_node[u];
 		f << u << " " << curr->type << " ";
 		for(double c : curr->coordinate){
-			f << c << " ";
+			f << fixed << setprecision(3) << c << " ";
 		}
 		f << "\n";
 	}
@@ -455,6 +464,8 @@ int main()
 	cout << "\nDeletion: \n";
 	for(auto u : to_delete) cout << u << " ";
 	cout << endl;
+
+	cout << to_add.size() << " " << to_delete.size() << endl;
 
 	// identifying added nodes
 	node_identification_addition(G, to_add, parameter, upd_ins);

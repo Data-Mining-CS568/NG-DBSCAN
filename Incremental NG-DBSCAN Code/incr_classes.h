@@ -82,6 +82,14 @@ class Graph {
 		auto it = find(clusters[cluster_no].begin(),clusters[cluster_no].end(),x);
 		clusters[cluster_no].erase(it);
 		cluster_identification.erase(x);
+		
+		vector<int> v;
+		for(auto it : edges[x]){
+			v.push_back(it);
+		}
+		for(auto u : v){
+			edges[u].erase(x);
+		}
 		edges[x].clear();
 	}
 };
@@ -95,7 +103,7 @@ class Parameters {
 	int Minpts; 
 	int threshold;
 
-	Parameters(int k = 20, int Mmax = 20, int iter = 50, double epsilon = 4, int Minpts = 10, int threshold = 1000){
+	Parameters(int k = 10, int Mmax = 10, int iter = 10, double epsilon = 0.5, int Minpts = 10, int threshold = 100){
 		this->k = k;
 		this->Mmax = Mmax;
 		this->iter = iter;
