@@ -14,7 +14,6 @@ class Graph {
 	public:
 	int N;
 	int dimension;
-	int last_unused_index;
 	set<int> active;
 	set<int> unused_indices;
 	map<int, set<int>> edges;

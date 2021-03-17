@@ -389,7 +389,6 @@ void save_points_info(Graph& G){
 	f << G.active.size() << " " << G.dimension << "\n";
 	for(auto u : G.active){
 		Node* curr = G.id_to_node[u];
-		if(!curr) continue;
 		f << u << " " << curr->type << " ";
 		for(double c : curr->coordinate){
 			f << c << " ";

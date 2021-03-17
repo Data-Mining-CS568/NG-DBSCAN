@@ -31,7 +31,7 @@ void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, 
 
 void save_clusters_info(Graph& G){
 	fstream f;
-	f.open("clusters_save.txt",ios::out);
+	f.open("clusters_save1.txt",ios::out);
 
 	// number of clusters
 	f << clusters.size() << "\n";
@@ -51,7 +51,7 @@ void save_clusters_info(Graph& G){
 
 void save_points_info(Graph& G){
 	fstream f;
-	f.open("points_save.txt",ios::out);
+	f.open("points_save1.txt",ios::out);
 
 	f << G.N << " " << dimensions << "\n";
 
@@ -66,7 +66,7 @@ void save_points_info(Graph& G){
 
 void save_epsilon_graph(Graph& G){
 	fstream f;
-	f.open("epsilon_graph_save.txt",ios::out);
+	f.open("epsilon_graph_save1.txt",ios::out);
 
 	for(int i = 0; i < G.N; i++){
 		f << i << " ";
@@ -78,19 +78,20 @@ void save_epsilon_graph(Graph& G){
 }
 
 void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<double>,bool>& to_delete){
-	int dimension;
+	int tot_points;
 	char type;
 
 	fstream f;
 	f.open("queries.txt",ios::in);
-	if(!f) return;
-
-	f >> dimension;
-	while(!f.eof())
+	if(!f){
+		return;	
+	} 
+	f >> tot_points;
+	for(int j = 0; j < tot_points; j++)
 	{
 		f >> type;
-		vector<double> v(dimension);
-		for(int i = 0; i < dimension; i++){
+		vector<double> v(dimensions);
+		for(int i = 0; i < dimensions; i++){
 			f >> v[i];
 		}
 		if(type == 'A'){
