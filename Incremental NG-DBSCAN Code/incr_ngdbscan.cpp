@@ -31,7 +31,7 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 	fstream f;
 	f.open("queries.txt",ios::in);
 	f >> total_queries;
-
+	
 	for(int i = 0; i < total_queries; i++)
 	{
 		f >> type;
@@ -46,6 +46,10 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 			G.active.insert(id);
 			G.noncore.insert(id);	// making initially noncore
 			to_add.push_back(id);
+
+			Node* curr = new Node(id,"noncore",v);
+			G.id_to_node[id] = curr;
+			
 			G.node_index_to_coordinates[id] = v;
 			G.coordinates_to_node_index[v] = id;
 		}
@@ -117,7 +121,7 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 	// nodes which got their type changed
 	set<int> found_completed;
 
-	// // going through list of each node for which we want to find some neighbours
+	// going through list of each node for which we want to find some neighbours
 	for(int u : S)
 	{
 		int i = 0;
@@ -368,9 +372,10 @@ void save_epsilon_graph(Graph& G){
 void save_points_info(Graph& G){
 	fstream f;
 	f.open("points_save1.txt",ios::out);
-	f << G.dimension << "\n";
+	f << G.active.size() << " " << G.dimension << "\n";
 	for(auto u : G.active){
 		Node* curr = G.id_to_node[u];
+		if(!curr) continue;
 		f << u << " " << curr->type << " ";
 		for(double c : curr->coordinate){
 			f << c << " ";
@@ -385,7 +390,7 @@ void save_clusters_info(Graph& G){
 	f << G.clusters.size() << "\n";
 	for(auto it : G.clusters){
 		vector<int>& u = it.second;
-		f << u.size() << "\n";
+		f << it.first << " " << u.size() << "\n";
 		for(int v : u){
 			f << v << " ";
 		}
@@ -433,10 +438,10 @@ int main()
 
 	// identifying deleted nodes
 	// node_identification_deletion(G, to_delete, parameter, upd_del);
-	// cluster_membership(G, upd_del);
+	cluster_membership(G, upd_del);
 
 	// saving in the files
-	// save(G);
+	save(G);
 
 	return 0;
 }
