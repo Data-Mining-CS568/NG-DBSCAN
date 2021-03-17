@@ -65,15 +65,22 @@ class Graph {
 			edges[i].clear();
 		}
 	}
-	void delete_entries(int x){ // deletes occurance of node x from graph
-		if(active.find(x) != active.end()) active.erase(x);
+	// deletes occurrence of node x from graph
+	void delete_entries(int x){ 
+		if(active.find(x) != active.end()){
+			active.erase(x);	
+		} 
 		unused_indices.insert(x);
 		id_to_node.erase(x);
 		node_index_to_coordinates.erase(x);
-		if(core.find(x)!=core.end()) core.erase(x);
-		if(noncore.find(x)!=noncore.end()) noncore.erase(x);
+		if(core.find(x) != core.end()){
+			core.erase(x);
+		} 
+		if(noncore.find(x) != noncore.end()){
+			noncore.erase(x);
+		} 
 		cluster_identification.erase(x);
-		return;
+		edges[x].clear();
 	}
 };
 

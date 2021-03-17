@@ -154,12 +154,28 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 		}
 	}
 	// inserting those into upd who got their type changed from noncore to core or vice versa
-	for(auto v : found_completed)
-	{
-		upd.push_back(v);
-		G.core.insert(v);
-		if(G.noncore.find(v) != G.noncore.end()){
-			G.noncore.erase(v);
+	if(type == 'A'){
+		for(auto v : found_completed){
+			upd.push_back(v);
+			G.core.insert(v);
+			if(G.noncore.find(v) != G.noncore.end()){
+				G.noncore.erase(v);
+			}
+		}	
+	}
+	else {
+		for(auto v : S){
+			if(found_completed.find(v) == found_completed.end()){
+				upd.push_back(v);
+				G.core.erase(v);
+				G.noncore.insert(v);
+			}
+		}
+		for(auto v : found_completed){
+			if(G.noncore.find(v) != G.noncore.end()){
+				G.noncore.erase(v);
+			}
+			G.core.insert(v);
 		}
 	}
 }
@@ -205,26 +221,24 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 	set<int>& R = G.core;
 	vector<int> I;
 
-	set<int> d;
+	set<int> deleted;
 	for(auto u : D){
-		d.insert(u);
-		if(G.core.find(u) != G.core.end()){
-			G.core.erase(u);
-			G.noncore.insert(u);
-		}
+		deleted.insert(u);
 		G.delete_entries(u);
 	}
+	// checking which core nodes can change to non-core
 	for(auto u : R){
-		vector<int> to_remove;
+		vector<int> affected;
 		for(auto v : G.edges[u]){
-			if(d.find(v) != d.end()){
-				to_remove.push_back(v);
+			if(deleted.find(v) != deleted.end()){
+				affected.push_back(u);
+				break;
 			}
 		}
-		for(auto v : to_remove){
+		for(auto v : affected){
 			G.edges[u].erase(v);
 		}
-		if(G.edges[u].size() < parameter.Minpts && G.edges[u].size() + to_remove.size() >= parameter.Minpts){
+		if(G.edges[u].size() < parameter.Minpts && G.edges[u].size() + affected.size() >= parameter.Minpts){
 			I.push_back(u);
 		}
 	}
@@ -426,7 +440,7 @@ int main()
 	for(auto u : to_add) cout << u << " ";
 	cout << endl;
 
-	cout << "Deletion: \n";
+	cout << "\nDeletion: \n";
 	for(auto u : to_delete) cout << u << " ";
 	cout << endl;
 
@@ -440,12 +454,16 @@ int main()
 	cluster_membership(G, upd_ins);
 
 	// identifying deleted nodes
-	// // node_identification_deletion(G, to_delete, parameter, upd_del);
+	node_identification_deletion(G, to_delete, parameter, upd_del);
+
+	cout << "Present in upd_del: \n";
+	for(auto u : upd_del) cout << u << " ";
+	cout << endl;
+
 	cluster_membership(G, upd_del);
 
 	// saving in the files
 	save(G);
-
 	return 0;
 }
 
