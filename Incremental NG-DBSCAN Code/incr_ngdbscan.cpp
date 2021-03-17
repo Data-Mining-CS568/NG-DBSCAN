@@ -267,11 +267,10 @@ void build_epsilon_graph(Graph& G)
 void points_info(Graph& G)
 {
 	fstream f;
-	f.open("points_info.txt",ios::in);
-	int dimension, id;
+	f.open("points_save.txt",ios::in);
+	int n, dimension, id;
 	string type;
-	f >> dimension;
-
+	f >> n >> dimension;
 	while(!f.eof()){
 		vector<double> v(dimension);
 		f >> id >> type;
@@ -291,19 +290,28 @@ void points_info(Graph& G)
 
 void clusters_info(Graph& G)
 {
-	fstream f;
-	f.open("clusters.txt",ios::in);
+	fstream f, f_pts;
+	f.open("clusters_save.txt",ios::in);
+
+	//Reading Clusters file
 	int no_of_clusters, each_cluster,cluster_id = 0;
 	f >> no_of_clusters;
 
 	while(!f.eof()){
-		f >> each_cluster;
+		f >> cluster_id>>each_cluster;
 		vector<int> v(each_cluster);
 		for(int i = 0; i < each_cluster; i++){
 			cin >> v[i];
+			G.cluster_identification[v[i]] = cluster_id;
 		}
+		G.clusters[cluster_id] = v;
 
 	}
+
+	f.close();
+
+	
+
 
 }
 
