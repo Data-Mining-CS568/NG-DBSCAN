@@ -44,7 +44,7 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 			id = *G.unused_indices.begin();
 			G.unused_indices.erase(G.unused_indices.begin());
 			G.active.insert(id);
-
+			G.noncore.insert(id);	// making initially noncore
 			to_add.push_back(id);
 			G.node_index_to_coordinates[id] = v;
 			G.coordinates_to_node_index[v] = id;
@@ -64,15 +64,23 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 
 // ------------------------------------------- RANDOM NEIGHBOUR SEARCH -------------------------------------------------------------------
 
+void check_for_completion(int u, Graph& G, Parameters& parameter, set<int>& found_completed){
+	if(G.edges[u].size() >= parameter.Minpts){
+		found_completed.insert(u);
+	}
+}
+
 void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_A, Parameters& parameter, vector<int> upd, char type)
 {
 	map<int, set<int>> mp;
 
 	// A is old clustered data (it contains indices of the points)
-	if(type_A == 0)
+	if(type_A == 1)
 	{ 
+		// for each point in S, we find some neighbours of it
 		for(int u : S)
 		{
+			// assign k points from each cluster
 			for(auto it : G.clusters)
 			{
 				int v = it.first;
@@ -82,13 +90,23 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 					mp[u].insert(G.clusters[v][idx]);
 				}
 			}
+
+			// assign some points from newly added
+			for(int i = 0; i < parameter.k; i++){
+				int z = rand() % A.size();
+				if(u != z){
+					mp[u].insert(z);
+				}
+			}
 		}
 	}
 	// A is new added points (it contains indices of the points)
-	else if(type_A == 1)
+	else if(type_A == 0)
 	{
+		// for each point in S, we find some neighbours of it
 		for(int u : S)
 		{
+			// find k random neighbours of each point
 			for(int i = 0; i < parameter.k; i++){
 				int idx = rand() % A.size();
 				mp[u].insert(A[idx]);
@@ -96,57 +114,48 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 		}
 	}
 
+	// nodes which got their type changed
+	set<int> found_completed;
+
+	// // going through list of each node for which we want to find some neighbours
 	for(int u : S)
 	{
 		int i = 0;
 		set<int> temp;
 		map<int, int> visited;
-		bool complete = 0;
+
+		// run for constant number of iterations
 		while(i < parameter.iter)
 		{
+			// going through list of u
 			for(int v : mp[u])
 			{
-				if(G.edges[u].size() >= parameter.Minpts){
-					complete = 1;
-					break;
-				}
 				if(distance(u, v, G) <= parameter.epsilon){
 					G.add_edge(u, v);
+					G.add_edge(v, u);
+					check_for_completion(v, G, parameter, found_completed);
+					check_for_completion(u, G, parameter, found_completed);
 				}
+				// inserting non-visited neighbours of present node v in list of u
 				for(int w : G.neighbours(v)){
-					if(!visited[w]){
+					if(!visited.count(w)){
 						visited[w] = 1;
 						temp.insert(w);
 					}
 				}
 				i++;
 			}
-			if(complete){
-				break;
-			}
+			// changing to new list of u
 			mp[u] = temp;
 		}
-
-		// inserting those into upd who got their type changed from core to noncore or vice versa
-		if(complete && type == 'A'){ //change4 
-			upd.push_back(u);
-			if(type_A == 1){ //new data
-				G.core.insert(u);
-			}
-			else{
-				G.core.insert(u);
-				G.noncore.erase(u);
-			}
-		}
-
-		else if(!complete && type == 'A' && type_A ==1) //new data to be added in noncore set
-		{	
-			G.noncore.insert(u);
-		}
-		else if(!complete && type == 'D'){
-			upd.push_back(u);
-			G.core.erase(u);
-			G.noncore.erase(u);
+	}
+	// inserting those into upd who got their type changed from noncore to core or vice versa
+	for(auto v : found_completed)
+	{
+		upd.push_back(v);
+		G.core.insert(v);
+		if(G.noncore.find(v) != G.noncore.end()){
+			G.noncore.erase(v);
 		}
 	}
 }
@@ -161,18 +170,17 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameters& paramete
 	// find epsilon neighbourhood of newly added points
 	vector<int> dataset;
 	for(auto u: G.core) dataset.push_back(u);
-	for(auto u: G.noncore) dataset.push_back(u); 
+	for(auto u: G.noncore) dataset.push_back(u);
+
 	random_neighbour_search(G, A, dataset, 1, parameter, upd_ins, 'A');
 
 	if(A.size() * G.noncore.size() <= parameter.threshold)
 	{
 		for(auto u : G.noncore){
 			for(auto v : A){
-				if(G.edges[u].size() > parameter.Minpts){
-					break;
-				}
-				if(distance(u,v,G) <= parameter.epsilon){
-					G.add_edge(u,v);
+				if(distance(u, v, G) <= parameter.epsilon){
+					G.add_edge(u, v);
+					G.add_edge(v, u);
 				}
 			}
 		}
@@ -196,6 +204,10 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 	set<int> d;
 	for(auto u : D){
 		d.insert(u);
+		if(G.core.find(u) != G.core.end()){
+			G.core.erase(u);
+			G.noncore.insert(u);
+		}
 		G.delete_entries(u);
 	}
 	for(auto u : R){
@@ -220,29 +232,32 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 
 // -------------------------------------------- CLUSTER MEMBERSHIP PART ------------------------------------------------------------------
 
-void dfs(int u, Graph& G, int cluster_no, vector<int>& visited)
+void dfs(int u, Graph& G, int cluster_no, map<int,int>& visited)
 {
 	visited[u] = 1;
 	int prev_cluster = G.cluster_identification[u];
 	vector<int>& v = G.clusters[prev_cluster];
+
 	auto it = find(v.begin(),v.end(),u);
-	v.erase(it);
+	if(it != v.end()){
+		v.erase(it);
+	}
 
 	G.cluster_identification[u] = cluster_no;
 	G.clusters[cluster_no].push_back(u);
 
 	for(auto v : G.edges[u]){
-		if(!visited[v]){
+		if(!visited.count(v)){
 			dfs(v, G, cluster_no, visited);
 		}
 	}
 }
 
 void cluster_membership(Graph& G, vector<int>& upd){
-	vector<int> visited(G.N + 1, 0);
+	map<int, int> visited;
 	
 	for(auto u : upd){
-		if(!visited[u]){
+		if(!visited.count(u)){
 			dfs(u, G, u, visited);
 		}
 	}
@@ -299,6 +314,8 @@ void points_info(Graph& G)
 		else {
 			G.noncore.insert(id);
 		}
+		G.node_index_to_coordinates[id] = v;
+		G.coordinates_to_node_index[v] = id;
 		Node* n = new Node(id, type, v);
 		G.id_to_node[id] = n;
 	}
@@ -407,8 +424,12 @@ int main()
 	cout << endl;
 
 	// identifying added nodes
-	// node_identification_addition(G, to_add, parameter, upd_ins);
-	// cluster_membership(G, upd_ins);
+	node_identification_addition(G, to_add, parameter, upd_ins);
+
+	for(auto u : upd_ins) cout << u << " ";
+	cout << endl;
+
+	cluster_membership(G, upd_ins);
 
 	// identifying deleted nodes
 	// node_identification_deletion(G, to_delete, parameter, upd_del);
