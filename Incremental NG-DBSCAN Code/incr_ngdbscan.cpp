@@ -23,23 +23,30 @@ double distance(int u, int v, Graph& G)
 
 void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 {
-	int dimension;
+	int total_queries;
 	char type;
 	fstream f;
 	f.open("queries.txt",ios::in);
-	f >> dimension;
+	f >> total_queries;
 
-	while(!f.eof())
+	for(int i = 0; i < total_queries; i++)
 	{
 		f >> type;
-		vector<double> v(dimension);
-		for(int i = 0; i < dimension; i++){
+		vector<double> v(G.dimension);
+		for(int i = 0; i < G.dimension; i++){
 			f >> v[i];
 		}
 		if(type == 'A'){
-			int id = *G.unused_indices.begin();
+			int id;
+			if(G.unused_indices.size() == 0){
+				id = G.last_unused_index;
+				G.last_unused_index++;
+			}
+			else {
+				id = *G.unused_indices.begin();
+				G.unused_indices.erase(G.unused_indices.begin());
+			}
 			to_add.push_back(id);
-			G.unused_indices.erase(G.unused_indices.begin());
 			G.node_index_to_coordinates[id] = v;
 			G.coordinates_to_node_index[v] = id;
 		}
@@ -247,8 +254,9 @@ void cluster_membership(Graph& G, vector<int>& upd){
 void build_epsilon_graph(Graph& G)
 {
 	fstream f;
-	f.open("epsilon_graph.txt",ios::in);
+	f.open("epsilon_graph_save.txt",ios::in);
 	string s;
+	G.edges.clear();
 
 	while(!f.eof()){
 		getline(f,s);
@@ -271,7 +279,10 @@ void points_info(Graph& G)
 	int n, dimension, id;
 	string type;
 	f >> n >> dimension;
-	while(!f.eof()){
+	G.dimension = dimension;
+
+	while(!f.eof())
+	{
 		vector<double> v(dimension);
 		f >> id >> type;
 		for(int i = 0; i < dimension; i++){
@@ -290,29 +301,23 @@ void points_info(Graph& G)
 
 void clusters_info(Graph& G)
 {
-	fstream f, f_pts;
+	fstream f;
 	f.open("clusters_save.txt",ios::in);
 
-	//Reading Clusters file
-	int no_of_clusters, each_cluster,cluster_id = 0;
+	// Reading Clusters file
+	int no_of_clusters, pts_each_cluster, cluster_id = 0;
 	f >> no_of_clusters;
 
-	while(!f.eof()){
-		f >> cluster_id>>each_cluster;
-		vector<int> v(each_cluster);
-		for(int i = 0; i < each_cluster; i++){
-			cin >> v[i];
+	for(int j = 0; j < no_of_clusters; j++)
+	{
+		f >> cluster_id >> pts_each_cluster;
+		vector<int> v(pts_each_cluster);
+		for(int i = 0; i < pts_each_cluster; i++){
+			f >> v[i];
 			G.cluster_identification[v[i]] = cluster_id;
 		}
 		G.clusters[cluster_id] = v;
-
 	}
-
-	f.close();
-
-	
-
-
 }
 
 void build_graph(Graph& G){
@@ -391,15 +396,15 @@ int main()
 	reading_queries(G, to_add, to_delete);
 	
 	// identifying added nodes
-	node_identification_addition(G, to_add, parameter, upd_ins);
-	cluster_membership(G, upd_ins);
+	// node_identification_addition(G, to_add, parameter, upd_ins);
+	// cluster_membership(G, upd_ins);
 
 	// identifying deleted nodes
-	node_identification_deletion(G, to_delete, parameter, upd_del);
-	cluster_membership(G, upd_del);
+	// node_identification_deletion(G, to_delete, parameter, upd_del);
+	// cluster_membership(G, upd_del);
 
 	// saving in the files
-	save(G);
+	// save(G);
 
 	return 0;
 }

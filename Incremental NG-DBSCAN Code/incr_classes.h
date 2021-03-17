@@ -14,9 +14,10 @@ class Graph {
 	public:
 	int N;
 	int dimension;
+	int last_unused_index;
 	set<int> active;
 	set<int> unused_indices;
-	vector<set<int>> edges;
+	map<int, set<int>> edges;
 	map<int,Node*> id_to_node;
 	
 	map<int,vector<double>> node_index_to_coordinates;
@@ -30,11 +31,12 @@ class Graph {
 		active.insert(id);
 	}
 	Graph(int total_nodes){
-		edges.resize(total_nodes,set<int>());
+		edges.clear();
 		for(int i = 0;i < total_nodes; i++){
 			add_node(i);
 		}
 		this->N = total_nodes;
+		this->last_unused_index = 0;
 	}
 	int vertices_count(){
 		return edges.size();
