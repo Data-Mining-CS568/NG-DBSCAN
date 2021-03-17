@@ -53,7 +53,7 @@ void save_points_info(Graph& G){
 	fstream f;
 	f.open("points_save.txt",ios::out);
 
-	f << G.N << "\n";
+	f << G.N <<" "<<dimensions<< "\n";
 
 	for(int i = 0; i < G.N; i++){
 		f << i << " " << node_from_id[i]->type << " ";
