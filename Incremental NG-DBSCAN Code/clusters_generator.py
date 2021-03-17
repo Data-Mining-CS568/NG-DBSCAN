@@ -6,48 +6,59 @@ from mpl_toolkits import mplot3d
 l = []
 noise = []
 
-input_file = open("clusters.txt","r")
-x = input_file.readline()
+points_file = open("points_save.txt", "r")
+x = points_file.readline()
 a = x.split()
-n = int(a[0])
-dimensions = int(a[1])
+n = int(a[0]) #number of ponts
+dimension = int(a[1]) #dimesnsion of points
+
+points = {}
+points_type = {}
+for i in range(n):
+	lst = []
+	x = points_file.readline()
+	a = x.split(' ')
+	pt_id = a[0]
+	pt_type = a[1]
+	points_type[i] = pt_type
+	for it in range(2, dimension+2):
+		lst.append(float(a[it]))
+	points[i] = lst 
+
+
+#print(points)
+
+cluster_file = open("clusters_save.txt","r")
+x = cluster_file.readline()
+a = x.split()
+n = int(a[0]) #number of clusters
+
 
 for i in range(n):
 	lst = []
-	x = input_file.readline()
+	x = cluster_file.readline()
 	a = x.split()
-	m = int(a[0])
-	for j in range(m):
-		x = input_file.readline()
-		x = x.split(' ')
-		p = []
-		for item in x:
-			if item == "core\n":
-				pass
-			elif item == "border\n":
-				pass
-			else:
-				p.append(float(item))
-		lst.append(p)
+	cluster_id = int(a[0])
+	m = int(a[1]) #number of points in cluster i
+	x = cluster_file.readline()
+	points_id = x.split(' ')
+	for i in range(m):
+		pt_id = int(points_id[i])
+		pt_type = points_type[pt_id]
+		pt_coordinates = points[pt_id]
+		if pt_type == "noise":
+			noise.append(pt_coordinates)
+		else:
+			lst.append(pt_coordinates)
+
 	l.append(lst)
 
-x = input_file.readline()
-a = x.split()
-noise_p = int(a[0])
 
-for i in range(noise_p):
-	x = input_file.readline()
-	x = x.split(' ')
-	p = []
-	for item in x:
-		if item == "noise\n":
-			noise.append(p)
-		else:
-			p.append(float(item))
+
 
 colours = ["green", "blue", "red", "orange", "yellow", "violet", "black", "pink", "grey", "cyan", "dark_green"]
 
-if dimensions == 2:
+if dimension == 2:
 	fig, ax = plt.subplots()
 	i = 0
 	for cluster in l:
@@ -61,7 +72,7 @@ if dimensions == 2:
 	for item in noise:
 		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 100)
 
-elif dimensions == 3:
+elif dimension == 3:
 	ax = plt.axes(projection='3d')
 	i = 0
 	for cluster in l:
