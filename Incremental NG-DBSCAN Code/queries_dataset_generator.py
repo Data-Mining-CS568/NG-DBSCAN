@@ -88,18 +88,20 @@ plt.title('Clusters plot!')
 plt.show()
 
 
+queries = []
+
 
 # deleting some points
-num = int(input("Enter number of points to be deleted: \n"))
+numd = int(input("Enter number of points to be deleted: \n"))
 x1=8
 x2=10
 y1=4
 y2=6
-outputfile = open("del.txt","w")
-outputfile.write(str(num) + '\n')
+#outputfile = open("del.txt","w")
+#outputfile.write(str(num) + '\n')
 count=0
 for point in l:
-    if x1<=point[0]<=x2 and y1<=point[1]<=y2 and count<num:
+    if x1<=point[0]<=x2 and y1<=point[1]<=y2 and count<numd:
         count=count+1
         l.remove(point)
         a = str(round(point[0],3))
@@ -126,8 +128,9 @@ for point in l:
             b=b+"00"
         if d==2:
             b=b+"0"
-        outputfile.write(a+' '+b+'\n')
-outputfile.close()
+        queries.append("D "+a+" "+b+'\n')
+        #outputfile.write(a+' '+b+'\n')
+#outputfile.close()
 
 print(len(l))
 
@@ -172,14 +175,14 @@ plt.show()
 
 
 #Adding new points
-num = int(input("Enter number of points to be added: \n"))
+numa = int(input("Enter number of points to be added: \n"))
 x1=2
 x2=5
 y1=6
 y2=9
-outputfile = open("add.txt","w")
-outputfile.write(str(num)+'\n')
-for i in range(num):
+#outputfile = open("add.txt","w")
+#outputfile.write(str(num)+'\n')
+for i in range(numa):
     newx=x1+(x2-x1)*random.random()
     newy=y1+(y2-y1)*random.random()
     l.append([newx,newy])
@@ -207,9 +210,17 @@ for i in range(num):
         b=b+"00"
     if d==2:
         b=b+"0"
-    outputfile.write(a+' '+b+'\n')
-outputfile.close()
-              
+    queries.append("A "+a+' '+b+'\n')
+    #outputfile.write(a+' '+b+'\n')
+#outputfile.close()
+
+queryfile = open("queries.txt","w")
+queryfile.write(str(len(queries))+'\n')
+random.shuffle(queries)
+for query in queries:
+    queryfile.write(query)
+queryfile.close()
+
 print(len(l))
 
 # Applying DBSCAN
