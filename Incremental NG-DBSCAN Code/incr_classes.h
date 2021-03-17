@@ -92,7 +92,7 @@ class Parameters {
 	int Minpts; 
 	int threshold;
 
-	Parameters(int k = 20, int Mmax = 20, int iter = 10, double epsilon = 8, int Minpts = 10, int threshold = 100){
+	Parameters(int k = 20, int Mmax = 20, int iter = 50, double epsilon = 8, int Minpts = 10, int threshold = 1000){
 		this->k = k;
 		this->Mmax = Mmax;
 		this->iter = iter;

@@ -69,12 +69,12 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 // ------------------------------------------- RANDOM NEIGHBOUR SEARCH -------------------------------------------------------------------
 
 void check_for_completion(int u, Graph& G, Parameters& parameter, set<int>& found_completed){
-	if(G.edges[u].size() >= parameter.Minpts){
+	if(G.edges[u].size() == parameter.Minpts){
 		found_completed.insert(u);
 	}
 }
 
-void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_A, Parameters& parameter, vector<int> upd, char type)
+void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_A, Parameters& parameter, vector<int>& upd, char type)
 {
 	map<int, set<int>> mp;
 
@@ -210,6 +210,8 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameters& paramete
 		for(auto v : G.noncore) S.push_back(v);
 		random_neighbour_search(G, S, A, 0, parameter, upd_ins, 'A');
 	}
+	
+	cout << A.size() << " " << G.noncore.size() << " " << upd_ins.size() << endl;
 }
 
 void node_identification_deletion(Graph& G, vector<int>& D, Parameters& parameter, vector<int>& upd_del)
@@ -435,7 +437,7 @@ int main()
 	// reading the points to add or remove
 	reading_queries(G, to_add, to_delete);
 	
-	cout << "Addition: \n";
+	cout << "\nAddition: \n";
 	for(auto u : to_add) cout << u << " ";
 	cout << endl;
 
@@ -446,7 +448,7 @@ int main()
 	// identifying added nodes
 	node_identification_addition(G, to_add, parameter, upd_ins);
 
-	cout << "Present in upd_ins: \n";
+	cout << "\nPresent in upd_ins: \n";
 	for(auto u : upd_ins) cout << u << " ";
 	cout << endl;
 
@@ -455,9 +457,9 @@ int main()
 	// identifying deleted nodes
 	node_identification_deletion(G, to_delete, parameter, upd_del);
 
-	cout << "Present in upd_del: \n";
-	for(auto u : upd_del) cout << u << " ";
-	cout << endl;
+	// cout << "\nPresent in upd_del: \n";
+	// for(auto u : upd_del) cout << u << " ";
+	// cout << endl;
 
 	cluster_membership(G, upd_del);
 
