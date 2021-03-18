@@ -59,18 +59,19 @@ void save_clusters_info(Graph& G, int flag){
 	}
 }
 
-void save_points_info(Graph& G, int flag){
+void save_points_info(Graph& G, int flag)
+{
 	fstream f;
-
-
 	string filename = "";
-	if(flag)
+	
+	if(flag){
 		filename = "Files/points_save1.txt";
-	else 
+	}
+	else {
 		filename = "Files/points_save.txt";
+	}
 	
 	f.open(filename, ios::out);
-
 
 	f << G.N << " " << dimensions << "\n";
 
@@ -83,14 +84,17 @@ void save_points_info(Graph& G, int flag){
 	}
 }
 
-void save_epsilon_graph(Graph& G, int flag){
+void save_epsilon_graph(Graph& G, int flag)
+{
 	fstream f;
-
 	string filename = "";
-	if(flag)
+	
+	if(flag){
 		filename = "Files/epsilon_graph_save1.txt";
-	else 
+	}
+	else {
 		filename = "Files/epsilon_graph_save.txt";
+	}
 
 	f.open(filename,ios::out);
 
@@ -149,10 +153,14 @@ int main()
 	
 	// storing queries points
 	map<vector<double>,bool> to_delete, to_add;
-	int flag=0;
-	cout<<"Do you have new data points to add/delete in dataset(0/1):"; cin>>flag;
-	if(flag)
+	int flag = 0;
+	
+	cout << "Do you have new data points to add/delete in dataset(0/1)?"; 
+	cin >> flag;
+	
+	if(flag){
 		store_add_and_delete_points(to_add, to_delete);
+	}
 
 	coordinates.clear();
 	int idx = 0;
