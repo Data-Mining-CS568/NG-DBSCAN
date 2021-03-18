@@ -1,9 +1,23 @@
 #include "metrics_calculate.cpp"
 
-void store_in_map()
+void store_in_map(int flag)
 {
 	fstream f_points;
-	f_points.open("Files/points_save1.txt", ios::in);
+
+
+	string filename = "";
+
+	if(flag){
+		filename = "Files/points_save1.txt";
+	}
+	else {
+		filename = "Files/points_save.txt";
+	}
+
+
+	f_points.open(filename, ios::in);
+	
+
 	int pt_id, t = 0; 
 	string pt_type;  
 	
@@ -21,10 +35,21 @@ void store_in_map()
 	f_points.close();
 }
 
-void store_clusters()
+void store_clusters(int flag)
 {
 	fstream f_clusters;
-	f_clusters.open("Files/clusters_save1.txt", ios::in);
+	
+	string filename = "";
+
+	if(flag){
+		filename = "Files/clusters_save1.txt";
+	}
+	else {
+		filename = "Files/clusters_save.txt";
+	}
+
+	f_clusters.open(filename, ios::in);
+	
 	f_clusters >> n_clusters;
 	clusters.resize(n_clusters);
 
@@ -65,8 +90,14 @@ void Separation()
 
 int main()
 {
-	store_in_map(); 	// store points coordinate in map
-	store_clusters();
+
+	int flag;
+	
+	cout << "Do you have new data points to add/delete in dataset(0/1)?\n"; 
+	cin >> flag;
+
+	store_in_map(flag); 	// store points coordinate in map
+	store_clusters(flag);
 
 	compactness.resize(n_clusters,0);
 	separation.resize(n_clusters,vector<double>(n_clusters,0));

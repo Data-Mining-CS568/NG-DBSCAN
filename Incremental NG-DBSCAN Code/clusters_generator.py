@@ -5,8 +5,20 @@ from mpl_toolkits import mplot3d
 
 l = []
 noise = []
+flag = input("Do you have new data points to add/delete in dataset(0/1)?\n")
+flag = int(flag)
 
-points_file = open("Files/points_save1.txt", "r")
+filename_p = ""
+filename_c = ""
+if flag == 0:
+	filename_p = "Files/points_save.txt"
+	filename_c = "Files/clusters_save.txt"
+else:
+	filename_p = "Files/points_save1.txt"
+	filename_c = "Files/clusters_save1.txt"
+
+
+points_file = open(filename_p, "r")
 x = points_file.readline()
 a = x.split()
 n = int(a[0])			 # number of points
@@ -27,7 +39,7 @@ for i in range(n):
 	if pt_type == "noise":
 		noise.append(points[pt_id])
 
-cluster_file = open("Files/clusters_save1.txt","r")
+cluster_file = open(filename_c,"r")
 x = cluster_file.readline()
 a = x.split()
 n = int(a[0]) 			# number of clusters
