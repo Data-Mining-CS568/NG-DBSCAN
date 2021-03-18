@@ -121,7 +121,7 @@ int main()
 	
 	// storing queries points
 	map<vector<double>,bool> to_delete, to_add;
-	store_add_and_delete_points(to_add, to_delete);
+	//store_add_and_delete_points(to_add, to_delete);
 
 	coordinates.clear();
 	int idx = 0;
@@ -148,8 +148,20 @@ int main()
 	}
 
 	n = idx;
+
+	auto start = chrono::system_clock::now();
+
+	//Main functions to find the clusters
 	Graph EG = epsilon_graph_construction(n, parameter);
 	Graph T = Discovering_Dense_Regions(EG, n, parameter, G);
+
+	auto end = chrono::system_clock::now();
+
+	chrono::duration<double> elapsed_seconds = end-start;
+    time_t end_time = chrono::system_clock::to_time_t(end);
+
+    cout << "finished computation at " << std::ctime(&end_time)
+              << "elapsed time: " << elapsed_seconds.count() << "s\n";
 	
 	// saving data in files
 	save_clusters_info(G);

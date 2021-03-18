@@ -222,7 +222,7 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameters& paramete
 		for(auto v : G.noncore) S.push_back(v);
 		random_neighbour_search(G, S, A, 0, parameter, upd_ins, 'A');
 	}
-	cout << A.size() << " " << G.noncore.size() << " " << upd_ins.size() << endl;
+	//cout << A.size() << " " << G.noncore.size() << " " << upd_ins.size() << endl;
 }
 
 void node_identification_deletion(Graph& G, vector<int>& D, Parameters& parameter, vector<int>& upd_del)
@@ -451,8 +451,11 @@ int main()
 	vector<int> to_delete, to_add;
 	vector<int> upd_ins, upd_del;
 	
+	
 	// building the graph from static version
 	build_graph(G);
+
+	auto start = chrono::system_clock::now();
 
 	// reading the points to add or remove
 	reading_queries(G, to_add, to_delete);
@@ -468,6 +471,14 @@ int main()
 
 
 	cluster_membership(G, upd_del);
+
+	auto end = chrono::system_clock::now();
+
+	chrono::duration<double> elapsed_seconds = end-start;
+    time_t end_time = chrono::system_clock::to_time_t(end);
+
+    cout << "finished computation at " << std::ctime(&end_time)
+              << "elapsed time: " << elapsed_seconds.count() << "s\n";
 	
 
 	// saving in the files
