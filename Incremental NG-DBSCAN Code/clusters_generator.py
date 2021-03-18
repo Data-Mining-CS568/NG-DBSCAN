@@ -24,6 +24,8 @@ for i in range(n):
 	for it in range(2, dimension+2):
 		lst.append(float(a[it]))
 	points[pt_id] = lst 
+	if pt_type == "noise":
+		noise.append(points[pt_id])
 
 cluster_file = open("files/clusters_save1.txt","r")
 x = cluster_file.readline()
@@ -42,11 +44,8 @@ for i in range(n):
 		pt_id = int(points_id[i])
 		pt_type = points_type[pt_id]
 		pt_coordinates = points[pt_id]
-		if pt_type == "noise":
-			noise.append(pt_coordinates)
-		else:
+		if pt_type != "noise":
 			lst.append(pt_coordinates)
-
 	l.append(lst)
 
 colours = ["green", "blue", "red", "orange", "yellow", "violet", "black", "pink", "grey", "cyan", "dark_green"]
@@ -60,10 +59,10 @@ if dimension == 2:
 	    for point in cluster:
 	        x.append(point[0])
 	        y.append(point[1])
-	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 100)
+	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 50)
 	    i = (i + 1) % 11
 	for item in noise:
-		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 100)
+		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 50)
 
 elif dimension == 3:
 	ax = plt.axes(projection='3d')
