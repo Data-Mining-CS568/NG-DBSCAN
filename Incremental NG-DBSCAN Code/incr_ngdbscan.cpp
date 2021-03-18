@@ -4,7 +4,7 @@
 using namespace std;
 
 #include "incr_classes.h"
-
+#include "resources_calculation.cpp"
 
 // ------------------------------------------------- DISTANCE FUNCTION -------------------------------------------------------------------
 
@@ -502,6 +502,9 @@ int main()
 
     cout << "finished computation at " << std::ctime(&end_time)
               << "elapsed time: " << elapsed_seconds.count() << "s\n";
+	
+	cout<<"Virtual Memory Used: "<<getValue_virtual_memory()<<endl;
+	cout<<"Physical Memory Used: "<<getValue_physical_memory()<<endl;
 	
 	// saving in the files
 	save(G);

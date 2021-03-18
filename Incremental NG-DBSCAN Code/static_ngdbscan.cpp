@@ -1,4 +1,5 @@
 #include "Static/phase2.cpp"
+#include "resources_calculation.cpp"
 
 void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, int& p, int& iter, double& epsilon, int& Minpts)
 {
@@ -128,6 +129,8 @@ void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<do
 	}
 }
 
+
+
 int main()
 {
 	Graph G(0);
@@ -191,6 +194,9 @@ int main()
     cout << "finished computation at " << std::ctime(&end_time)
               << "elapsed time: " << elapsed_seconds.count() << "s\n";
 	
+	cout<<"Virtual Memory Used: "<<getValue_virtual_memory()<<endl;
+	cout<<"Physical Memory Used: "<<getValue_physical_memory()<<endl;
+
 	// saving data in files
 	save_clusters_info(G, flag);
 	save_points_info(G, flag);
