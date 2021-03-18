@@ -31,7 +31,7 @@ void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, 
 
 void save_clusters_info(Graph& G){
 	fstream f;
-	f.open("files/clusters_save1.txt",ios::out);
+	f.open("Files/clusters_save1.txt",ios::out);
 
 	// number of clusters
 	f << clusters.size() << "\n";
@@ -51,7 +51,7 @@ void save_clusters_info(Graph& G){
 
 void save_points_info(Graph& G){
 	fstream f;
-	f.open("files/points_save1.txt",ios::out);
+	f.open("Files/points_save1.txt",ios::out);
 
 	f << G.N << " " << dimensions << "\n";
 
@@ -66,7 +66,7 @@ void save_points_info(Graph& G){
 
 void save_epsilon_graph(Graph& G){
 	fstream f;
-	f.open("files/epsilon_graph_save1.txt",ios::out);
+	f.open("Files/epsilon_graph_save1.txt",ios::out);
 
 	for(int i = 0; i < G.N; i++){
 		f << i << " ";
@@ -82,7 +82,7 @@ void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<do
 	char type;
 
 	fstream f;
-	f.open("files/queries.txt",ios::in);
+	f.open("Files/queries.txt",ios::in);
 	if(!f){
 		return;	
 	} 
@@ -113,7 +113,7 @@ int main()
 	// deciding parameters
 	parameter_decision_for_static(xTn, xTr, k, Mmax, p, iter, epsilon, Minpts);
 	
-	f.open("files/points.txt",ios::in);
+	f.open("Files/points.txt",ios::in);
 	f >> n >> dimensions;
 	
 	// creating parameter
