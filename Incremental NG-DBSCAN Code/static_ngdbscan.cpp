@@ -31,7 +31,7 @@ void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, 
 
 void save_clusters_info(Graph& G, int flag){
 	fstream f;
-<<<<<<< HEAD
+
 
 	string filename = "";
 	if(flag)
@@ -40,9 +40,7 @@ void save_clusters_info(Graph& G, int flag){
 		filename = "Files/clusters_save.txt";
 
 	f.open(filename,ios::out);
-=======
-	f.open("Files/clusters_save1.txt",ios::out);
->>>>>>> f871058eb52207c62266e3d20d6097057b91cda1
+
 
 	// number of clusters
 	f << clusters.size() << "\n";
@@ -62,7 +60,7 @@ void save_clusters_info(Graph& G, int flag){
 
 void save_points_info(Graph& G, int flag){
 	fstream f;
-<<<<<<< HEAD
+
 
 	string filename = "";
 	if(flag)
@@ -71,9 +69,7 @@ void save_points_info(Graph& G, int flag){
 		filename = "Files/points_save.txt";
 	
 	f.open(filename, ios::out);
-=======
-	f.open("Files/points_save1.txt",ios::out);
->>>>>>> f871058eb52207c62266e3d20d6097057b91cda1
+
 
 	f << G.N << " " << dimensions << "\n";
 
@@ -88,7 +84,6 @@ void save_points_info(Graph& G, int flag){
 
 void save_epsilon_graph(Graph& G, int flag){
 	fstream f;
-<<<<<<< HEAD
 
 	string filename = "";
 	if(flag)
@@ -97,9 +92,6 @@ void save_epsilon_graph(Graph& G, int flag){
 		filename = "Files/epsilon_graph_save.txt";
 
 	f.open(filename,ios::out);
-=======
-	f.open("Files/epsilon_graph_save1.txt",ios::out);
->>>>>>> f871058eb52207c62266e3d20d6097057b91cda1
 
 	for(int i = 0; i < G.N; i++){
 		f << i << " ";
