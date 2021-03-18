@@ -78,11 +78,14 @@ class Graph {
 		if(noncore.find(x) != noncore.end()){
 			noncore.erase(x);
 		} 
-		int cluster_no = cluster_identification[x];
-		auto it = find(clusters[cluster_no].begin(),clusters[cluster_no].end(),x);
-		clusters[cluster_no].erase(it);
-		cluster_identification.erase(x);
-		
+		if(cluster_identification.count(x)){
+			int cluster_no = cluster_identification[x];
+			auto it = find(clusters[cluster_no].begin(),clusters[cluster_no].end(),x);
+			if(it != clusters[cluster_no].end()){
+				clusters[cluster_no].erase(it);
+			}
+			cluster_identification.erase(x);	
+		}
 		vector<int> v;
 		for(auto it : edges[x]){
 			v.push_back(it);
