@@ -537,7 +537,7 @@ int main()
 	save(G);
 	
 	// Printing on Command line
-	print_values(to_delete, to_add, upd_ins, upd_del);
+	//print_values(to_delete, to_add, upd_ins, upd_del);
 
 	return 0;
 }
