@@ -1,6 +1,8 @@
 #include "Static/phase2.cpp"
 #include "resources_calculation.cpp"
 
+// --------------------------------- DECIDING PARAMETERS --------------------------------------------------------------------------------
+
 void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, int& p, int& iter, double& epsilon, int& Minpts)
 {
 	cout << "Want to change the default parameters?\nEnter 1 for Yes and 0 for No\n";
@@ -30,18 +32,24 @@ void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, 
 	}
 }
 
-void save_clusters_info(Graph& G, int flag){
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
+
+// -------------------------------------------------- SAVING DATA IN FILES ---------------------------------------------------------------
+
+void save_clusters_info(Graph& G, int flag)
+{
 	fstream f;
-
-
 	string filename = "";
-	if(flag)
+
+	if(flag){
 		filename = "Files/clusters_save1.txt";
-	else 
+	}
+	else {
 		filename = "Files/clusters_save.txt";
+	}
 
-	f.open(filename,ios::out);
-
+	f.open(filename, ios::out);
 
 	// number of clusters
 	f << clusters.size() << "\n";
@@ -107,6 +115,18 @@ void save_epsilon_graph(Graph& G, int flag)
 	}
 }
 
+void save_data(Graph& G, int flag)
+{
+	save_clusters_info(G, flag);
+	save_points_info(G, flag);
+	save_epsilon_graph(G, flag);
+}
+
+// --------------------------------------------------------------------------------------------------------------------------------------
+
+
+// ----------------------------------------- STORING POINTS TO ADD AND DELETE in MAPS ---------------------------------------------------
+
 void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<double>,bool>& to_delete){
 	int tot_points;
 	char type;
@@ -133,7 +153,10 @@ void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<do
 	}
 }
 
+// ---------------------------------------------------------------------------------------------------------------------------------------
 
+
+// ----------------------------------------- MAIN CALLING FUNCTION -----------------------------------------------------------------------
 
 int main()
 {
@@ -155,7 +178,7 @@ int main()
 	map<vector<double>,bool> to_delete, to_add;
 	int flag = 0;
 	
-	cout << "Do you have new data points to add/delete in dataset(0/1)?"; 
+	cout << "Do you have new data points to add/delete in dataset(0/1)?\n"; 
 	cin >> flag;
 	
 	if(flag){
@@ -190,25 +213,34 @@ int main()
 
 	auto start = chrono::system_clock::now();
 
-	//Main functions to find the clusters
+	// Main functions to find the clusters
 	Graph EG = epsilon_graph_construction(n, parameter);
 	Graph T = Discovering_Dense_Regions(EG, n, parameter, G);
+
+
+	// ---------------------------------- TIME CALCULATION ------------------------------------------------------------------------------
 
 	auto end = chrono::system_clock::now();
 
 	chrono::duration<double> elapsed_seconds = end-start;
     time_t end_time = chrono::system_clock::to_time_t(end);
 
-    cout << "finished computation at " << std::ctime(&end_time)
-              << "elapsed time: " << elapsed_seconds.count() << "s\n";
+    cout << "finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << "s\n";
 	
-	cout<<"Virtual Memory Used: "<<getValue_virtual_memory()<<endl;
-	cout<<"Physical Memory Used: "<<getValue_physical_memory()<<endl;
+	// ----------------------------------------------------------------------------------------------------------------------------------
+
+
+	// ----------- MEMORY USAGE ---------------------------------------------------------------------------------------------------------
+
+	cout << "Virtual Memory Used: " << getValue_virtual_memory() << "KB\n";
+	cout << "Physical Memory Used: " << getValue_physical_memory() << "KB\n";
+
+	// ----------------------------------------------------------------------------------------------------------------------------------
 
 	// saving data in files
-	save_clusters_info(G, flag);
-	save_points_info(G, flag);
-	save_epsilon_graph(G, flag);
+	save_data(G, flag);
 
 	return 0;
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------
