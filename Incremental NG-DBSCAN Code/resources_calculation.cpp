@@ -1,4 +1,5 @@
-int parseLine(char* line){
+int parseLine(char* line)
+{
     // This assumes that a digit will be found and the line ends in " Kb".
     int i = strlen(line);
     const char* p = line;
@@ -8,14 +9,14 @@ int parseLine(char* line){
     return i;
 }
 
-
-int getValue_virtual_memory(){ //Note: this value is in KB!
+int getValue_virtual_memory()
+{   
+    // Note: this value is in KB!
     FILE* file = fopen("/proc/self/status", "r");
     int result = -1;
     char line[128];
-
-    while (fgets(line, 128, file) != NULL){
-        if (strncmp(line, "VmSize:", 7) == 0){
+    while(fgets(line, 128, file) != NULL){
+        if(strncmp(line, "VmSize:", 7) == 0){
             result = parseLine(line);
             break;
         }
@@ -24,13 +25,15 @@ int getValue_virtual_memory(){ //Note: this value is in KB!
     return result;
 }
 
-int getValue_physical_memory(){ //Note: this value is in KB!
+int getValue_physical_memory()
+{   
+    //Note: this value is in KB!
     FILE* file = fopen("/proc/self/status", "r");
     int result = -1;
     char line[128];
-
-    while (fgets(line, 128, file) != NULL){
-        if (strncmp(line, "VmRSS:", 6) == 0){
+    while(fgets(line, 128, file) != NULL)
+    {
+        if(strncmp(line, "VmRSS:", 6) == 0){
             result = parseLine(line);
             break;
         }

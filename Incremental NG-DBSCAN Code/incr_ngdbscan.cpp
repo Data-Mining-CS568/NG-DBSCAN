@@ -465,6 +465,23 @@ void classify(Graph& G)
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
 
+void print_values(vector<int>& to_delete, vector<int>& to_add, vector<int>& upd_ins, vector<int>& upd_del){
+	cout << "\nAddition: \n";
+	for(auto u : to_add) cout << u << " ";
+	cout << endl;
+
+	cout << "\nDeletion: \n";
+	for(auto u : to_delete) cout << u << " ";
+	cout << endl;
+
+	cout << "\nPresent in upd_ins: \n";
+	for(auto u : upd_ins) cout << u << " ";
+	cout << endl;
+
+	cout << "\nPresent in upd_del: \n";
+	for(auto u : upd_del) cout << u << " ";
+	cout << endl;
+}
 
 // ---------------------------------- MAIN FUNCTION CALLING ALL OTHER FUNCTIONS ----------------------------------------------------------
 
@@ -493,41 +510,33 @@ int main()
 
 	cluster_membership(G, upd_del);
 
+	// node classification
 	classify(G);
+
+	// ---------------------------------- Time Calculation ------------------------------------------------------------------------------
 
 	auto end = chrono::system_clock::now();
 
 	chrono::duration<double> elapsed_seconds = end-start;
     time_t end_time = chrono::system_clock::to_time_t(end);
 
-    cout << "finished computation at " << std::ctime(&end_time)
-              << "elapsed time: " << elapsed_seconds.count() << "s\n";
+    cout << "finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << "s\n";
 	
-	cout<<"Virtual Memory Used: "<<getValue_virtual_memory()<<endl;
-	cout<<"Physical Memory Used: "<<getValue_physical_memory()<<endl;
+	// ----------------------------------------------------------------------------------------------------------------------------------
+
+
+	// ----------- Memory Usage ---------------------------------------------------------------------------------------------------------
+
+	cout << "Virtual Memory Used: " << getValue_virtual_memory() << "KB\n";
+	cout << "Physical Memory Used: " << getValue_physical_memory() << "KB\n";
 	
+	// ----------------------------------------------------------------------------------------------------------------------------------
+
 	// saving in the files
 	save(G);
 	
 	// Printing on Command line
-	
-	cout << "\nAddition: \n";
-	for(auto u : to_add) cout << u << " ";
-	cout << endl;
-
-	cout << "\nDeletion: \n";
-	for(auto u : to_delete) cout << u << " ";
-	cout << endl;
-
-	cout << to_add.size() << " " << to_delete.size() << endl;
-
-	cout << "\nPresent in upd_ins: \n";
-	for(auto u : upd_ins) cout << u << " ";
-	cout << endl;
-
-	cout << "\nPresent in upd_del: \n";
-	for(auto u : upd_del) cout << u << " ";
-	cout << endl;
+	print_values(to_delete, to_add, upd_ins, upd_del);
 
 	return 0;
 }
