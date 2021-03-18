@@ -76,6 +76,7 @@ void check_for_completion(int u, Graph& G, Parameters& parameter, set<int>& foun
 void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_A, Parameters& parameter, vector<int>& upd, char type)
 {
 	map<int, set<int>> mp;
+	srand(time(0));
 
 	// A is old clustered data (it contains indices of the points)
 	if(type_A == 1)
