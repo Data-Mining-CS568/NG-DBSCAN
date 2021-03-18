@@ -7,10 +7,10 @@ void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, 
 	int parameterChange;
 	cin >> parameterChange;
 	
-	iter = 10;
+	iter = 15;
 	xTn = 0.001;		// limits number of nodes in NG for termination
 	xTr = 0.0001;		// limits number of removed nodes in current iteration in NG
-	k = 10;				// represents degree of each node in neighbour graph
+	k = 15;				// represents degree of each node in neighbour graph
 	Mmax = 20;			// used to reduce NG in phase-1 to reduce computation
 	p = 2;				// limits nodes for which 2 hop distance is calculated in NG
 	epsilon = 0.5;		// minimum distance b/w nodes 

@@ -442,6 +442,30 @@ void save(Graph& G){
 // ---------------------------------------------------------------------------------------------------------------------------------------
 
 
+// ---------------------------------- CLASSIFYING POINTS AS CORE, BORDER, NOISE ----------------------------------------------------------
+
+void classify(Graph& G)
+{
+	for(auto u : G.active)
+	{
+		if(G.id_to_node[u]->type == "noncore")
+		{
+			bool f = 0;
+			for(auto v : G.edges[u]){
+				if(G.id_to_node[v]->type == "core"){
+					f = 1;
+					break;
+				}
+			}
+			if(f) G.id_to_node[u]->type = "border";
+			else G.id_to_node[u]->type = "noise";	
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
+
 // ---------------------------------- MAIN FUNCTION CALLING ALL OTHER FUNCTIONS ----------------------------------------------------------
 
 int main()
@@ -450,8 +474,7 @@ int main()
 	Parameters parameter;
 	vector<int> to_delete, to_add;
 	vector<int> upd_ins, upd_del;
-	
-	
+		
 	// building the graph from static version
 	build_graph(G);
 
@@ -463,14 +486,14 @@ int main()
 	// identifying added nodes
 	node_identification_addition(G, to_add, parameter, upd_ins);
 
-
 	cluster_membership(G, upd_ins);
 
 	// identifying deleted nodes
 	node_identification_deletion(G, to_delete, parameter, upd_del);
 
-
 	cluster_membership(G, upd_del);
+
+	classify(G);
 
 	auto end = chrono::system_clock::now();
 
@@ -480,12 +503,11 @@ int main()
     cout << "finished computation at " << std::ctime(&end_time)
               << "elapsed time: " << elapsed_seconds.count() << "s\n";
 	
-
 	// saving in the files
 	save(G);
 	
-
 	// Printing on Command line
+	
 	cout << "\nAddition: \n";
 	for(auto u : to_add) cout << u << " ";
 	cout << endl;
@@ -503,7 +525,6 @@ int main()
 	cout << "\nPresent in upd_del: \n";
 	for(auto u : upd_del) cout << u << " ";
 	cout << endl;
-
 
 	return 0;
 }
