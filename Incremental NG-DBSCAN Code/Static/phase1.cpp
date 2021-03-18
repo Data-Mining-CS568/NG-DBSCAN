@@ -18,7 +18,7 @@ vector<int> random_selecting_nodes(Graph& NG, int n, Parameters parameter){
 	vector<int> v = NG.neighbours(n);
 	int threshold = min(parameter.p * parameter.k, (int)v.size());
 	vector<int> selected;
-	
+	srand(time(0));
 	int count = 0;
 	while(count < threshold){
 		int idx = rand() % v.size();
@@ -93,6 +93,7 @@ void Random_Initialisation(Graph& NG, Parameters parameter){
 		set<int> visited;
 		visited.insert(u);
 		int count = 0;
+		srand(time(0));
 		while(count < parameter.k){
 			int v = rand() % NG.N;
 			if(visited.find(v) == visited.end()){
