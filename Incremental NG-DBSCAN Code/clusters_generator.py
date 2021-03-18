@@ -6,7 +6,7 @@ from mpl_toolkits import mplot3d
 l = []
 noise = []
 
-points_file = open("points_save1.txt", "r")
+points_file = open("files/points_save1.txt", "r")
 x = points_file.readline()
 a = x.split()
 n = int(a[0])			 # number of points
@@ -25,7 +25,7 @@ for i in range(n):
 		lst.append(float(a[it]))
 	points[pt_id] = lst 
 
-cluster_file = open("clusters_save1.txt","r")
+cluster_file = open("files/clusters_save1.txt","r")
 x = cluster_file.readline()
 a = x.split()
 n = int(a[0]) 			# number of clusters

@@ -4,7 +4,7 @@ import math
 dim = 8
 num_of_points = 2000
 n_dim = []
-file = open("n-dim_data.txt","w")
+file = open("files/n-dim_data.txt","w")
 file.write(str(num_of_points)+' '+str(dim)+'\n')
 for i in range(num_of_points):
     point = []
@@ -18,7 +18,7 @@ file.close()
         
 ###  deleting from n-dim  ###
 numd = 100
-file = open("n-dim_queries.txt","w")
+file = open("files/n-dim_queries.txt","w")
 file.write("200 " + str(dim)+'\n')
 for i in range(numd):
     d = math.floor(len(n_dim)*random.random())
@@ -30,7 +30,7 @@ file.close()
 
 ###  adding to n-dim  ###
 numa = 100
-file=open("n-dim_queries.txt","a")
+file=open("files/n-dim_queries.txt","a")
 for i in range(numa):
     point = []
     file.write("A ")

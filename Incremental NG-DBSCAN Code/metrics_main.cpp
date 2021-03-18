@@ -5,7 +5,7 @@
 void store_in_map(){
 
 	fstream f_points;
-	f_points.open("points_save.txt", ios::in);
+	f_points.open("files/points_save.txt", ios::in);
 	int pt_id ,  t = 0 ; 
 	string pt_type;  
 	
@@ -29,7 +29,7 @@ void store_in_map(){
 void store_clusters(){
 
 	fstream f_clusters;
-	f_clusters.open("clusters_save.txt", ios::in);
+	f_clusters.open("files/clusters_save.txt", ios::in);
 
 	f_clusters >> n_clusters;
 	clusters.resize(n_clusters);

@@ -15,7 +15,7 @@ dimension = int(input("Since dataset choosen is blob, enter number of dimensions
 X, y = make_blobs(n_samples = pts, centers = [(1,5),(5,10),(10,5)], n_features = dimension)
 
 # writing in file
-outputfile = open("points.txt","w")
+outputfile = open("files/points.txt","w")
 outputfile.write(str(pts) + " " + str(dimension) + "\n")
 for l1 in X:
     for l2 in l1:
@@ -214,7 +214,7 @@ for i in range(numa):
     #outputfile.write(a+' '+b+'\n')
 #outputfile.close()
 
-queryfile = open("queries.txt","w")
+queryfile = open("files/queries.txt","w")
 queryfile.write(str(len(queries))+'\n')
 random.shuffle(queries)
 for query in queries:
