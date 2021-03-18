@@ -29,9 +29,16 @@ void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, 
 	}
 }
 
-void save_clusters_info(Graph& G){
+void save_clusters_info(Graph& G, int flag){
 	fstream f;
-	f.open("files/clusters_save1.txt",ios::out);
+
+	string filename = "";
+	if(flag)
+		filename = "files/clusters_save1.txt";
+	else 
+		filename = "files/clusters_save.txt";
+
+	f.open(filename,ios::out);
 
 	// number of clusters
 	f << clusters.size() << "\n";
@@ -49,9 +56,16 @@ void save_clusters_info(Graph& G){
 	}
 }
 
-void save_points_info(Graph& G){
+void save_points_info(Graph& G, int flag){
 	fstream f;
-	f.open("files/points_save1.txt",ios::out);
+
+	string filename = "";
+	if(flag)
+		filename = "files/points_save1.txt";
+	else 
+		filename = "files/points_save.txt";
+	
+	f.open(filename, ios::out);
 
 	f << G.N << " " << dimensions << "\n";
 
@@ -64,9 +78,16 @@ void save_points_info(Graph& G){
 	}
 }
 
-void save_epsilon_graph(Graph& G){
+void save_epsilon_graph(Graph& G, int flag){
 	fstream f;
-	f.open("files/epsilon_graph_save1.txt",ios::out);
+
+	string filename = "";
+	if(flag)
+		filename = "files/epsilon_graph_save1.txt";
+	else 
+		filename = "files/epsilon_graph_save.txt";
+
+	f.open(filename,ios::out);
 
 	for(int i = 0; i < G.N; i++){
 		f << i << " ";
@@ -121,7 +142,10 @@ int main()
 	
 	// storing queries points
 	map<vector<double>,bool> to_delete, to_add;
-	//store_add_and_delete_points(to_add, to_delete);
+	int flag=0;
+	cout<<"Do you have new data points to add/delete in dataset(0/1):"; cin>>flag;
+	if(flag)
+		store_add_and_delete_points(to_add, to_delete);
 
 	coordinates.clear();
 	int idx = 0;
@@ -164,9 +188,9 @@ int main()
               << "elapsed time: " << elapsed_seconds.count() << "s\n";
 	
 	// saving data in files
-	save_clusters_info(G);
-	save_points_info(G);
-	save_epsilon_graph(G);
+	save_clusters_info(G, flag);
+	save_points_info(G, flag);
+	save_epsilon_graph(G, flag);
 
 	return 0;
 }
