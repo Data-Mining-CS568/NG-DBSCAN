@@ -514,7 +514,7 @@ int main()
 	// node classification
 	classify(G);
 
-	// ---------------------------------- Time Calculation ------------------------------------------------------------------------------
+	// ---------------------------------- TIME CALCULATION ------------------------------------------------------------------------------
 
 	auto end = chrono::system_clock::now();
 
@@ -526,7 +526,7 @@ int main()
 	// ----------------------------------------------------------------------------------------------------------------------------------
 
 
-	// ----------- Memory Usage ---------------------------------------------------------------------------------------------------------
+	// ----------- MEMORY USAGE ---------------------------------------------------------------------------------------------------------
 
 	cout << "Virtual Memory Used: " << getValue_virtual_memory() << "KB\n";
 	cout << "Physical Memory Used: " << getValue_physical_memory() << "KB\n";
@@ -537,7 +537,7 @@ int main()
 	save(G);
 	
 	// Printing on Command line
-	print_values(to_delete, to_add, upd_ins, upd_del);
+	// print_values(to_delete, to_add, upd_ins, upd_del);
 
 	return 0;
 }
