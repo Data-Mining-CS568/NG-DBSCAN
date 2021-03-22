@@ -79,5 +79,39 @@
 
 - Instructions to run the Incremental NG-DBSCAN Code:
 
+	- First put the points.txt and queries.txt for the dataset you want the algorithm to run on.
+
+	- Then first run the static version without considering the queries.txt using the following command:
+		1. g++ static_ngdbscan.cpp 0
+		2. ./a.out
+	- It will create old_epsilon_graph.txt, old_clusters.txt, old_points.txt and this will constitute our database.
+
+	- To plot the clusters for the points present in database, we will run the following command:
+		1. python3 clusters_generator.py 0
+
+	- Now to run the queries.txt over incremental version, use the following command. 
+		1. g++ incr_ngdbscan.cpp 
+		2. ./a.out 
+	- After this, new_epsilon_graph.txt, new_clusters.txt, new_points.txt will be generated.
+
+	- To plot the clusters for the points after considering queries.txt, we will run the following command:
+		1. python3 clusters_generator.py 1
+
+	- Now to run the queries.txt over incremental version (for comparison with incremental version), use the following command. 
+		1. g++ static_ngdbscan.cpp 1 
+		2. ./a.out 
+	- After this, new_epsilon_graph.txt, new_clusters.txt, new_points.txt will be generated.
+
+	- To plot the clusters for the points after considering queries.txt, we will run the following command:
+		1. python3 clusters_generator.py 1 
+
+	- To use metrics on the database (only considering points.txt), we will use the following command:
+		1. g++ metrics_main.cpp 0
+		2. ./a.out
+
+	- To use metrics on the updated dataset (after considering queries.txt), we will use the following command:
+		1. g++ metrics_main.cpp 1
+		2. ./a.out	 
+
 - Code Files for Incremental NG-DBSCAN:
 
