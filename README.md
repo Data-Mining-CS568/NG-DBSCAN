@@ -1,11 +1,11 @@
-# NG-DBSCAN
+# About Static NG-DBSCAN
 
-- Inside "NG-DBSCAN Code" folder, all the files to run are present.
+- Inside "Static NG-DBSCAN Code" folder, all the files to run are present.
 - While plotting 2-D and 3-D datasets, try changing epsilon values to get better cluster quality.
 - Images folder contains some of the clusters generated. 
 - For synthetic datasets, we used moon, blob and circular datasets.
 
-# Instructions to run the code
+- Instructions to run the Static NG-DBSCAN Code:
 
 	- First generate the random dataset using dataset_generator.py. 
 
@@ -34,8 +34,7 @@
 		2. Execute: ./a.out
 	- Using this we can compare between DBSCAN and NG-DCSCAN.
 
-
-# Code Files  
+- Code Files for Static NG-DBSCAN 
 
 	- classes.h - contains all the used classes in the algorithm.
 
@@ -71,11 +70,14 @@
 
 	- health_twitter.txt & sms_spam_collection.txt: text datasets 
 
+# About Incremental NG-DBSCAN
 
+- Inside "Incremental NG-DBSCAN Code" folder, all the files to run are present.
+- Try to tune the parameters while running on different datasets to get more accuracy.
+- Inside each dataset of 2 dimension, images of cluster plotting are also present. 
+- For synthetic datasets, we used moon, blob and circular datasets.
 
+- Instructions to run the Incremental NG-DBSCAN Code:
 
-
-
-
-
+- Code Files for Incremental NG-DBSCAN:
 
