@@ -1,7 +1,7 @@
 # About Static NG-DBSCAN
 
 - Inside "Static NG-DBSCAN Code" folder, all the files to run are present.
-- While plotting 2-D and 3-D datasets, try changing epsilon values to get better cluster quality.
+- While plotting 2 and 3 dimensional datasets, try changing epsilon values to get better cluster quality.
 - Images folder contains some of the clusters generated. 
 - For synthetic datasets, we used moon, blob and circular datasets.
 
@@ -9,7 +9,7 @@
 
 	- First generate the random dataset using dataset_generator.py. 
 
-	- It asks for number of points(or number of sentences in case of text dataset) we want in the dataset (use upto 10000 for fast running) and then asks for type of dataset. 
+	- It asks for number of points (or number of sentences in case of text dataset) we want in the dataset (use upto 10000 for fast running) and then asks for type of dataset. 
 
 	- Running the following command and entering the required inputs will generate required dataset in points.txt file:
 		- python3 dataset_generator.py
@@ -32,7 +32,7 @@
 	- We calculated the DBSCAN metrics: compactness, separation, recall 
 		- g++ dbscan_metrics_main.cpp
 		- ./a.out
-	- Using this we can compare between DBSCAN and NG-DCSCAN.
+	- Using this we can compare between DBSCAN and NG-DBSCAN.
 
 - Code Files for Static NG-DBSCAN 
 
