@@ -12,35 +12,49 @@
 	- It asks for number of points(or number of sentences in case of text dataset) we want in the dataset (use upto 10000 for fast running) and then asks for type of dataset. 
 
 	- Running the following command and entering the required inputs will generate required dataset in points.txt file:
-		1. python3 dataset_generator.py
+		- python3 dataset_generator.py
 
 	- Now run the main algorithm (NG-DBSCAN) code using the following command: 
-		1. Compile: g++ phase2.cpp
-		2. Execute: ./a.out
+		- g++ phase2.cpp
+		- ./a.out
 	- It will create clusters.txt which contains all the clusters. 
 
 	- Now to plot the clusters (for 2D and 3D dataset), use the following command:
-		1. python3 clusters_generator.py 
+		- python3 clusters_generator.py 
 
 	- We calculated the NG-DBSCAN metrics for comparison with DBSCAN: compactness, separation, recall 
-		1. Compile: g++ metrics_main.cpp
-		2. Execute: ./a.out
+		- g++ metrics_main.cpp
+		- ./a.out
 
 	- Ran DBSCAN algorithm (for comparison with NG-DBSCAN) over points.txt using dbscan_code.py using the following command:
-		1. python3 dbscan_code.py
+		- python3 dbscan_code.py
 
 	- We calculated the DBSCAN metrics: compactness, separation, recall 
-		1. Compile: g++ dbscan_metrics_main.cpp
-		2. Execute: ./a.out
+		- g++ dbscan_metrics_main.cpp
+		- ./a.out
 	- Using this we can compare between DBSCAN and NG-DCSCAN.
 
 - Code Files for Static NG-DBSCAN 
 
 	- classes.h - contains all the used classes in the algorithm.
 
-	- phase1.cpp - contains the phase-1 code which will be used to create 𝜖-graph.
+	- phase1.cpp - contains the phase-1 code which will be used to create epsilon graph.
 
 	- phase2.cpp - used to create the propagation tree and list of clusters.
+
+	- metric_main.cpp - main method to calculate metrics for NG-DBSCAN.
+
+	- metric_calculate.cpp - contains Functions to contain metrics.
+
+	- dbscan_metrics_main.cpp - main method to calculate metrics for DBSCAN.
+
+	- jaro_winkler_distance.cpp: it calculates Jaro Winkler Distance between two strings.
+
+	- dbscan_code.py - main method to create the DBSCAN clusters and numbered_dbscan_clusters.txt file.
+
+	- dataset_generator.py - contains the python code to generate the random points.
+
+	- clusters_generator.py - plots the clusters in 2-dimension in different colours using clusters. 
 
 	- epsilon_graph.txt - represents the epsilon graph used in the algorithm.
 
@@ -52,23 +66,10 @@
 
 	- numbered_clusters.txt - contains the lists of list of clusters, where elements of list are node number instead of data values.
 
-	- dataset_generator.py - contains the python code to generate the random points.
-
-	- clusters_generator.py - plots the clusters in 2-dimension in different colours using clusters.
-
-	- metric_main.cpp - main method to calculate metrics for NG-DBSCAN.
-
-	- metric_calculate.cpp - contains Functions to contain metrics.
-
-	- dbscan_code.py - main method to create the DBSCAN clusters and numbered_dbscan_clusters.txt file.
-
 	- numbered_dbscan_clusters.txt - contains all the points of DBSCAN, where ith point represents in which cluster number it lies.
 
-	- dbscan_metrics_main.cpp - main method to calculate metrics for DBSCAN.
+	- health_twitter.txt & sms_spam_collection.txt: text datasets
 
-	- jaro_winkler_distance.cpp: it calculates Jaro Winkler Distance between two strings
-
-	- health_twitter.txt & sms_spam_collection.txt: text datasets 
 
 # About Incremental NG-DBSCAN
 
@@ -82,36 +83,50 @@
 	- First put the points.txt and queries.txt for the dataset you want the algorithm to run on.
 
 	- Then first run the static version without considering the queries.txt using the following command:
-		1. g++ static_ngdbscan.cpp 0
-		2. ./a.out
+		- g++ static_ngdbscan.cpp 
+		- ./a.out 0
 	- It will create old_epsilon_graph.txt, old_clusters.txt, old_points.txt and this will constitute our database.
 
 	- To plot the clusters for the points present in database, we will run the following command:
-		1. python3 clusters_generator.py 0
+		- python3 clusters_generator.py 0
 
 	- Now to run the queries.txt over incremental version, use the following command. 
-		1. g++ incr_ngdbscan.cpp 
-		2. ./a.out 
+		- g++ incr_ngdbscan.cpp 
+		- ./a.out 
 	- After this, new_epsilon_graph.txt, new_clusters.txt, new_points.txt will be generated.
 
 	- To plot the clusters for the points after considering queries.txt, we will run the following command:
-		1. python3 clusters_generator.py 1
+		- python3 clusters_generator.py 1
 
 	- Now to run the queries.txt over incremental version (for comparison with incremental version), use the following command. 
-		1. g++ static_ngdbscan.cpp 1 
-		2. ./a.out 
+		- g++ static_ngdbscan.cpp  
+		- ./a.out 1
 	- After this, new_epsilon_graph.txt, new_clusters.txt, new_points.txt will be generated.
 
 	- To plot the clusters for the points after considering queries.txt, we will run the following command:
-		1. python3 clusters_generator.py 1 
+		- python3 clusters_generator.py 1 
 
 	- To use metrics on the database (only considering points.txt), we will use the following command:
-		1. g++ metrics_main.cpp 0
-		2. ./a.out
+		- g++ metrics_main.cpp 
+		- ./a.out 0
 
 	- To use metrics on the updated dataset (after considering queries.txt), we will use the following command:
-		1. g++ metrics_main.cpp 1
-		2. ./a.out	 
+		- g++ metrics_main.cpp 
+		- ./a.out 1	 
 
 - Code Files for Incremental NG-DBSCAN:
+	
+	- incr_classes.h - contains all used classes in the incremental NG-DBSCAN algorithm.
 
+	- incr_ngdbscan.cpp - contains the whole incremental NG-DBSCAN algorithm code.
+
+	- static_ngdbscan.cpp - contains the main function for running the static NG-DBSCAN code while comparing with static NG-DBSCAN algorithm.
+
+	- metric_main.cpp - main method to calculate metrics for incremental and static NG-DBSCAN.
+
+	- metric_calculate.cpp - contains all the main functions to calculate metrics.
+
+	- resources_calculation.cpp - contains the main functions to calculate time, memory, CPU usage etc for static and incremental versions.
+
+	- clusters_generator.py - used to plot the clusters of static and incremental NG-DBSCAN versions.
+	
