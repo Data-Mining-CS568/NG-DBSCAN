@@ -130,3 +130,18 @@
 
 	- clusters_generator.py - used to plot the clusters of static and incremental NG-DBSCAN versions.
 	
+	- points.txt - contains the database points (clusters would be formed using these points in real scenario) used as input in static_ngdbscan.cpp and incr_ngdbscan.cpp.
+
+	- queries.txt - contains the points to add or delete from the existing dataset (points.txt).
+
+	- old_epsilon_graph.txt - contains the epsilon graph for the old dataset.
+
+	- new_epsilon_graph.txt - contains the epsilon graph for the updated dataset (after considering queries.txt).
+
+	- old_points.txt - contains the information of each point in the old dataset.
+
+	- new_points.txt - contains the information of each point in the updated dataset (after considering queries.txt).
+
+	- old_clusters.txt - contains the clusters for the old dataset.
+
+	- new_clusters.txt - contains the clusters for the new dataset (after considering queries.txt).
