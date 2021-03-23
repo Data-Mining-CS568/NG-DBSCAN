@@ -12,43 +12,45 @@
 	 
 		- Use dataset_generator.py. 
 
-		- Enter number of points (or number of sentences in case of text dataset) and type of dataset.(use upto 10000 for fast running) 
-		- Run command dataset will be generate in points.txt file:
+		- Enter number of points (or number of sentences in case of text dataset) and type of dataset.(use upto 10000 for fast running).
+
+		- Run the following command and the dataset will be generated in points.txt file:
 			- python3 dataset_generator.py
 </details>
 
-```
-- Run the main algorithm (NG-DBSCAN) using command: 
-	- g++ phase2.cpp
-	- ./a.out
-- It will create clusters.txt which contains all the clusters. 
+<details>
+	<summary> Running the Static Code </summary>
 
-- Now to plot the clusters (for 2D and 3D dataset), use the following command:
-	- python3 clusters_generator.py 
+			- Run the main algorithm (NG-DBSCAN) using command: 
+				- g++ phase2.cpp
+				- ./a.out
+	
+			- It will create clusters.txt which contains all the clusters. 
 
-```
-
-
+			- Now to plot the clusters (for 2 and 3 dimensional datasets), use the following command:
+				- python3 clusters_generator.py 
+</details>
 
 <details>
 <summary> Metrics Calculation and Comparison </summary>
 
-	- We calculated the NG-DBSCAN metrics for comparison with DBSCAN: compactness, separation, recall 
+	- We calculated these NG-DBSCAN metrics for comparison with DBSCAN: compactness, separation, recall. Use the following command for calculating NG-DBSCAN metrics. 
 		- g++ metrics_main.cpp
 		- ./a.out
 
-	- Ran DBSCAN algorithm (for comparison with NG-DBSCAN) over points.txt using dbscan_code.py using the following command:
+	- Run DBSCAN algorithm (for comparison with NG-DBSCAN) over points.txt using dbscan_code.py using the following command:
 		- python3 dbscan_code.py
 
-	- We calculated the DBSCAN metrics: compactness, separation, recall 
+	- We calculated the DBSCAN metrics: compactness, separation, recall. Use the following command for calculating DBSCAN metrics.
 		- g++ dbscan_metrics_main.cpp
 		- ./a.out
+
 	- Using this we can compare between DBSCAN and NG-DBSCAN.
 		
 </details>
 
 <details>
- <summary> Code Files for Static NG-DBSCAN </summary>
+<summary> Code Files for Static NG-DBSCAN </summary>
 	
 	- classes.h - contains all the used classes in the algorithm.
 
