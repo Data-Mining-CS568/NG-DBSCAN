@@ -150,6 +150,42 @@ void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<do
 	}
 }
 
+void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::system_clock::time_point end, int flag){
+
+	chrono::duration<double> elapsed_seconds = end-start;
+    time_t end_time = chrono::system_clock::to_time_t(end);
+
+    cout << "finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << " seconds\n";
+	
+	// ----------- MEMORY USAGE ----
+
+	cout << "Virtual Memory Used: " << getValue_virtual_memory() << " KB\n";
+	cout << "Physical Memory Used: " << getValue_physical_memory() << " KB\n";
+
+
+	//Writing Resources Used In Files
+	string filename = "";
+	if(flag)
+		filename = "Metrics/time_new_static.txt";
+	else 
+		filename = "Metrics/time_old_static.txt";
+	fstream fout;
+	fout.open(filename, ios::app);
+	fout<<G.active.size()<<" "<<elapsed_seconds.count()<<"\n";
+	fout.close();
+
+	if(flag)
+		filename = "Metrics/memory_new_static.txt";
+	else 
+		filename = "Metrics/memory_old_static.txt";
+
+	fout.open(filename, ios::app);
+	fout<<G.active.size()<<" "<<getValue_virtual_memory()<<" "<<getValue_physical_memory()<<"\n";
+	fout.close();
+	return;
+
+}
+
 // ---------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -221,31 +257,7 @@ int main(int argc, char* argv[])
 	// ---------------------------------- TIME CALCULATION ------------------------------------------------------------------------------
 
 	auto end = chrono::system_clock::now();
-
-	chrono::duration<double> elapsed_seconds = end-start;
-    time_t end_time = chrono::system_clock::to_time_t(end);
-
-    cout << "finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << " seconds\n";
-	
-	// ----------------------------------------------------------------------------------------------------------------------------------
-
-
-	// ----------- MEMORY USAGE ---------------------------------------------------------------------------------------------------------
-
-	cout << "Virtual Memory Used: " << getValue_virtual_memory() << " KB\n";
-	cout << "Physical Memory Used: " << getValue_physical_memory() << " KB\n";
-
-	// ----------------------------------------------------------------------------------------------------------------------------------
-
-	//Writing Resources Used In Files
-	string filename = "";
-	if(flag)
-		filename = "Metrics/time_new_static.txt";
-	else 
-		filename = "Metrics/time_old_static.txt";
-	fstream fout;
-	fout.open(filename, ios::app);
-	fout<<G.active.size()<<" "<<elapsed_seconds.count()<<"\n";
+	resources_usage(G, start, end, flag);
 
 	// saving data in files
 	save_data(G, flag);

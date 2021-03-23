@@ -497,10 +497,47 @@ void set_unused_indices(Graph& G)
 	G.store_indices(old_dataset_pts + queries_pts);
 }
 
+
+void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::system_clock::time_point end){
+
+	chrono::duration<double> elapsed_seconds = end-start;
+    time_t end_time = chrono::system_clock::to_time_t(end);
+
+    cout << "finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << " seconds\n";
+	
+	// ----------------------------------------------------------------------------------------------------------------------------------
+
+
+	// ----------- MEMORY USAGE ---------------------------------------------------------------------------------------------------------
+
+	cout << "Virtual Memory Used: " << getValue_virtual_memory() << " KB\n";
+	cout << "Physical Memory Used: " << getValue_physical_memory() << " KB\n";
+	
+	// ----------------------------------------------------------------------------------------------------------------------------------
+
+	//Writing Resources Used In Files
+	string filename = "";
+	filename = "Metrics/time_incr.txt";
+	fstream fout;
+	fout.open(filename, ios::app);
+	fout<<G.dataset_pts.size()<<" "<<elapsed_seconds.count()<<"\n";
+	fout.close();
+
+	filename = "Metrics/memory_incr.txt";
+	fout.open(filename, ios::app);
+	fout<<G.dataset_pts.size()<<" "<<getValue_virtual_memory()<<" "<<getValue_physical_memory()<<"\n";
+	fout.close();
+	return;
+
+}
+
+
 // ---------------------------------------------------------------------------------------------------------------------------------------
 
 
 // ---------------------------------- MAIN FUNCTION CALLING ALL OTHER FUNCTIONS ----------------------------------------------------------
+
+
 
 int main()
 {
@@ -533,32 +570,9 @@ int main()
 	// node classification
 	classify(G);
 
-	// ---------------------------------- TIME CALCULATION ------------------------------------------------------------------------------
-
-	auto end = chrono::system_clock::now();
-
-	chrono::duration<double> elapsed_seconds = end-start;
-    time_t end_time = chrono::system_clock::to_time_t(end);
-
-    cout << "finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << " seconds\n";
+	auto end = chrono::system_clock::now();	
+	resources_usage(G,start, end);
 	
-	// ----------------------------------------------------------------------------------------------------------------------------------
-
-
-	// ----------- MEMORY USAGE ---------------------------------------------------------------------------------------------------------
-
-	cout << "Virtual Memory Used: " << getValue_virtual_memory() << " KB\n";
-	cout << "Physical Memory Used: " << getValue_physical_memory() << " KB\n";
-	
-	// ----------------------------------------------------------------------------------------------------------------------------------
-
-	//Writing Resources Used In Files
-	string filename = "";
-	filename = "Metrics/time_incr.txt";
-	fstream fout;
-	fout.open(filename, ios::app);
-	fout<<G.dataset_pts.size()<<" "<<elapsed_seconds.count()<<"\n";
-
 	// saving in the files
 	save(G);
 	
