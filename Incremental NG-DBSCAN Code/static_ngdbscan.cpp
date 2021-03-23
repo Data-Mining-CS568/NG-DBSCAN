@@ -16,7 +16,8 @@ void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, 
 	epsilon = 0.5;		// minimum distance b/w nodes 
 	Minpts  = 10; 		// each core node is having degree at least Minpts − 1
 
-	if(parameterChange == 1){
+	if(parameterChange == 1)
+	{
 		cout << "Enter Parameters (If you want to keep default value then enter -1)\n";
 		cout << "Enter x for Tn (Tn = x*n)\n"; 	cin >> xTn; 
 		cout << "Enter x for Tr (Tr = x*n)\n"; 	cin >> xTr;
@@ -166,10 +167,10 @@ void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::
 	// Writing Resources Used In Files
 	string filename = "";
 	if(flag){
-		filename = "Metrics/time_new_static.txt";
+		filename = "Metrics/Time/time_new_static.txt";
 	}
 	else {
-		filename = "Metrics/time_old_static.txt";
+		filename = "Metrics/Time/time_old_static.txt";
 	}
 	fstream fout;
 	fout.open(filename, ios::app);
@@ -177,10 +178,10 @@ void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::
 	fout.close();
 
 	if(flag){
-		filename = "Metrics/memory_new_static.txt";
+		filename = "Metrics/Memory/memory_new_static.txt";
 	}
 	else {
-		filename = "Metrics/memory_old_static.txt";
+		filename = "Metrics/Memory/memory_old_static.txt";
 	}
 
 	fout.open(filename, ios::app);

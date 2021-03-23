@@ -53,10 +53,10 @@ void Compactness(int flag)
 
 	string filename;
 	if(flag){
-		filename = "Metrics/compactness_incr.txt";
+		filename = "Metrics/Compactness/compactness_incr.txt";
 	}
 	else {
-		filename = "Metrics/compactness_static.txt";
+		filename = "Metrics/Compactness/compactness_static.txt";
 	}
 	fstream fout;
 	fout.open(filename, ios::out);
@@ -106,10 +106,10 @@ void Separation(int flag)
 	string filename;
 
 	if(flag){
-		filename = "Metrics/separation_incr.txt";
+		filename = "Metrics/Seperation/separation_incr.txt";
 	}
 	else {
-		filename = "Metrics/separation_static.txt";
+		filename = "Metrics/Seperation/separation_static.txt";
 	}
 
 	fstream fout;

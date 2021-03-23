@@ -527,14 +527,14 @@ void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::
 
 	// writing resources used in files
 	string filename = "";
-	filename = "Metrics/time_incr.txt";
+	filename = "Metrics/Time/time_incr.txt";
 	
 	fstream fout;
 	fout.open(filename, ios::app);
 	fout << G.dataset_pts.size() << " " << elapsed_seconds.count() << "\n";
 	fout.close();
 
-	filename = "Metrics/memory_incr.txt";
+	filename = "Metrics/Memory/memory_incr.txt";
 	fout.open(filename, ios::app);
 	fout << G.dataset_pts.size() << " " << getValue_virtual_memory() << " " << getValue_physical_memory() << "\n";
 	fout.close();

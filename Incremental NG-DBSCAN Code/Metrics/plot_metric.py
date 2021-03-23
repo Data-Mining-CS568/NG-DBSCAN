@@ -2,12 +2,9 @@ import matplotlib.pyplot as plt
 
 def plot_graph():
 
-
-
-
 	# ------ Plot Time --------
-	filename0 = "time_new_static.txt"
-	filename1 = "time_incr.txt"	
+	filename0 = "Time/time_new_static.txt"
+	filename1 = "Time/time_incr.txt"	
 	x0 = []
 	y0 = []
 	x1 = []
@@ -37,11 +34,9 @@ def plot_graph():
 	plt.savefig('Plot_Images/time_plot.png', dpi = 300, bbox_inches='tight')
 	
 
-
-
 	# ------ Plot Memory --------
-	filename0 = "memory_new_static.txt"
-	filename1 = "memory_incr.txt"	
+	filename0 = "Memory/memory_new_static.txt"
+	filename1 = "Memory/memory_incr.txt"	
 	x0 = []
 	y0 = []
 	z0 = []
@@ -64,7 +59,8 @@ def plot_graph():
 			z1.append(float(coordinates[2]))
 
 	plot_time = plt.figure(2)
-	#dashed for virtual memory			
+	
+	# dashed for virtual memory			
 	plt.plot(x0,y0, color = 'blue', linestyle = 'dashed', label = "Virtual Memory Static")
 	plt.plot(x0,z0, color = 'blue', label = "Physical Memory Static")
 	plt.plot(x1,y1, color = 'red' , linestyle = 'dashed', label = "Virutual Memory Incremental")
@@ -77,10 +73,7 @@ def plot_graph():
 	plt.legend(loc ="lower right")
 	plt.savefig('Plot_Images/memory_plot.png', dpi = 300, bbox_inches='tight')	
 
-
-
 	plt.show()
-
 
 
 if __name__ == "__main__":
