@@ -53,6 +53,7 @@
 
 <details>
 <summary> Code Files for Static NG-DBSCAN </summary>
+
 	
 <details>
 <summary> Header Files</summary>
@@ -62,7 +63,7 @@
 </details>
 
 <details>
-<summary> Cpp Files </summary>
+<summary> C++ Files </summary>
 
 	- phase1.cpp - contains the phase-1 code which will be used to create epsilon graph.
 
@@ -184,7 +185,16 @@
 <details>
 <summary> Code Files for Incremental NG-DBSCAN </summary>
 	
+
+<details>
+<summary> Header Files </summary>
+
 	- incr_classes.h - contains all used classes in the incremental NG-DBSCAN algorithm.
+
+</details>	
+
+<details>
+<summary> C++ Files </summary>
 
 	- incr_ngdbscan.cpp - contains the whole incremental NG-DBSCAN algorithm code.
 
@@ -196,8 +206,18 @@
 
 	- resources_calculation.cpp - contains the main functions to calculate time, memory, CPU usage etc for static and incremental versions.
 
-	- clusters_generator.py - used to plot the clusters of static and incremental NG-DBSCAN versions.
+</details>
 	
+<details>
+<summary> Python Files </summary>
+
+	- clusters_generator.py - used to plot the clusters of static and incremental NG-DBSCAN versions.
+
+</details>
+
+<details>
+<summary> Text Files </summary>
+
 	- points.txt - contains the database points (clusters would be formed using these points in real scenario) used as input in static_ngdbscan.cpp and incr_ngdbscan.cpp.
 
 	- queries.txt - contains the points to add or delete from the existing dataset (points.txt).
@@ -213,6 +233,8 @@
 	- old_clusters.txt - contains the clusters for the old dataset.
 
 	- new_clusters.txt - contains the clusters for the new dataset (after considering queries.txt).
+
+</details>	
 
 </details>
 
