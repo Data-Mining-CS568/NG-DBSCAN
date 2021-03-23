@@ -40,10 +40,10 @@ void save_clusters_info(Graph& G, int flag)
 	string filename = "";
 
 	if(flag){
-		filename = "Files/clusters_save1.txt";
+		filename = "Files/new_clusters.txt";
 	}
 	else {
-		filename = "Files/clusters_save.txt";
+		filename = "Files/old_clusters.txt";
 	}
 
 	f.open(filename, ios::out);
@@ -70,10 +70,10 @@ void save_points_info(Graph& G, int flag)
 	string filename = "";
 	
 	if(flag){
-		filename = "Files/points_save1.txt";
+		filename = "Files/new_points.txt";
 	}
 	else {
-		filename = "Files/points_save.txt";
+		filename = "Files/old_points.txt";
 	}
 	
 	f.open(filename, ios::out);
@@ -95,10 +95,10 @@ void save_epsilon_graph(Graph& G, int flag)
 	string filename = "";
 	
 	if(flag){
-		filename = "Files/epsilon_graph_save1.txt";
+		filename = "Files/new_epsilon_graph.txt";
 	}
 	else {
-		filename = "Files/epsilon_graph_save.txt";
+		filename = "Files/old_epsilon_graph.txt";
 	}
 
 	f.open(filename,ios::out);

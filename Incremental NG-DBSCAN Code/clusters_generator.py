@@ -18,11 +18,11 @@ noise = []
 filename_p = ""
 filename_c = ""
 if flag == 0:
-	filename_p = "Files/points_save.txt"
-	filename_c = "Files/clusters_save.txt"
+	filename_p = "Files/old_points.txt"
+	filename_c = "Files/old_clusters.txt"
 else:
-	filename_p = "Files/points_save1.txt"
-	filename_c = "Files/clusters_save1.txt"
+	filename_p = "Files/new_points.txt"
+	filename_c = "Files/new_clusters.txt"
 
 
 points_file = open(filename_p, "r")

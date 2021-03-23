@@ -3,23 +3,19 @@
 void store_in_map(int flag)
 {
 	fstream f_points;
-
-
 	string filename = "";
 
 	if(flag){
-		filename = "../Files/points_save1.txt";
+		filename = "../Files/new_points.txt";
 	}
 	else {
-		filename = "../Files/points_save.txt";
+		filename = "../Files/old_points.txt";
 	}
 
-
-	f_points.open(filename, ios::in);
-	
+	f_points.open(filename, ios::in);	
 
 	int pt_id, t = 0; 
-	string pt_type;  
+	string pt_type;
 	
 	f_points >> total_points >> dim;
 	
@@ -38,14 +34,13 @@ void store_in_map(int flag)
 void store_clusters(int flag)
 {
 	fstream f_clusters;
-	
 	string filename = "";
 
 	if(flag){
-		filename = "../Files/clusters_save1.txt";
+		filename = "../Files/new_clusters.txt";
 	}
 	else {
-		filename = "../Files/clusters_save.txt";
+		filename = "../Files/old_clusters.txt";
 	}
 
 	f_clusters.open(filename, ios::in);
@@ -76,7 +71,6 @@ void Compactness(int flag)
 	}
 	cout << "\n";
 
-
 	string filename;
 	if(flag){
 		filename = "compactness_incr.txt";
@@ -84,7 +78,6 @@ void Compactness(int flag)
 	else {
 		filename = "compactness_static.txt";
 	}
-
 
 	fstream fout;
 	fout.open(filename, ios::out);
@@ -130,10 +123,8 @@ void Separation(int flag)
 
 
 int main(int argc, char* argv[])
-{
-
-	
-	if(argc < 2) {
+{	
+	if(argc < 2){
 		cout<<"Command Line Argument(s) is/are missing\n";
 		return 0;
 	} 

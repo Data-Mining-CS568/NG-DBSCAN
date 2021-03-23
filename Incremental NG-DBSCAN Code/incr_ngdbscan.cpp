@@ -303,7 +303,7 @@ void cluster_membership(Graph& G, vector<int>& upd){
 void build_epsilon_graph(Graph& G)
 {
 	fstream f;
-	f.open("Files/epsilon_graph_save.txt",ios::in);
+	f.open("Files/old_epsilon_graph.txt",ios::in);
 	string s;
 	G.edges.clear();
 
@@ -324,7 +324,7 @@ void build_epsilon_graph(Graph& G)
 void points_info(Graph& G)
 {
 	fstream f;
-	f.open("Files/points_save.txt",ios::in);
+	f.open("Files/old_points.txt",ios::in);
 	int n, dimension, id;
 	string type;
 	f >> n >> dimension;
@@ -356,7 +356,7 @@ void points_info(Graph& G)
 void clusters_info(Graph& G)
 {
 	fstream f;
-	f.open("Files/clusters_save.txt",ios::in);
+	f.open("Files/old_clusters.txt",ios::in);
 
 	// Reading Clusters file
 	int no_of_clusters, pts_each_cluster, cluster_id = 0;
@@ -387,7 +387,7 @@ void build_graph(Graph& G){
 
 void save_epsilon_graph(Graph& G){
 	fstream f;
-	f.open("Files/epsilon_graph_save1.txt",ios::out);
+	f.open("Files/new_epsilon_graph.txt",ios::out);
 	for(auto u : G.active){
 		f << u << "  ";
 		for(auto v : G.edges[u]){
@@ -399,7 +399,7 @@ void save_epsilon_graph(Graph& G){
 
 void save_points_info(Graph& G){
 	fstream f;
-	f.open("Files/points_save1.txt",ios::out);
+	f.open("Files/new_points.txt",ios::out);
 	f << G.active.size() << " " << G.dimension << "\n";
 	for(auto u : G.active){
 		Node* curr = G.id_to_node[u];
@@ -413,7 +413,7 @@ void save_points_info(Graph& G){
 
 void save_clusters_info(Graph& G){
 	fstream f;
-	f.open("Files/clusters_save1.txt",ios::out);
+	f.open("Files/new_clusters.txt",ios::out);
 	int no_of_clusters = 0;
 	for(auto it : G.clusters){
 		vector<int>& u = it.second;
