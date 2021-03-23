@@ -86,6 +86,8 @@
   
 </details>
 
+#### Clusters Generated With 3-D Points
+![Image of 3D Plot](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Report%20Images/3d_dataset.png)
 	
 
 
