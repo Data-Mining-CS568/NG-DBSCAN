@@ -88,13 +88,17 @@ void Separation()
 	}
 }
 
-int main()
+int main(int argc, char* argv[])
 {
 
-	int flag;
 	
-	cout << "Do you have new data points to add/delete in dataset(0/1)?\n"; 
-	cin >> flag;
+	if(argc < 2) {
+		cout<<"Command Line Argument(s) is/are missing\n";
+		return 0;
+	} 
+	
+	int flag = 0;
+	flag = atoi(argv[1]); //flag == 1, if there are queries to add or delete points
 
 	store_in_map(flag); 	// store points coordinate in map
 	store_clusters(flag);

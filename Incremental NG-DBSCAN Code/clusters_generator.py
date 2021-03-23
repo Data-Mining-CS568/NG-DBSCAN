@@ -1,12 +1,19 @@
+import sys
 import math
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 
+
+argc = len(sys.argv)
+flag = 0
+if argc < 2:
+	print("Command Line Argument Is Missing, Taking 0 As Default Argument:")
+else:
+	flag = int(sys.argv[1]) #1 is argument when we have queries to add and delete points
+
 l = []
 noise = []
-flag = input("Do you have new data points to add/delete in dataset(0/1)?\n")
-flag = int(flag)
 
 filename_p = ""
 filename_c = ""

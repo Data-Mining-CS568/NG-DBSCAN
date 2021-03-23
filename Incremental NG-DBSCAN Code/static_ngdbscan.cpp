@@ -3,12 +3,9 @@
 
 // --------------------------------- DECIDING PARAMETERS --------------------------------------------------------------------------------
 
-void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, int& p, int& iter, double& epsilon, int& Minpts)
+void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, int& p, int& iter, double& epsilon, int& Minpts, int parameterChange)
 {
-	cout << "Want to change the default parameters?\nEnter 1 for Yes and 0 for No\n";
-
-	int parameterChange;
-	cin >> parameterChange;
+	//Change the default parameters if parameterChange == 1
 	
 	iter = 15;
 	xTn = 0.001;		// limits number of nodes in NG for termination
@@ -158,15 +155,20 @@ void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<do
 
 // ----------------------------------------- MAIN CALLING FUNCTION -----------------------------------------------------------------------
 
-int main()
+int main(int argc, char* argv[])
 {
 	Graph G(0);
 	fstream f;
 	double xTn, xTr, epsilon;
 	int k, Mmax, p, iter, Minpts, n;
 
+	if(argc < 3) {
+		cout<<"Command Line Argument(s) is/are missing\n";
+		return 0;
+	} 
 	// deciding parameters
-	parameter_decision_for_static(xTn, xTr, k, Mmax, p, iter, epsilon, Minpts);
+	int parameterChange = atoi(argv[1]);
+	parameter_decision_for_static(xTn, xTr, k, Mmax, p, iter, epsilon, Minpts, parameterChange);
 	
 	f.open("Files/points.txt",ios::in);
 	f >> n >> dimensions;
@@ -177,9 +179,7 @@ int main()
 	// storing queries points
 	map<vector<double>,bool> to_delete, to_add;
 	int flag = 0;
-	
-	cout << "Do you have new data points to add/delete in dataset(0/1)?\n"; 
-	cin >> flag;
+	flag = atoi(argv[2]); //flag == 1, if there are queries to add or delete points
 	
 	if(flag){
 		store_add_and_delete_points(to_add, to_delete);
