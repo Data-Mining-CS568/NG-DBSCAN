@@ -1,4 +1,4 @@
-#include "Metrics/metrics_functions.cpp"
+#include "metrics_functions.cpp"
 
 // -------------------------------------------- STORING IN MAP -------------------------------------------------------------------------
 
@@ -8,10 +8,10 @@ void store_in_map(int flag)
 	string filename = "";
 
 	if(flag){
-		filename = "Files/new_points.txt";
+		filename = "../Files/new_points.txt";
 	}
 	else {
-		filename = "Files/old_points.txt";
+		filename = "../Files/old_points.txt";
 	}
 
 	f_points.open(filename, ios::in);
@@ -42,10 +42,10 @@ void store_clusters(int flag)
 	string filename = "";
 
 	if(flag){
-		filename = "Files/new_clusters.txt";
+		filename = "../Files/new_clusters.txt";
 	}
 	else {
-		filename = "Files/old_clusters.txt";
+		filename = "../Files/old_clusters.txt";
 	}
 
 	f_clusters.open(filename, ios::in);
