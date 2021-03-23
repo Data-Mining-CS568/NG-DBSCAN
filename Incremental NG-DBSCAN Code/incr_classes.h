@@ -42,7 +42,9 @@ class Graph {
 			add_node(i);
 		}
 		this->N = total_nodes;
-		for(int i = 0; i < 50000; i++){
+	}
+	void store_indices(int max_indices){
+		for(int i = 0; i < max_indices; i++){
 			this->unused_indices.insert(i);
 		}
 	}

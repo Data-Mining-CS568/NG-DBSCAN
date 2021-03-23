@@ -482,6 +482,24 @@ void print_values(vector<int>& to_delete, vector<int>& to_add, vector<int>& upd_
 	cout << endl;
 }
 
+// --------------------------------------- STORING THE MAXIMUM NUMBER OF INDICES IN UNUSED INDICES ---------------------------------------
+
+void set_unused_indices(Graph& G)
+{
+	int old_dataset_pts, queries_pts;
+	fstream f1, f2;
+	f1.open("Files/points.txt", ios::in);
+	f2.open("Files/queries.txt", ios::in);
+	f1 >> old_dataset_pts;
+	f2 >> queries_pts;
+	f1.close();
+	f2.close();
+	G.store_indices(old_dataset_pts + queries_pts);
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
+
 // ---------------------------------- MAIN FUNCTION CALLING ALL OTHER FUNCTIONS ----------------------------------------------------------
 
 int main()
@@ -490,7 +508,10 @@ int main()
 	Parameters parameter;
 	vector<int> to_delete, to_add;
 	vector<int> upd_ins, upd_del;
-		
+
+	// storing unused indices in G	
+	set_unused_indices(G);
+
 	// building the graph from static version
 	build_graph(G);
 
