@@ -54,6 +54,7 @@
 <details>
 <summary> Code Files for Static NG-DBSCAN </summary>
 
+	- Here are the different types of files used in static NG-DBSCAN:
 	
 <details>
 <summary> Header Files</summary>
@@ -185,6 +186,7 @@
 <details>
 <summary> Code Files for Incremental NG-DBSCAN </summary>
 	
+	- Here are the different types of files used in incremental NG-DBSCAN:	
 
 <details>
 <summary> Header Files </summary>
@@ -233,6 +235,14 @@
 	- old_clusters.txt - contains the clusters for the old dataset.
 
 	- new_clusters.txt - contains the clusters for the new dataset (after considering queries.txt).
+
+	- memory*.txt - Files of this format contains in each line: <no_of_points> <virtual_memory_used> <physical_memory_used>.
+
+	- time*.txt - Files of this format contains in each line: <no_of_points> <time_taken>.
+
+	- seperation*.txt - These files contains the number of points and then seperation values for each pair of clusters.
+
+	- compactness*.txt - These files contains the number of points and then compactness values for each cluster.	
 
 </details>	
 
