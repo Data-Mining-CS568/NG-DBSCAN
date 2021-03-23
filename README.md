@@ -8,7 +8,7 @@
 ### Instructions to run the Static NG-DBSCAN Code:
 
 <details>
-<summary> Generate Dataset </summary>
+<summary> Generate Synthetic Datasets </summary>
 	 
 	- Use dataset_generator.py. 
 
@@ -16,10 +16,11 @@
 
 	- Run the following command and the dataset will be generated in points.txt file:
 		- python3 dataset_generator.py
+
 </details>
 
 <details>
-<summary> Running the Static Code </summary>
+<summary> Run the Static NG-DBSCAN Algorithm </summary>
 
 	- Run the main algorithm (NG-DBSCAN) using command: 
 		- g++ phase2.cpp
@@ -29,10 +30,11 @@
 
 	- Now to plot the clusters (for 2 and 3 dimensional datasets), use the following command:
 		- python3 clusters_generator.py 
+
 </details>
 
 <details>
-<summary> Metrics Calculation and Comparison </summary>
+<summary> Calculate metrics and compare results of NG-DBSCAN and DBSCAN </summary>
 
 	- We calculated these NG-DBSCAN metrics for comparison with DBSCAN: compactness, separation, recall. Use the following command for calculating NG-DBSCAN metrics. 
 		- g++ metrics_main.cpp
@@ -46,7 +48,7 @@
 		- ./a.out
 
 	- Using this we can compare between DBSCAN and NG-DBSCAN.
-		
+	
 </details>
 
 <details>
@@ -103,7 +105,7 @@
 ### Instructions to run the Incremental NG-DBSCAN Code:
 
 <details>
-<summary> Generating and Plotting the already existing clusters (used as database in real life) </summary>
+<summary> Generate and Plot the already existing dataset (which is considered as database in real life) </summary>
 	
 	- First put the points.txt and queries.txt for the dataset you want the algorithm to run on.
 
@@ -119,7 +121,7 @@
 </details>
 
 <details>
-<summary> Running the Incremental NG-DBSCAN algorithm over the existing dataset </summary>
+<summary> Run and Plot the Incremental NG-DBSCAN algorithm over the existing dataset </summary>
 
 	- Now to run the queries.txt over incremental version, use the following command. 
 		- g++ incr_ngdbscan.cpp 
@@ -133,7 +135,7 @@
 </details>
 	
 <details>
-<summary> Running the Static NG-DBSCAN algorithm over the existing dataset (for comparison with incremental version) </summary>
+<summary> Run and Plot the Static NG-DBSCAN algorithm over the existing dataset (for comparison with incremental version) </summary>
 
 	- Now to run the queries.txt over incremental version (for comparison with incremental version), use the following command. 
 		- g++ static_ngdbscan.cpp  
@@ -147,7 +149,7 @@
 </details>
 	 
 <details>
-<summary> Calculating metrics on Incremental and Static Versions </summary>
+<summary> Calculate metrics on Incremental and Static Versions for comparison </summary>
 	
 	- To use metrics on the database (only considering points.txt), we will use the following command:
 		- g++ metrics_main.cpp 
@@ -157,7 +159,7 @@
 		- g++ metrics_main.cpp 
 		- ./a.out 1
 
-</details>	 
+</details>
 
 <details>
 <summary> Code Files for Incremental NG-DBSCAN </summary>
@@ -191,6 +193,6 @@
 	- old_clusters.txt - contains the clusters for the old dataset.
 
 	- new_clusters.txt - contains the clusters for the new dataset (after considering queries.txt).
-  
+
 </details>
 
