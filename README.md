@@ -54,7 +54,15 @@
 <details>
 <summary> Code Files for Static NG-DBSCAN </summary>
 	
+<details>
+<summary> Header Files</summary>
+
 	- classes.h - contains all the used classes in the algorithm.
+
+</details>
+
+<details>
+<summary> Cpp Files </summary>
 
 	- phase1.cpp - contains the phase-1 code which will be used to create epsilon graph.
 
@@ -68,11 +76,21 @@
 
 	- jaro_winkler_distance.cpp: it calculates Jaro Winkler Distance between two strings.
 
+</details>
+
+<details>
+<summary> Python Files</summary>
+
 	- dbscan_code.py - main method to create the DBSCAN clusters and numbered_dbscan_clusters.txt file.
 
 	- dataset_generator.py - contains the python code to generate the random points.
 
-	- clusters_generator.py - plots the clusters in 2-dimension in different colours using clusters. 
+	- clusters_generator.py - plots the clusters in 2-dimension in different colours using clusters.
+
+</details>
+
+<details>
+<summary> Text Files </summary>
 
 	- epsilon_graph.txt - represents the epsilon graph used in the algorithm.
 
@@ -87,6 +105,8 @@
 	- numbered_dbscan_clusters.txt - contains all the points of DBSCAN, where ith point represents in which cluster number it lies.
 
 	- health_twitter.txt & sms_spam_collection.txt: text datasets
+
+</details>
   
 </details>
 
