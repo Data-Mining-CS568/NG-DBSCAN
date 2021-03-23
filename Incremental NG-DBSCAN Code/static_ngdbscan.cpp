@@ -5,7 +5,7 @@
 
 void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, int& p, int& iter, double& epsilon, int& Minpts, int parameterChange)
 {
-	//Change the default parameters if parameterChange == 1
+	// Change the default parameters if parameterChange == 1
 	
 	iter = 15;
 	xTn = 0.001;		// limits number of nodes in NG for termination
@@ -17,9 +17,9 @@ void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, 
 	Minpts  = 10; 		// each core node is having degree at least Minpts − 1
 
 	if(parameterChange == 1){
-		cout << "Enter Parameters(If you want to keep default value then enter -1\n";
-		cout << "Enter x for Tn(Tn = x*n)\n"; 	cin >> xTn; 
-		cout << "Enter x for Tr(Tr = x*n)\n"; 	cin >> xTr;
+		cout << "Enter Parameters (If you want to keep default value then enter -1)\n";
+		cout << "Enter x for Tn (Tn = x*n)\n"; 	cin >> xTn; 
+		cout << "Enter x for Tr (Tr = x*n)\n"; 	cin >> xTr;
 		cout << "Enter k\n"; 					cin >> k;
 		cout << "Enter Mmax\n"; 				cin >> Mmax;
 		cout << "Enter p\n"; 					cin >> p;
@@ -122,7 +122,7 @@ void save_data(Graph& G, int flag)
 // --------------------------------------------------------------------------------------------------------------------------------------
 
 
-// ----------------------------------------- STORING POINTS TO ADD AND DELETE in MAPS ---------------------------------------------------
+// ----------------------------------------- STORING POINTS TO ADD AND DELETE IN MAPS ---------------------------------------------------
 
 void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<double>,bool>& to_delete){
 	int tot_points;
@@ -150,40 +150,45 @@ void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<do
 	}
 }
 
-void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::system_clock::time_point end, int flag){
+// ---------------------------------------------------------------------------------------------------------------------------------------
 
+
+// --------------------------------------- STORING RESOURCES OF MEMORY AND TIME IN FILES -------------------------------------------------
+
+void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::system_clock::time_point end, int flag)
+{
 	chrono::duration<double> elapsed_seconds = end-start;
     time_t end_time = chrono::system_clock::to_time_t(end);
 
-    cout << "finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << " seconds\n";
-	
-	// ----------- MEMORY USAGE ----
+    cout << "Finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << " seconds\n";
 
 	cout << "Virtual Memory Used: " << getValue_virtual_memory() << " KB\n";
 	cout << "Physical Memory Used: " << getValue_physical_memory() << " KB\n";
 
 
-	//Writing Resources Used In Files
+	// Writing Resources Used In Files
 	string filename = "";
-	if(flag)
+	if(flag){
 		filename = "Metrics/time_new_static.txt";
-	else 
+	}
+	else {
 		filename = "Metrics/time_old_static.txt";
+	}
 	fstream fout;
 	fout.open(filename, ios::app);
-	fout<<G.active.size()<<" "<<elapsed_seconds.count()<<"\n";
+	fout << G.active.size() << " " << elapsed_seconds.count() << "\n";
 	fout.close();
 
-	if(flag)
+	if(flag){
 		filename = "Metrics/memory_new_static.txt";
-	else 
+	}
+	else {
 		filename = "Metrics/memory_old_static.txt";
+	}
 
 	fout.open(filename, ios::app);
-	fout<<G.active.size()<<" "<<getValue_virtual_memory()<<" "<<getValue_physical_memory()<<"\n";
+	fout << G.active.size() << " " << getValue_virtual_memory() << " " << getValue_physical_memory() << "\n";
 	fout.close();
-	return;
-
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
@@ -202,6 +207,7 @@ int main(int argc, char* argv[])
 		cout<<"Command Line Argument(s) is/are missing\n";
 		return 0;
 	} 
+
 	// deciding parameters
 	int parameterChange = atoi(argv[1]);
 	parameter_decision_for_static(xTn, xTr, k, Mmax, p, iter, epsilon, Minpts, parameterChange);
@@ -253,10 +259,9 @@ int main(int argc, char* argv[])
 	Graph EG = epsilon_graph_construction(n, parameter);
 	Graph T = Discovering_Dense_Regions(EG, n, parameter, G);
 
-
-	// ---------------------------------- TIME CALCULATION ------------------------------------------------------------------------------
-
 	auto end = chrono::system_clock::now();
+
+	// calculating and storing time and memory in files
 	resources_usage(G, start, end, flag);
 
 	// saving data in files

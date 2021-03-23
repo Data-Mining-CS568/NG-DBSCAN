@@ -221,7 +221,7 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameters& paramete
 		for(auto v : G.noncore) S.push_back(v);
 		random_neighbour_search(G, S, A, 0, parameter, upd_ins, 'A');
 	}
-	//cout << A.size() << " " << G.noncore.size() << " " << upd_ins.size() << endl;
+	// cout << A.size() << " " << G.noncore.size() << " " << upd_ins.size() << endl;
 }
 
 void node_identification_deletion(Graph& G, vector<int>& D, Parameters& parameter, vector<int>& upd_del)
@@ -464,23 +464,29 @@ void classify(Graph& G)
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
 
+
+// ----------------------------------------- PRINTING VALUES -----------------------------------------------------------------------------
+
 void print_values(vector<int>& to_delete, vector<int>& to_add, vector<int>& upd_ins, vector<int>& upd_del){
 	cout << "\nAddition: \n";
 	for(auto u : to_add) cout << u << " ";
-	cout << endl;
+	cout << "\n";
 
 	cout << "\nDeletion: \n";
 	for(auto u : to_delete) cout << u << " ";
-	cout << endl;
+	cout << "\n";
 
 	cout << "\nPresent in upd_ins: \n";
 	for(auto u : upd_ins) cout << u << " ";
-	cout << endl;
+	cout << "\n";
 
 	cout << "\nPresent in upd_del: \n";
 	for(auto u : upd_del) cout << u << " ";
-	cout << endl;
+	cout << "\n";
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
 
 // --------------------------------------- STORING THE MAXIMUM NUMBER OF INDICES IN UNUSED INDICES ---------------------------------------
 
@@ -497,47 +503,40 @@ void set_unused_indices(Graph& G)
 	G.store_indices(old_dataset_pts + queries_pts);
 }
 
+// -------------------------------------------------------------------------------------------------------------------------------------- 
 
-void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::system_clock::time_point end){
 
+// --------------------------------------- STORING RESOURCES OF MEMORY AND TIME IN FILES ------------------------------------------------
+
+void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::system_clock::time_point end)
+{
 	chrono::duration<double> elapsed_seconds = end-start;
     time_t end_time = chrono::system_clock::to_time_t(end);
 
-    cout << "finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << " seconds\n";
+    cout << "Finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << " seconds\n";
 	
-	// ----------------------------------------------------------------------------------------------------------------------------------
-
-
-	// ----------- MEMORY USAGE ---------------------------------------------------------------------------------------------------------
-
 	cout << "Virtual Memory Used: " << getValue_virtual_memory() << " KB\n";
 	cout << "Physical Memory Used: " << getValue_physical_memory() << " KB\n";
-	
-	// ----------------------------------------------------------------------------------------------------------------------------------
 
-	//Writing Resources Used In Files
+	// writing resources used in files
 	string filename = "";
 	filename = "Metrics/time_incr.txt";
+	
 	fstream fout;
 	fout.open(filename, ios::app);
-	fout<<G.dataset_pts.size()<<" "<<elapsed_seconds.count()<<"\n";
+	fout << G.dataset_pts.size() << " " << elapsed_seconds.count() << "\n";
 	fout.close();
 
 	filename = "Metrics/memory_incr.txt";
 	fout.open(filename, ios::app);
-	fout<<G.dataset_pts.size()<<" "<<getValue_virtual_memory()<<" "<<getValue_physical_memory()<<"\n";
+	fout << G.dataset_pts.size() << " " << getValue_virtual_memory() << " " << getValue_physical_memory() << "\n";
 	fout.close();
-	return;
-
 }
-
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
 
 
 // ---------------------------------- MAIN FUNCTION CALLING ALL OTHER FUNCTIONS ----------------------------------------------------------
-
-
 
 int main()
 {
@@ -552,6 +551,7 @@ int main()
 	// building the graph from static version
 	build_graph(G);
 
+	// starting the time
 	auto start = chrono::system_clock::now();
 
 	// reading the points to add or remove
@@ -560,17 +560,22 @@ int main()
 	// identifying added nodes
 	node_identification_addition(G, to_add, parameter, upd_ins);
 
+	// identifying the clusters after addition of points
 	cluster_membership(G, upd_ins);
 
 	// identifying deleted nodes
 	node_identification_deletion(G, to_delete, parameter, upd_del);
 
+	// identifying the clusters after deletion of points
 	cluster_membership(G, upd_del);
 
 	// node classification
 	classify(G);
 
+	// ending the time
 	auto end = chrono::system_clock::now();	
+
+	// calculating the time, memory and storing them in files
 	resources_usage(G,start, end);
 	
 	// saving in the files
