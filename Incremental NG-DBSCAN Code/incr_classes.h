@@ -1,3 +1,6 @@
+
+// -------------------------------------------------- CLASS FOR EACH NODE ----------------------------------------------------------------
+
 class Node {
 	public:
 	int id;
@@ -10,11 +13,15 @@ class Node {
 	}
 };
 
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------- CLASS FOR EACH GRAPH ---------------------------------------------------------------
+
 class Graph {
 	public:
 	int N;
 	int dimension;
-	set<int> active;
+	set<int> dataset_pts;
 	set<int> unused_indices;
 	map<int, set<int>> edges;
 	map<int,Node*> id_to_node;
@@ -27,7 +34,7 @@ class Graph {
 	map<int,int> cluster_identification;
 
 	void add_node(int id){
-		active.insert(id);
+		dataset_pts.insert(id);
 	}
 	Graph(int total_nodes){
 		edges.clear();
@@ -35,7 +42,7 @@ class Graph {
 			add_node(i);
 		}
 		this->N = total_nodes;
-		for(int i = 0; i < 10000; i++){
+		for(int i = 0; i < 50000; i++){
 			this->unused_indices.insert(i);
 		}
 	}
@@ -43,7 +50,7 @@ class Graph {
 		return edges.size();
 	}
 	void remove_node(int id){
-		active.erase(id);
+		dataset_pts.erase(id);
 		edges[id].clear();
 	}
 	void remove_edge(int x, int y){
@@ -60,14 +67,16 @@ class Graph {
 		return n;
 	}
 	void clean_graph(){
-		for(int i = 0; i < N; i++){
+		for(auto i : dataset_pts){
 			edges[i].clear();
 		}
+		dataset_pts.clear();
 	}
+
 	// deletes occurrence of node x from graph
 	void delete_entries(int x){ 
-		if(active.find(x) != active.end()){
-			active.erase(x);	
+		if(dataset_pts.find(x) != dataset_pts.end()){
+			dataset_pts.erase(x);	
 		} 
 		unused_indices.insert(x);
 		id_to_node.erase(x);
@@ -97,6 +106,10 @@ class Graph {
 	}
 };
 
+// ---------------------------------------------------------------------------------------------------------------------------------------
+
+// ----------------------------------------- CLASS FOR EACH PARAMETER --------------------------------------------------------------------
+
 class Parameters {
 	public:
 	int k;			
@@ -116,4 +129,4 @@ class Parameters {
 	}
 };
 
-vector<vector<double>> coordinates;
+// ---------------------------------------------------------------------------------------------------------------------------------------

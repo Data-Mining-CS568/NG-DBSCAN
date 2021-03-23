@@ -1,5 +1,3 @@
-// rename active to dataset_pts in incr_classes.h
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -43,7 +41,7 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 			int id;
 			id = *G.unused_indices.begin();
 			G.unused_indices.erase(G.unused_indices.begin());
-			G.active.insert(id);
+			G.dataset_pts.insert(id);
 			G.noncore.insert(id);	// making initially noncore
 			to_add.push_back(id);
 
@@ -338,7 +336,7 @@ void points_info(Graph& G)
 			f >> v[i];
 		}
 		G.unused_indices.erase(id);
-		G.active.insert(id);
+		G.dataset_pts.insert(id);
 
 		if(type == "core"){
 			G.core.insert(id);
@@ -388,7 +386,7 @@ void build_graph(Graph& G){
 void save_epsilon_graph(Graph& G){
 	fstream f;
 	f.open("Files/new_epsilon_graph.txt",ios::out);
-	for(auto u : G.active){
+	for(auto u : G.dataset_pts){
 		f << u << "  ";
 		for(auto v : G.edges[u]){
 			f << v << " ";
@@ -400,8 +398,8 @@ void save_epsilon_graph(Graph& G){
 void save_points_info(Graph& G){
 	fstream f;
 	f.open("Files/new_points.txt",ios::out);
-	f << G.active.size() << " " << G.dimension << "\n";
-	for(auto u : G.active){
+	f << G.dataset_pts.size() << " " << G.dimension << "\n";
+	for(auto u : G.dataset_pts){
 		Node* curr = G.id_to_node[u];
 		f << u << " " << curr->type << " ";
 		for(double c : curr->coordinate){
@@ -447,7 +445,7 @@ void save(Graph& G){
 
 void classify(Graph& G)
 {
-	for(auto u : G.active)
+	for(auto u : G.dataset_pts)
 	{
 		if(G.id_to_node[u]->type == "noncore")
 		{
@@ -537,7 +535,7 @@ int main()
 	save(G);
 	
 	// Printing on Command line
-	//print_values(to_delete, to_add, upd_ins, upd_del);
+	// print_values(to_delete, to_add, upd_ins, upd_del);
 
 	return 0;
 }
