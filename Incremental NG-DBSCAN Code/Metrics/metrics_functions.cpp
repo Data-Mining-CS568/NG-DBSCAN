@@ -105,10 +105,10 @@ void Separation(int flag)
 	string filename;
 
 	if(flag){
-		filename = "separation_incr.txt";
+		filename = "Metrics/separation_incr.txt";
 	}
 	else {
-		filename = "separation_static.txt";
+		filename = "Metrics/separation_static.txt";
 	}
 
 	fstream fout;
