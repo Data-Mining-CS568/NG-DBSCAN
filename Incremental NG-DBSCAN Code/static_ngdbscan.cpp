@@ -237,6 +237,16 @@ int main(int argc, char* argv[])
 
 	// ----------------------------------------------------------------------------------------------------------------------------------
 
+	//Writing Resources Used In Files
+	string filename = "";
+	if(flag)
+		filename = "Metrics/time_new_static.txt";
+	else 
+		filename = "Metrics/time_old_static.txt";
+	fstream fout;
+	fout.open(filename, ios::app);
+	fout<<G.active.size()<<" "<<elapsed_seconds.count()<<"\n";
+
 	// saving data in files
 	save_data(G, flag);
 

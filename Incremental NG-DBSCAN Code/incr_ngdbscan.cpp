@@ -552,6 +552,13 @@ int main()
 	
 	// ----------------------------------------------------------------------------------------------------------------------------------
 
+	//Writing Resources Used In Files
+	string filename = "";
+	filename = "Metrics/time_incr.txt";
+	fstream fout;
+	fout.open(filename, ios::app);
+	fout<<G.dataset_pts.size()<<" "<<elapsed_seconds.count()<<"\n";
+
 	// saving in the files
 	save(G);
 	

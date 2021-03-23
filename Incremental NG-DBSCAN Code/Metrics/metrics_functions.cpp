@@ -52,10 +52,10 @@ void Compactness(int flag)
 
 	string filename;
 	if(flag){
-		filename = "compactness_incr.txt";
+		filename = "Metrics/compactness_incr.txt";
 	}
 	else {
-		filename = "compactness_static.txt";
+		filename = "Metrics/compactness_static.txt";
 	}
 	fstream fout;
 	fout.open(filename, ios::out);
