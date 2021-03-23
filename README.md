@@ -5,15 +5,18 @@
 - Images folder contains some of the clusters generated. 
 - For synthetic datasets, we used moon, blob and circular datasets.
 
-- Instructions to run the Static NG-DBSCAN Code:
+## Instructions to run the Static NG-DBSCAN Code:
 
-	- First generate the random dataset using dataset_generator.py. 
+<details>
+<summary> Generate Dataset </summary>
+	 
+		- Use dataset_generator.py. 
 
-	- It asks for number of points (or number of sentences in case of text dataset) we want in the dataset (use upto 10000 for fast running) and then asks for type of dataset. 
-
-	- Running the following command and entering the required inputs will generate required dataset in points.txt file:
-		- python3 dataset_generator.py
-
+		- Enter number of points (or number of sentences in case of text dataset) we want in the dataset (use upto 10000 for fast running) and type of dataset.
+		- Run command dataset will be generate in **points.txt** file:
+			- python3 dataset_generator.py
+</details>
+	
 	- Now run the main algorithm (NG-DBSCAN) code using the following command: 
 		- g++ phase2.cpp
 		- ./a.out
@@ -34,8 +37,9 @@
 		- ./a.out
 	- Using this we can compare between DBSCAN and NG-DBSCAN.
 
-- Code Files for Static NG-DBSCAN 
-
+<details>
+ <summary> Code Files for Static NG-DBSCAN </summary>
+	
 	- classes.h - contains all the used classes in the algorithm.
 
 	- phase1.cpp - contains the phase-1 code which will be used to create epsilon graph.
@@ -69,6 +73,10 @@
 	- numbered_dbscan_clusters.txt - contains all the points of DBSCAN, where ith point represents in which cluster number it lies.
 
 	- health_twitter.txt & sms_spam_collection.txt: text datasets
+  
+</details>
+
+	
 
 
 # About Incremental NG-DBSCAN
