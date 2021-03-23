@@ -4,7 +4,7 @@
 using namespace std;
 
 #include "incr_classes.h"
-#include "resources_calculation.cpp"
+#include "Metrics/resources_calculation.cpp"
 
 // ------------------------------------------------- DISTANCE FUNCTION -------------------------------------------------------------------
 

@@ -8,10 +8,10 @@ void store_in_map(int flag)
 	string filename = "";
 
 	if(flag){
-		filename = "Files/points_save1.txt";
+		filename = "../Files/points_save1.txt";
 	}
 	else {
-		filename = "Files/points_save.txt";
+		filename = "../Files/points_save.txt";
 	}
 
 
@@ -42,10 +42,10 @@ void store_clusters(int flag)
 	string filename = "";
 
 	if(flag){
-		filename = "Files/clusters_save1.txt";
+		filename = "../Files/clusters_save1.txt";
 	}
 	else {
-		filename = "Files/clusters_save.txt";
+		filename = "../Files/clusters_save.txt";
 	}
 
 	f_clusters.open(filename, ios::in);
@@ -68,16 +68,35 @@ void store_clusters(int flag)
 	}
 }
 
-void Compactness()
+void Compactness(int flag)
 {
 	for(int i = 0; i < n_clusters; ++i){
 		compactness[i] = calculate_compactness(i);
 		cout << compactness[i] << " ";
 	}
 	cout << "\n";
+
+
+	string filename;
+	if(flag){
+		filename = "compactness_incr.txt";
+	}
+	else {
+		filename = "compactness_static.txt";
+	}
+
+
+	fstream fout;
+	fout.open(filename, ios::out);
+	fout<<total_points<<"\n";
+	for(int i = 0; i < n_clusters; ++i){
+		fout << compactness[i] << " ";
+	}
+	fout.close();
+	return;
 }
 
-void Separation()
+void Separation(int flag)
 {
 	for(int i = 0; i < n_clusters; ++i){
 		for(int j = 0; j < n_clusters; ++j){
@@ -86,7 +105,29 @@ void Separation()
 		}
 		cout << "\n";
 	}
+
+	string filename;
+
+	if(flag){
+		filename = "separation_incr.txt";
+	}
+	else {
+		filename = "separation_static.txt";
+	}
+
+	fstream fout;
+	fout.open(filename, ios::out);
+	fout<<total_points<<"\n";
+	for(int i = 0; i < n_clusters; ++i){
+		for(int j = 0; j < n_clusters; ++j){
+			fout << separation[i][j] << " ";
+		}
+		fout<<"\n";
+	}
+	fout.close();
+	return;
 }
+
 
 int main(int argc, char* argv[])
 {
@@ -107,10 +148,10 @@ int main(int argc, char* argv[])
 	separation.resize(n_clusters,vector<double>(n_clusters,0));
 
 	cout << "\nPrinting compactness of each cluster: \n";	
-	Compactness();
+	Compactness(flag);
 
 	cout << "\nPrinting separation between (i,j)th clusters: \n";
-	Separation();
+	Separation(flag);
 
 	return 0;
 }
