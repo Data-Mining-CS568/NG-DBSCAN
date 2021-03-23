@@ -162,7 +162,7 @@ int main(int argc, char* argv[])
 	double xTn, xTr, epsilon;
 	int k, Mmax, p, iter, Minpts, n;
 
-	if(argc < 3) {
+	if(argc < 3){
 		cout<<"Command Line Argument(s) is/are missing\n";
 		return 0;
 	} 
@@ -179,7 +179,7 @@ int main(int argc, char* argv[])
 	// storing queries points
 	map<vector<double>,bool> to_delete, to_add;
 	int flag = 0;
-	flag = atoi(argv[2]); //flag == 1, if there are queries to add or delete points
+	flag = atoi(argv[2]); 	// flag == 1, if there are queries to add or delete points
 	
 	if(flag){
 		store_add_and_delete_points(to_add, to_delete);
@@ -225,15 +225,15 @@ int main(int argc, char* argv[])
 	chrono::duration<double> elapsed_seconds = end-start;
     time_t end_time = chrono::system_clock::to_time_t(end);
 
-    cout << "finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << "s\n";
+    cout << "finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << " seconds\n";
 	
 	// ----------------------------------------------------------------------------------------------------------------------------------
 
 
 	// ----------- MEMORY USAGE ---------------------------------------------------------------------------------------------------------
 
-	cout << "Virtual Memory Used: " << getValue_virtual_memory() << "KB\n";
-	cout << "Physical Memory Used: " << getValue_physical_memory() << "KB\n";
+	cout << "Virtual Memory Used: " << getValue_virtual_memory() << " KB\n";
+	cout << "Physical Memory Used: " << getValue_physical_memory() << " KB\n";
 
 	// ----------------------------------------------------------------------------------------------------------------------------------
 

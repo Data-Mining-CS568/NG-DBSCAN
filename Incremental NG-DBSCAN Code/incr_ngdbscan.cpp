@@ -521,15 +521,15 @@ int main()
 	chrono::duration<double> elapsed_seconds = end-start;
     time_t end_time = chrono::system_clock::to_time_t(end);
 
-    cout << "finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << "s\n";
+    cout << "finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << " seconds\n";
 	
 	// ----------------------------------------------------------------------------------------------------------------------------------
 
 
 	// ----------- MEMORY USAGE ---------------------------------------------------------------------------------------------------------
 
-	cout << "Virtual Memory Used: " << getValue_virtual_memory() << "KB\n";
-	cout << "Physical Memory Used: " << getValue_physical_memory() << "KB\n";
+	cout << "Virtual Memory Used: " << getValue_virtual_memory() << " KB\n";
+	cout << "Physical Memory Used: " << getValue_physical_memory() << " KB\n";
 	
 	// ----------------------------------------------------------------------------------------------------------------------------------
 

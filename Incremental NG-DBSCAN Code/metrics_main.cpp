@@ -1,4 +1,4 @@
-#include "metrics_calculate.cpp"
+#include "Metrics/metrics_calculate.cpp"
 
 void store_in_map(int flag)
 {
@@ -6,10 +6,10 @@ void store_in_map(int flag)
 	string filename = "";
 
 	if(flag){
-		filename = "../Files/new_points.txt";
+		filename = "Files/new_points.txt";
 	}
 	else {
-		filename = "../Files/old_points.txt";
+		filename = "Files/old_points.txt";
 	}
 
 	f_points.open(filename, ios::in);	
@@ -37,10 +37,10 @@ void store_clusters(int flag)
 	string filename = "";
 
 	if(flag){
-		filename = "../Files/new_clusters.txt";
+		filename = "Files/new_clusters.txt";
 	}
 	else {
-		filename = "../Files/old_clusters.txt";
+		filename = "Files/old_clusters.txt";
 	}
 
 	f_clusters.open(filename, ios::in);
@@ -73,10 +73,10 @@ void Compactness(int flag)
 
 	string filename;
 	if(flag){
-		filename = "compactness_incr.txt";
+		filename = "Metrics/compactness_incr.txt";
 	}
 	else {
-		filename = "compactness_static.txt";
+		filename = "Metrics/compactness_static.txt";
 	}
 
 	fstream fout;
@@ -102,10 +102,10 @@ void Separation(int flag)
 	string filename;
 
 	if(flag){
-		filename = "separation_incr.txt";
+		filename = "Metrics/separation_incr.txt";
 	}
 	else {
-		filename = "separation_static.txt";
+		filename = "Metrics/separation_static.txt";
 	}
 
 	fstream fout;
@@ -120,7 +120,6 @@ void Separation(int flag)
 	fout.close();
 	return;
 }
-
 
 int main(int argc, char* argv[])
 {	
