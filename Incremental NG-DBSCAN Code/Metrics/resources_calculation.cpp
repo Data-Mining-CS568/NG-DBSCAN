@@ -11,7 +11,7 @@ int parseLine(char* line)
 
 int getValue_virtual_memory()
 {   
-    // Note: this value is in KB!
+    // Note: this value is in KB
     FILE* file = fopen("/proc/self/status", "r");
     int result = -1;
     char line[128];
@@ -27,7 +27,7 @@ int getValue_virtual_memory()
 
 int getValue_physical_memory()
 {   
-    //Note: this value is in KB!
+    // Note: this value is in KB
     FILE* file = fopen("/proc/self/status", "r");
     int result = -1;
     char line[128];

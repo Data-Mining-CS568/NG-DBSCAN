@@ -78,10 +78,10 @@ if dimension == 2:
 	    for point in cluster:
 	        x.append(point[0])
 	        y.append(point[1])
-	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 50)
+	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 30)
 	    i = (i + 1) % 11
 	for item in noise:
-		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 50)
+		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 30)
 
 elif dimension == 3:
 	ax = plt.axes(projection='3d')

@@ -1,7 +1,7 @@
 #include "Static/phase2.cpp"
 #include "Metrics/resources_calculation.cpp"
 
-// --------------------------------- DECIDING PARAMETERS --------------------------------------------------------------------------------
+// --------------------------------- DECIDING PARAMETERS ---------------------------------------------------------------------------------
 
 void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, int& p, int& iter, double& epsilon, int& Minpts, int parameterChange)
 {
@@ -45,7 +45,6 @@ void save_clusters_info(Graph& G, int flag)
 	else {
 		filename = "Files/old_clusters.txt";
 	}
-
 	f.open(filename, ios::out);
 
 	// number of clusters
@@ -77,7 +76,6 @@ void save_points_info(Graph& G, int flag)
 	}
 	
 	f.open(filename, ios::out);
-
 	f << G.N << " " << dimensions << "\n";
 
 	for(int i = 0; i < G.N; i++){
@@ -102,7 +100,6 @@ void save_epsilon_graph(Graph& G, int flag)
 	}
 
 	f.open(filename,ios::out);
-
 	for(int i = 0; i < G.N; i++){
 		f << i << " ";
 		for(auto u : G.edges[i]){
@@ -124,7 +121,8 @@ void save_data(Graph& G, int flag)
 
 // ----------------------------------------- STORING POINTS TO ADD AND DELETE IN MAPS ---------------------------------------------------
 
-void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<double>,bool>& to_delete){
+void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<double>,bool>& to_delete)
+{
 	int tot_points;
 	char type;
 
@@ -165,7 +163,6 @@ void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::
 	cout << "Virtual Memory Used: " << getValue_virtual_memory() << " KB\n";
 	cout << "Physical Memory Used: " << getValue_physical_memory() << " KB\n";
 
-
 	// Writing Resources Used In Files
 	string filename = "";
 	if(flag){
@@ -204,7 +201,7 @@ int main(int argc, char* argv[])
 	int k, Mmax, p, iter, Minpts, n;
 
 	if(argc < 3){
-		cout<<"Command Line Argument(s) is/are missing\n";
+		cout << "Command Line Argument(s) is/are missing\n";
 		return 0;
 	} 
 
@@ -220,6 +217,7 @@ int main(int argc, char* argv[])
 	
 	// storing queries points
 	map<vector<double>,bool> to_delete, to_add;
+
 	int flag = 0;
 	flag = atoi(argv[2]); 	// flag == 1, if there are queries to add or delete points
 	

@@ -9,7 +9,8 @@ vector<vector<double>> separation;
 
 // ---------------------------------------------- PRINTING A VECTOR ----------------------------------------------------------------------
 
-void print(vector<double> &d){
+void print(vector<double> &d)
+{
 	for(int i = 0; i < d.size(); ++i){
 		cout << d[i] << " ";
 	}
@@ -19,7 +20,7 @@ void print(vector<double> &d){
 // ---------------------------------------------------------------------------------------------------------------------------------------
 
 
-// --------------------------------------------- Calculating Compactness -----------------------------------------------------------------
+// --------------------------------------------- CALCULATING COMPACTNESS -----------------------------------------------------------------
 
 double calculate_compactness(int n)
 {
@@ -69,7 +70,7 @@ void Compactness(int flag)
 // ---------------------------------------------------------------------------------------------------------------------------------------
 
 
-// ----------------------------------------- Calculating Separation between different clusters -------------------------------------------
+// ----------------------------------------- CALCULATING SEPERATION BETWEEN DIFFERENT CLUSTERS -------------------------------------------
 
 double calculate_separation(int n, int m)
 {
@@ -125,7 +126,8 @@ void Separation(int flag)
 
 // ----------------------------------- CALCULATING DISTANCE BETWEEN 2 POINTS --------------------------------------------------------------
 
-double distance(vector<double> a, vector<double> b){
+double distance(vector<double> a, vector<double> b)
+{
 	double ans = 0;
 	for(int j = 0; j < a.size(); j++){
 		ans += (a[j] - b[j]) * (a[j] - b[j]);
@@ -134,5 +136,3 @@ double distance(vector<double> a, vector<double> b){
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------------------
-
-

@@ -65,7 +65,8 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 
 // ------------------------------------------- RANDOM NEIGHBOUR SEARCH -------------------------------------------------------------------
 
-void check_for_completion(int u, Graph& G, Parameters& parameter, set<int>& found_completed){
+void check_for_completion(int u, Graph& G, Parameters& parameter, set<int>& found_completed)
+{
 	if(G.edges[u].size() == parameter.Minpts){
 		found_completed.insert(u);
 	}
@@ -283,9 +284,9 @@ void dfs(int u, Graph& G, int cluster_no, map<int,int>& visited)
 	}
 }
 
-void cluster_membership(Graph& G, vector<int>& upd){
-	map<int, int> visited;
-	
+void cluster_membership(Graph& G, vector<int>& upd)
+{
+	map<int, int> visited;	
 	for(auto u : upd){
 		if(!visited.count(u)){
 			dfs(u, G, u, visited);
@@ -372,7 +373,8 @@ void clusters_info(Graph& G)
 	}
 }
 
-void build_graph(Graph& G){
+void build_graph(Graph& G)
+{
 	build_epsilon_graph(G);
 	points_info(G);
 	clusters_info(G);
@@ -383,7 +385,8 @@ void build_graph(Graph& G){
 
 // -------------------------------------------- SAVE INFO REGARDING CLUSTERS AND POINTS IN FILES -----------------------------------------
 
-void save_epsilon_graph(Graph& G){
+void save_epsilon_graph(Graph& G)
+{
 	fstream f;
 	f.open("Files/new_epsilon_graph.txt",ios::out);
 	for(auto u : G.dataset_pts){
@@ -395,7 +398,8 @@ void save_epsilon_graph(Graph& G){
 	}
 }
 
-void save_points_info(Graph& G){
+void save_points_info(Graph& G)
+{
 	fstream f;
 	f.open("Files/new_points.txt",ios::out);
 	f << G.dataset_pts.size() << " " << G.dimension << "\n";
@@ -409,7 +413,8 @@ void save_points_info(Graph& G){
 	}
 }
 
-void save_clusters_info(Graph& G){
+void save_clusters_info(Graph& G)
+{
 	fstream f;
 	f.open("Files/new_clusters.txt",ios::out);
 	int no_of_clusters = 0;
@@ -432,7 +437,8 @@ void save_clusters_info(Graph& G){
 	}
 }
 
-void save(Graph& G){
+void save(Graph& G)
+{
 	save_epsilon_graph(G);
 	save_points_info(G);
 	save_clusters_info(G);
@@ -467,7 +473,8 @@ void classify(Graph& G)
 
 // ----------------------------------------- PRINTING VALUES -----------------------------------------------------------------------------
 
-void print_values(vector<int>& to_delete, vector<int>& to_add, vector<int>& upd_ins, vector<int>& upd_del){
+void print_values(vector<int>& to_delete, vector<int>& to_add, vector<int>& upd_ins, vector<int>& upd_del)
+{
 	cout << "\nAddition: \n";
 	for(auto u : to_add) cout << u << " ";
 	cout << "\n";
