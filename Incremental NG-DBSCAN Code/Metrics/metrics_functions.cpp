@@ -7,7 +7,7 @@ vector<vector<vector<double>>> clusters;
 vector<double> compactness;
 vector<vector<double>> separation;
 
-// ---------------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------- PRINTING A VECTOR ----------------------------------------------------------------------
 
 void print(vector<double> &d){
 	for(int i = 0; i < d.size(); ++i){
@@ -42,6 +42,30 @@ double calculate_compactness(int n)
 	return ans/cnt;
 }
 
+void Compactness(int flag)
+{
+	for(int i = 0; i < n_clusters; ++i){
+		compactness[i] = calculate_compactness(i);
+		cout << compactness[i] << " ";
+	}
+	cout << "\n";
+
+	string filename;
+	if(flag){
+		filename = "compactness_incr.txt";
+	}
+	else {
+		filename = "compactness_static.txt";
+	}
+	fstream fout;
+	fout.open(filename, ios::out);
+	fout << total_points << "\n";
+	for(int i = 0; i < n_clusters; ++i){
+		fout << compactness[i] << " ";
+	}
+	fout.close();
+}
+
 // ---------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -69,14 +93,46 @@ double calculate_separation(int n, int m)
 	return ans/cnt;
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------------------
+void Separation(int flag)
+{
+	for(int i = 0; i < n_clusters; ++i){
+		for(int j = 0; j < n_clusters; ++j){
+			separation[i][j] = calculate_separation(i,j);
+			cout << separation[i][j] << " ";
+		}
+		cout << "\n";
+	}
+	string filename;
+
+	if(flag){
+		filename = "separation_incr.txt";
+	}
+	else {
+		filename = "separation_static.txt";
+	}
+
+	fstream fout;
+	fout.open(filename, ios::out);
+	fout << total_points << "\n";
+	for(int i = 0; i < n_clusters; ++i){
+		for(int j = 0; j < n_clusters; ++j){
+			fout << separation[i][j] << " ";
+		}
+		fout << "\n";
+	}
+	fout.close();
+}
+
+// ----------------------------------- CALCULATING DISTANCE BETWEEN 2 POINTS --------------------------------------------------------------
 
 double distance(vector<double> a, vector<double> b){
 	double ans = 0;
 	for(int j = 0; j < a.size(); j++){
 		ans += (a[j] - b[j]) * (a[j] - b[j]);
 	}
-	return sqrtf(ans);
+	return sqrt(ans);
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------------------
+
+

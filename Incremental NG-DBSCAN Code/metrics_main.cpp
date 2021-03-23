@@ -1,4 +1,6 @@
-#include "Metrics/metrics_calculate.cpp"
+#include "Metrics/metrics_functions.cpp"
+
+// -------------------------------------------- STORING IN MAP -------------------------------------------------------------------------
 
 void store_in_map(int flag)
 {
@@ -12,11 +14,9 @@ void store_in_map(int flag)
 		filename = "Files/old_points.txt";
 	}
 
-	f_points.open(filename, ios::in);	
-
+	f_points.open(filename, ios::in);
 	int pt_id, t = 0; 
-	string pt_type;
-	
+	string pt_type;	
 	f_points >> total_points >> dim;
 	
 	while(t++ < total_points)
@@ -31,6 +31,11 @@ void store_in_map(int flag)
 	f_points.close();
 }
 
+// --------------------------------------------------------------------------------------------------------------------------------------
+
+
+// --------------------------------------------- STORE CLUSTERS -------------------------------------------------------------------------
+
 void store_clusters(int flag)
 {
 	fstream f_clusters;
@@ -44,7 +49,6 @@ void store_clusters(int flag)
 	}
 
 	f_clusters.open(filename, ios::in);
-	
 	f_clusters >> n_clusters;
 	clusters.resize(n_clusters);
 
@@ -53,7 +57,7 @@ void store_clusters(int flag)
 		int size;
 		f_clusters >> cluster_id >> size;
 		clusters[i].resize(size);
-		int pt_id;
+		int pt_id; 
 		for(int j = 0; j < size; ++j){
 			f_clusters >> pt_id;
 			if(mp.find(pt_id) != mp.end()){
@@ -63,73 +67,20 @@ void store_clusters(int flag)
 	}
 }
 
-void Compactness(int flag)
-{
-	for(int i = 0; i < n_clusters; ++i){
-		compactness[i] = calculate_compactness(i);
-		cout << compactness[i] << " ";
-	}
-	cout << "\n";
+// ---------------------------------------------------------------------------------------------------------------------------------------
 
-	string filename;
-	if(flag){
-		filename = "Metrics/compactness_incr.txt";
-	}
-	else {
-		filename = "Metrics/compactness_static.txt";
-	}
 
-	fstream fout;
-	fout.open(filename, ios::out);
-	fout<<total_points<<"\n";
-	for(int i = 0; i < n_clusters; ++i){
-		fout << compactness[i] << " ";
-	}
-	fout.close();
-	return;
-}
-
-void Separation(int flag)
-{
-	for(int i = 0; i < n_clusters; ++i){
-		for(int j = 0; j < n_clusters; ++j){
-			separation[i][j] = calculate_separation(i,j);
-			cout << separation[i][j] << " ";
-		}
-		cout << "\n";
-	}
-
-	string filename;
-
-	if(flag){
-		filename = "Metrics/separation_incr.txt";
-	}
-	else {
-		filename = "Metrics/separation_static.txt";
-	}
-
-	fstream fout;
-	fout.open(filename, ios::out);
-	fout<<total_points<<"\n";
-	for(int i = 0; i < n_clusters; ++i){
-		for(int j = 0; j < n_clusters; ++j){
-			fout << separation[i][j] << " ";
-		}
-		fout<<"\n";
-	}
-	fout.close();
-	return;
-}
+// ---------------------------------------------- MAIN FUNCTION --------------------------------------------------------------------------
 
 int main(int argc, char* argv[])
 {	
 	if(argc < 2){
-		cout<<"Command Line Argument(s) is/are missing\n";
+		cout << "Command Line Argument(s) is/are missing\n";
 		return 0;
 	} 
 	
 	int flag = 0;
-	flag = atoi(argv[1]); //flag == 1, if there are queries to add or delete points
+	flag = atoi(argv[1]); 	// flag == 1, if there are queries to add or delete points
 
 	store_in_map(flag); 	// store points coordinate in map
 	store_clusters(flag);
@@ -145,3 +96,5 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
+
+// ----------------------------------------------------------------------------------------------------------------------------------------
