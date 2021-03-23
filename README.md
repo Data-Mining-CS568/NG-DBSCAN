@@ -5,22 +5,33 @@
 - Images folder contains some of the clusters generated. 
 - For synthetic datasets, we used moon, blob and circular datasets.
 
-- Instructions to run the Static NG-DBSCAN Code:
+### Instructions to run the Static NG-DBSCAN Code:
 
-	- First generate the random dataset using dataset_generator.py. 
+<details>
+<summary> Generate Dataset </summary>
+	 
+		- Use dataset_generator.py. 
 
-	- It asks for number of points (or number of sentences in case of text dataset) we want in the dataset (use upto 10000 for fast running) and then asks for type of dataset. 
+		- Enter number of points (or number of sentences in case of text dataset) and type of dataset.(use upto 10000 for fast running) 
+		- Run command dataset will be generate in points.txt file:
+			- python3 dataset_generator.py
+</details>
 
-	- Running the following command and entering the required inputs will generate required dataset in points.txt file:
-		- python3 dataset_generator.py
+```
+- Run the main algorithm (NG-DBSCAN) using command: 
+	- g++ phase2.cpp
+	- ./a.out
+- It will create clusters.txt which contains all the clusters. 
 
-	- Now run the main algorithm (NG-DBSCAN) code using the following command: 
-		- g++ phase2.cpp
-		- ./a.out
-	- It will create clusters.txt which contains all the clusters. 
+- Now to plot the clusters (for 2D and 3D dataset), use the following command:
+	- python3 clusters_generator.py 
 
-	- Now to plot the clusters (for 2D and 3D dataset), use the following command:
-		- python3 clusters_generator.py 
+```
+
+
+
+<details>
+<summary> Metrics Calculation and Comparison </summary>
 
 	- We calculated the NG-DBSCAN metrics for comparison with DBSCAN: compactness, separation, recall 
 		- g++ metrics_main.cpp
@@ -33,9 +44,12 @@
 		- g++ dbscan_metrics_main.cpp
 		- ./a.out
 	- Using this we can compare between DBSCAN and NG-DBSCAN.
+		
+</details>
 
-- Code Files for Static NG-DBSCAN 
-
+<details>
+ <summary> Code Files for Static NG-DBSCAN </summary>
+	
 	- classes.h - contains all the used classes in the algorithm.
 
 	- phase1.cpp - contains the phase-1 code which will be used to create epsilon graph.
@@ -69,6 +83,12 @@
 	- numbered_dbscan_clusters.txt - contains all the points of DBSCAN, where ith point represents in which cluster number it lies.
 
 	- health_twitter.txt & sms_spam_collection.txt: text datasets
+  
+</details>
+
+#### Clusters Generated With 3-D Points
+![Image of 3D Plot](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Report%20Images/3d_dataset.png)
+	
 
 
 # About Incremental NG-DBSCAN
@@ -78,7 +98,7 @@
 - Inside each dataset of 2 dimension, images of cluster plotting are also present. 
 - For synthetic datasets, we used moon, blob and circular datasets.
 
-- Instructions to run the Incremental NG-DBSCAN Code:
+### Instructions to run the Incremental NG-DBSCAN Code:
 
 	- First put the points.txt and queries.txt for the dataset you want the algorithm to run on.
 
@@ -93,6 +113,7 @@
 	- Now to run the queries.txt over incremental version, use the following command. 
 		- g++ incr_ngdbscan.cpp 
 		- ./a.out 
+	
 	- After this, new_epsilon_graph.txt, new_clusters.txt, new_points.txt will be generated.
 
 	- To plot the clusters for the points after considering queries.txt, we will run the following command:
@@ -114,9 +135,13 @@
 		- g++ metrics_main.cpp 
 		- ./a.out 1	 
 
-- Code Files for Incremental NG-DBSCAN:
+
 	
-	- incr_classes.h - contains all used classes in the incremental NG-DBSCAN algorithm.
+
+<details>
+ <summary> Code Files for Incremental NG-DBSCAN </summary>
+	
+		- incr_classes.h - contains all used classes in the incremental NG-DBSCAN algorithm.
 
 	- incr_ngdbscan.cpp - contains the whole incremental NG-DBSCAN algorithm code.
 
@@ -145,3 +170,6 @@
 	- old_clusters.txt - contains the clusters for the old dataset.
 
 	- new_clusters.txt - contains the clusters for the new dataset (after considering queries.txt).
+  
+</details>
+
