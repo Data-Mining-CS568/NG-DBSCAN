@@ -47,9 +47,21 @@ void Compactness(int flag)
 {
 	for(int i = 0; i < n_clusters; ++i){
 		compactness[i] = calculate_compactness(i);
-		cout << compactness[i] << " ";
 	}
-	cout << "\n";
+	long double mean = 0, standard_deviation = 0;
+	for(int i = 0; i < n_clusters; ++i){
+		mean += compactness[i];
+	}
+	mean /= n_clusters;
+
+	cout << "Mean compactness of all clusters: " << mean << "\n";
+
+	for(int i = 0; i < n_clusters; i++){
+		standard_deviation += (mean - compactness[i])*(mean - compactness[i]);
+	}
+	standard_deviation /= n_clusters;
+
+	cout << "Standard Deviation of compactness all clusters: " << standard_deviation << "\n";
 
 	string filename;
 	if(flag){
@@ -59,11 +71,9 @@ void Compactness(int flag)
 		filename = "Compactness/compactness_static.txt";
 	}
 	fstream fout;
-	fout.open(filename, ios::out);
+	fout.open(filename, ios::app);
 	fout << total_points << "\n";
-	for(int i = 0; i < n_clusters; ++i){
-		fout << compactness[i] << " ";
-	}
+	fout << mean << " " << standard_deviation << "\n";
 	fout.close();
 }
 
@@ -96,15 +106,17 @@ double calculate_separation(int n, int m)
 
 void Separation(int flag)
 {
+	long double mean = 0, standard_deviation = 0;
 	for(int i = 0; i < n_clusters; ++i){
 		for(int j = 0; j < n_clusters; ++j){
 			separation[i][j] = calculate_separation(i,j);
-			cout << separation[i][j] << " ";
+			if(i < j){
+				mean += separation[i][j];
+			}
 		}
-		cout << "\n";
 	}
-	string filename;
 
+	string filename;
 	if(flag){
 		filename = "Seperation/separation_incr.txt";
 	}
@@ -113,14 +125,19 @@ void Separation(int flag)
 	}
 
 	fstream fout;
-	fout.open(filename, ios::out);
-	fout << total_points << "\n";
+	fout.open(filename, ios::app);
 	for(int i = 0; i < n_clusters; ++i){
-		for(int j = 0; j < n_clusters; ++j){
-			fout << separation[i][j] << " ";
+		for(int j = i+1; j < n_clusters; ++j){
+			standard_deviation += (mean - separation[i][j])*(mean - separation[i][j]);
 		}
-		fout << "\n";
 	}
+	standard_deviation /= (n_clusters*(n_clusters-1))/2;
+
+	cout << "Mean seperation of all clusters: " << mean << "\n";
+	cout << "Standard Deviation of seperation all clusters: " << standard_deviation << "\n";
+	
+	fout << total_points << "\n";
+	fout << mean << " " << standard_deviation << "\n";
 	fout.close();
 }
 

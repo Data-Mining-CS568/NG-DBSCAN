@@ -88,12 +88,8 @@ int main(int argc, char* argv[])
 	compactness.resize(n_clusters,0);
 	separation.resize(n_clusters,vector<double>(n_clusters,0));
 
-	cout << "\nPrinting compactness of each cluster: \n";	
 	Compactness(flag);
-
-	cout << "\nPrinting separation between (i,j)th clusters: \n";
 	Separation(flag);
-
 	return 0;
 }
 

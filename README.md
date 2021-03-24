@@ -240,9 +240,11 @@
 
 	- time*.txt - Files of this format contains in each line: <no_of_points> <time_taken>.
 
-	- seperation*.txt - These files contains the number of points and then seperation values for each pair of clusters.
+	- cpu*.txt - Files of this format contains in each line: <no_of_points> <cpu_usage>.
 
-	- compactness*.txt - These files contains the number of points and then compactness values for each cluster.	
+	- seperation*.txt - These files contains the number of points on the first line and then mean and standard deviation on the subsequent line for all pair of clusters.
+
+	- compactness*.txt - These files contains the number of points on the first line and then mean and standard deviation on the subsequent line for all pair of clusters.	
 
 </details>	
 
