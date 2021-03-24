@@ -541,7 +541,7 @@ void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::
 	fout << G.dataset_pts.size() << " " << getValue_virtual_memory() << " " << getValue_physical_memory() << "\n";
 	fout.close();
 
-	filename = "Metrics/CPU/cpu_usage_incr.txt";
+	filename = "Metrics/CPU/cpu_incr.txt";
 	fout.open(filename, ios::app);
 	fout << G.dataset_pts.size() << " " << GetCPULoad() << "\n";
 	fout.close();

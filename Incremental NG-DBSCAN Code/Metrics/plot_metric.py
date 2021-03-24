@@ -74,8 +74,39 @@ def plot_graph():
 	plt.legend(loc ="lower right", prop={"size":8})
 	plt.savefig('Plot Images/memory_plot.png', dpi = 50, bbox_inches='tight')	
 
-	plt.show()
+	# ------ Plot CPU Usage --------
+	filename0 = "CPU/cpu_new_static.txt"
+	filename1 = "CPU/cpu_incr.txt"	
+	x0 = []
+	y0 = []
+	x1 = []
+	y1 = []
 
+	with open(filename0) as metric_file:
+		for line in metric_file:
+			coordinates = line.split()
+			x0.append(int(coordinates[0]))
+			y0.append(int(coordinates[1]))
+
+	with open(filename1) as metric_file:
+		for line in metric_file:
+			coordinates = line.split()
+			x1.append(int(coordinates[0]))
+			y1.append(int(coordinates[1]))
+
+	plot_time = plt.figure(3)			
+	plt.plot(x0,y0,label = "Static NG-DBSCAN")
+	plt.plot(x1,y1,label = "Incremental NG-DBSCAN")
+	plt.xlabel('Number Of Data Points')
+	metric = 'Percentage of CPU Used'
+	plt.ylabel(metric)
+	Title = 'CPU Usage Plot (Static vs Incremental)'
+	plt.title(Title)
+	plt.legend(loc ="upper right", prop={"size":8})
+	plt.savefig('Plot Images/cpu_usage_plot.png', dpi = 50, bbox_inches='tight')
+	
+
+	plt.show()
 
 if __name__ == "__main__":
 	plot_graph()
