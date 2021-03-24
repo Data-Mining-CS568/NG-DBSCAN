@@ -189,6 +189,17 @@ void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::
 	fout.open(filename, ios::app);
 	fout << G.active.size() << " " << getValue_virtual_memory() << " " << getValue_physical_memory() << "\n";
 	fout.close();
+
+	if(flag){
+		filename = "Metrics/CPU/cpu_new_static.txt";
+	}
+	else {
+		filename = "Metrics/CPU/cpu_old_static.txt";
+	}
+
+	fout.open(filename, ios::app);
+	fout << G.active.size() << " " << GetCPULoad() << "\n";
+	fout.close();
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
