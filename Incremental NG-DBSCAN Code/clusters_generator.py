@@ -67,7 +67,7 @@ for i in range(n):
 			lst.append(pt_coordinates)
 	l.append(lst)
 
-colours = ["green", "blue", "red", "orange", "yellow", "violet", "black", "pink", "grey", "cyan", "darkgreen"]
+colours = ["green", "blue", "red", "orange", "yellow", "violet", "pink", "grey", "cyan", "darkgreen"]
 
 if dimension == 2:
 	fig, ax = plt.subplots()
@@ -79,8 +79,11 @@ if dimension == 2:
 	        x.append(point[0])
 	        y.append(point[1])
 	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 30)
-	    i = (i + 1) % 11
+	    i = (i + 1) % 10
+	cnt = 0
 	for item in noise:
+		cnt = cnt + 1
+		print(cnt)
 		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 30)
 
 elif dimension == 3:
@@ -95,7 +98,7 @@ elif dimension == 3:
 	        y.append(point[1])
 	        z.append(point[2])
 	    ax.scatter3D(x, y, z, zdir='z', s = 30, c = colours[i], marker= ".")
-	    i = (i + 1) % 11
+	    i = (i + 1) % 10
 	for item in noise:
 		ax.scatter3D(item[0], item[1], item[2], zdir='z', s = 30, c = "black", marker = ".")
 
