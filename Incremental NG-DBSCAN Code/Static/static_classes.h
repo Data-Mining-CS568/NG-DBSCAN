@@ -62,7 +62,7 @@ class Parameters
 	double epsilon;	// minimum distance b/w nodes 
 	int Minpts; 	// each core node is having degree at least Minpts − 1
 
-	Parameters(double Tn = 10, double Tr = 5, int k = 15, int Mmax = 25, int p = 2, int iter = 30, double epsilon = 0.1, int Minpts = 8){
+	Parameters(double Tn = 10, double Tr = 5, int k = 20, int Mmax = 30, int p = 2, int iter = 30, double epsilon = 1.0, int Minpts = 15){
 		this->Tn = Tn;
 		this->Tr = Tr;
 		this->k = k;
