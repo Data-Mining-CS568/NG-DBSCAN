@@ -67,7 +67,7 @@ for i in range(n):
 			lst.append(pt_coordinates)
 	l.append(lst)
 
-colours = ["green", "blue", "red", "orange", "yellow", "violet", "black", "pink", "grey", "cyan", "dark_green"]
+colours = ["green", "blue", "red", "orange", "yellow", "violet", "black", "pink", "grey", "cyan", "darkgreen"]
 
 if dimension == 2:
 	fig, ax = plt.subplots()
