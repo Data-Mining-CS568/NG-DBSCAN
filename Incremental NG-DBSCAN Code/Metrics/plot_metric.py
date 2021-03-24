@@ -31,7 +31,7 @@ def plot_graph():
 	Title = 'Time' + ' Plot'
 	plt.title(Title)
 	plt.legend(loc ="lower right")
-	plt.savefig('Plot_Images/time_plot.png', dpi = 300, bbox_inches='tight')
+	plt.savefig('Plot Images/time_plot.png', dpi = 300, bbox_inches='tight')
 	
 
 	# ------ Plot Memory --------
@@ -71,7 +71,7 @@ def plot_graph():
 	Title = 'Memory' + ' Plot'
 	plt.title(Title)
 	plt.legend(loc ="lower right")
-	plt.savefig('Plot_Images/memory_plot.png', dpi = 300, bbox_inches='tight')	
+	plt.savefig('Plot Images/memory_plot.png', dpi = 300, bbox_inches='tight')	
 
 	plt.show()
 

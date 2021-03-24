@@ -164,10 +164,9 @@ void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::
 	cout << "Virtual Memory Used: " << getValue_virtual_memory() << " KB\n";
 	cout << "Physical Memory Used: " << getValue_physical_memory() << " KB\n";
 
-	cout<< "CPU Used: "<<getCurrentValue()<<" %\n";
-	cout<< "Total CPU Used: "<<getCurrentValue1()<<" %\n";
+	cout << "CPU Used: " << GetCPULoad() << "%\n";
 
-	// Writing Resources Used In Files
+	// writing resources used in files
 	string filename = "";
 	if(flag){
 		filename = "Metrics/Time/time_new_static.txt";
