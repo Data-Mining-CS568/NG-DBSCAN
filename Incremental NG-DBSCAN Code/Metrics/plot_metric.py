@@ -23,15 +23,15 @@ def plot_graph():
 			y1.append(float(coordinates[1]))
 
 	plot_time = plt.figure(1)			
-	plt.plot(x0,y0,label = "Static Algorithm")
-	plt.plot(x1,y1,label = "Incremental Algorithm")
-	plt.xlabel('Datasize/Number Of Data Points')
-	metric = 'Time'
+	plt.plot(x0,y0,label = "Static NG-DBSCAN")
+	plt.plot(x1,y1,label = "Incremental NG-DBSCAN")
+	plt.xlabel('Number Of Data Points')
+	metric = 'Time in seconds'
 	plt.ylabel(metric)
-	Title = 'Time' + ' Plot'
+	Title = 'Time Plot (Static vs Incremental)'
 	plt.title(Title)
-	plt.legend(loc ="lower right")
-	plt.savefig('Plot Images/time_plot.png', dpi = 300, bbox_inches='tight')
+	plt.legend(loc ="upper right", prop={"size":8})
+	plt.savefig('Plot Images/time_plot.png', dpi = 50, bbox_inches='tight')
 	
 
 	# ------ Plot Memory --------
@@ -61,17 +61,18 @@ def plot_graph():
 	plot_time = plt.figure(2)
 	
 	# dashed for virtual memory			
-	plt.plot(x0,y0, color = 'blue', linestyle = 'dashed', label = "Virtual Memory Static")
-	plt.plot(x0,z0, color = 'blue', label = "Physical Memory Static")
-	plt.plot(x1,y1, color = 'red' , linestyle = 'dashed', label = "Virutual Memory Incremental")
-	plt.plot(x1,z1, color = 'red' , label = "Physical Memory Incremental")
-	plt.xlabel('Datasize/Number Of Data Points')
-	metric = 'Memory'
+
+	# plt.plot(x0,y0, color = 'blue', linestyle = 'dashed', label = "Virtual Memory Static")
+	plt.plot(x0,z0, color = 'blue', label = "Static NG-DBSCAN")
+	# plt.plot(x1,y1, color = 'red' , linestyle = 'dashed', label = "Virtual Memory Incremental")
+	plt.plot(x1,z1, color = 'red' , label = "Incremental NG-DBSCAN")
+	plt.xlabel('Number Of Data Points')
+	metric = 'Memory in KB'
 	plt.ylabel(metric)
-	Title = 'Memory' + ' Plot'
+	Title = 'Memory Plot (Static vs Incremental)'
 	plt.title(Title)
-	plt.legend(loc ="lower right")
-	plt.savefig('Plot Images/memory_plot.png', dpi = 300, bbox_inches='tight')	
+	plt.legend(loc ="lower right", prop={"size":8})
+	plt.savefig('Plot Images/memory_plot.png', dpi = 50, bbox_inches='tight')	
 
 	plt.show()
 
