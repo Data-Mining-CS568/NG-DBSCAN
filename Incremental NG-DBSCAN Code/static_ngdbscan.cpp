@@ -7,14 +7,14 @@ void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, 
 {
 	// Change the default parameters if parameterChange == 1
 	
-	iter = 20;
+	iter = 60;
 	xTn = 0.001;		// limits number of nodes in NG for termination
 	xTr = 0.0001;		// limits number of removed nodes in current iteration in NG
-	k = 20;				// represents degree of each node in neighbour graph
-	Mmax = 40;			// used to reduce NG in phase-1 to reduce computation
-	p = 3;				// limits nodes for which 2 hop distance is calculated in NG
-	epsilon = 1;		// minimum distance b/w nodes 
-	Minpts  = 6; 		
+	k = 15;				// represents degree of each node in neighbour graph
+	Mmax = 30;			// used to reduce NG in phase-1 to reduce computation
+	p = 2;				// limits nodes for which 2 hop distance is calculated in NG
+	epsilon = 0.015;		// minimum distance b/w nodes 
+	Minpts  = 10; 
 
 	if(parameterChange == 1)
 	{
