@@ -144,6 +144,7 @@ void store_add_and_delete_points(map<vector<double>,bool>& to_add, map<vector<do
 			to_add[v] = 1;
 		}
 		else {
+			
 			to_delete[v] = 1;
 		}
 	}

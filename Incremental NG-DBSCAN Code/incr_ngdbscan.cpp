@@ -29,7 +29,7 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 	fstream f;
 	f.open("Files/queries.txt",ios::in);
 	f >> total_queries;
-	
+
 	for(int i = 0; i < total_queries; i++)
 	{
 		f >> type;
@@ -52,12 +52,15 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 			G.coordinates_to_node_index[v] = id;
 		}
 		else {
+		
 			if(G.coordinates_to_node_index.count(v)){
+				
 				int id = G.coordinates_to_node_index[v];
 				to_remove.push_back(id);
 			}
 		}
 	}
+	return;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
@@ -247,12 +250,15 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 	for(auto u : D){
 		deleted.insert(u);
 	}
+	int dd1 = 0;
 	for(auto u : D){
+		dd1++;
 		for(auto v : G.edges[u]){
 			if(deleted.find(v) == deleted.end()){
 				neighbours_of_delete.insert(v);
 			}
 		}
+		cout<<" dd1 = " << dd1 <<endl;
 		G.delete_entries(u);
 	}
 	// checking which core nodes can change to non-core
@@ -261,13 +267,13 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 		vector<int> affected;
 		for(auto v : G.edges[u]){
 			if(deleted.find(v) != deleted.end()){
-				affected.push_back(u);
+				affected.push_back(v);
 				break;
 			}
 		}
-		for(auto v : affected){
-			G.edges[u].erase(v);
-		}
+		// for(auto v : affected){
+		// 	G.edges[u].erase(v);
+		// }
 		if(G.edges[u].size() < parameter.Minpts && G.edges[u].size() + affected.size() >= parameter.Minpts){
 			I.push_back(u);
 		}
@@ -279,7 +285,7 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 		upd_del.push_back(it);
 	}
 
-	cout << D.size() << " " << G.noncore.size() << " " << upd_del.size() << endl;
+	cout << neighbours_of_delete.size() <<" "<< D.size() << " " << G.noncore.size() << " " << upd_del.size() << endl;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
@@ -360,6 +366,8 @@ void points_info(Graph& G)
 		for(int i = 0; i < dimension; i++){
 			f >> v[i];
 		}
+
+
 		G.unused_indices.erase(id);
 		G.dataset_pts.insert(id);
 
@@ -594,7 +602,8 @@ int main()
 
 	// reading the points to add or remove
 	reading_queries(G, to_add, to_delete);
-	
+
+
 	// identifying added nodes
 	node_identification_addition(G, to_add, parameter, upd_ins);
 
@@ -602,6 +611,7 @@ int main()
 	cluster_membership(G, upd_ins);
 
 	// identifying deleted nodes
+	cout<<to_delete.size()<<endl;
 	node_identification_deletion(G, to_delete, parameter, upd_del);
 
 	// identifying the clusters after deletion of points
