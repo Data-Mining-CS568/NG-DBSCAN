@@ -143,18 +143,42 @@ plt.show()
 
 queries = []
 for point in add:
-    s = "A "
+    q = "A "
     for x in point:
-        s = s + str(x) + ' '
-    s = s + '\n'
-    queries.append(s)
+        s = str(round(x,3))
+        d=0
+        f=0
+        for i in range(len(s)):
+            if f==1:
+                d=d+1
+            if s[i]=='.':
+                f=1
+        if d==1:
+            s=s+"00"
+        if d==2:
+            s=s+"0"
+        q = q + s + ' '
+    q = q + '\n'
+    queries.append(q)
     
 for point in delete:
-    s = "D "
+    q = "D "
     for x in point:
-        s = s + str(x) + ' '
-    s = s + '\n'
-    queries.append(s)
+        s = str(round(x,3))
+        d=0
+        f=0
+        for i in range(len(s)):
+            if f==1:
+                d=d+1
+            if s[i]=='.':
+                f=1
+        if d==1:
+            s=s+"00"
+        if d==2:
+            s=s+"0"
+        q = q + s + ' '
+    q = q + '\n'
+    queries.append(q)
     
 random.shuffle(queries)
 
