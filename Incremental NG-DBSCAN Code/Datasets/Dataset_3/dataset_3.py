@@ -1,25 +1,25 @@
 import random
 def ndim(n,num,centre,r):
-	file = open("points.txt","a")
-	for x in range(num):
-		for y in range(n):
-			k = centre[y]+r*random.random()
-			s = str(round(k,3))
-			d=0
-			f=0
-			for i in range(len(s)):
-				if f==1:
-					d=d+1
-				if s[i]=='.':
-					f=1
-			if d==1:
-				s=s+"00"
-			if d==2:
-				s=s+"0"
-			file.write(s+' ')
-		file.write('\n')
-	file.close()
-	
+    file = open("points.txt","a")
+    for x in range(num):
+        for y in range(n):
+            k = centre[y]+r*random.random()
+            s = str(round(k,3))
+            d=0
+            f=0
+            for i in range(len(s)):
+                if f==1:
+                    d=d+1
+                if s[i]=='.':
+                    f=1
+            if d==1:
+                s=s+"00"
+            if d==2:
+                s=s+"0"
+            file.write(s+' ')
+        file.write('\n')
+    file.close()
+
 from sklearn.datasets import make_blobs
 def blobs(pts,centre,dim):
     X, y = make_blobs(n_samples = pts, centers = centre, n_features = dim)
@@ -51,11 +51,38 @@ b  = int(input("Enter no. of points of blob:"))
 total = 0
 total = n1+n2+b
 file = open("points.txt","w")
-file.write(str(total)+' 3\n')
+file.write(str(total+400)+' 3\n')
 ndim(n,n1,[1,1,1],3)
 ndim(n,n2,[5,5,3],3)
-blobs(b,[(-1,-2,-2),(2,-2,-3)],n)
+blobs(b,[(-1,-2,-2),(4,-2,-3)],n)
 file.close()
+
+
+queries = []
+
+file = open("points.txt","a")
+X, y = make_blobs(n_samples = 400, centers = [(2,-2,-2)], n_features = 3)
+for l1 in X:
+    q = "D "
+    for l2 in l1:
+        s = str(round(l2,3))
+        d=0
+        f=0
+        for i in range(len(s)):
+            if f==1:
+                d=d+1
+            if s[i]=='.':
+                f=1
+        if d==1:
+            s=s+"00"
+        if d==2:
+            s=s+"0"
+        file.write(s + " ")
+        q = q+s+" "
+    queries.append(q + '\n')
+    file.write("\n")
+file.close()
+    
 
 datafile = open("points.txt","r")
 t=datafile.readline().split(" ")
@@ -99,8 +126,14 @@ plt.show()
 #print(data)
 
 
+for query in queries:
+    point = []
+    query = query.split(" ")
+    for i in range(3):
+        point.append(float(query[i+1]))
+    data.remove(point)
+
 ### generating queries ###
-queries = []
 #file = open("ndim_queries.txt","w")
 centre = [3,3,1.5]
 for x in range(1000):
@@ -150,25 +183,26 @@ for b in X:
     data.append(point)
     queries.append(q)
     
-for point in data:
-    if -1<=point[0]<=1 or -1<=point[1]<=1 or -1<=point[2]<=1:
-        q = "D "
-        data.remove(point)
-        for i in range(3):
-            s = str(round(point[i],3))
-            d=0
-            f=0
-            for i in range(len(s)):
-                if f==1:
-                    d=d+1
-                if s[i]=='.':
-                    f=1
-            if d==1:
-                s=s+"00"
-            if d==2:
-                s=s+"0"
-            q = q + s + ' '
-        queries.append(q)
+    
+# for point in data:
+#     if -1<=point[0]<=1 or -1<=point[1]<=1 or -1<=point[2]<=1:
+#         q = "D "
+#         data.remove(point)
+#         for i in range(3):
+#             s = str(round(point[i],3))
+#             d=0
+#             f=0
+#             for i in range(len(s)):
+#                 if f==1:
+#                     d=d+1
+#                 if s[i]=='.':
+#                     f=1
+#             if d==1:
+#                 s=s+"00"
+#             if d==2:
+#                 s=s+"0"
+#             q = q + s + ' '
+#         queries.append(q)
 random.shuffle(queries)
 file = open("queries.txt","w")
 file.write(str(len(queries))+'\n')
