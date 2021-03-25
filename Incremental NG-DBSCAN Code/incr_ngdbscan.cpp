@@ -265,9 +265,9 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 				break;
 			}
 		}
-		for(auto v : affected){
-			G.edges[u].erase(v);
-		}
+		// for(auto v : affected){
+		// 	G.edges[u].erase(v);
+		// }
 		if(G.edges[u].size() < parameter.Minpts && G.edges[u].size() + affected.size() >= parameter.Minpts){
 			I.push_back(u);
 		}
