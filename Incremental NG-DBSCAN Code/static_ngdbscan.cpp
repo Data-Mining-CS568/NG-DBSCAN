@@ -2,7 +2,7 @@
 #include "Metrics/resources_calculation.cpp"
 
 // --------------------------------- DECIDING PARAMETERS ---------------------------------------------------------------------------------
-
+int noise_cnt = 0;
 void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, int& p, int& iter, double& epsilon, int& Minpts, int parameterChange)
 {
 	// Change the default parameters if parameterChange == 1
@@ -81,6 +81,7 @@ void save_points_info(Graph& G, int flag)
 
 	for(int i = 0; i < G.N; i++){
 		f << i << " " << node_from_id[i]->type << " ";
+		if(node_from_id[i]->type == "noise") noise_cnt++;
 		for(int j = 0; j < dimensions; j++){
 			f << fixed << setprecision(3) << coordinates[i][j] << " ";
 		}
@@ -278,6 +279,7 @@ int main(int argc, char* argv[])
 
 	// saving data in files
 	save_data(G, flag);
+	cout<<"Number Of Noise Points: "<<noise_cnt<<endl;
 
 	return 0;
 }

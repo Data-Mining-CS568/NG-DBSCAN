@@ -45,8 +45,8 @@ for i in range(noise_p):
 		else:
 			p.append(float(item))
 
-colours = ["green", "blue", "red", "orange", "yellow", "violet", "black", "pink", "grey", "cyan", "dark_green"]
-
+# colours = ["green", "blue", "red", "orange", "yellow", "violet", "black", "pink", "grey", "cyan", "dark_green"]
+colors = cycle('bgrcmybgrcmybgrcmybgrcmy')
 if dimensions == 2:
 	fig, ax = plt.subplots()
 	i = 0
