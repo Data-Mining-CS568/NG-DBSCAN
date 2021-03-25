@@ -6,13 +6,12 @@ import matplotlib
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 
-
 argc = len(sys.argv)
 flag = 0
 if argc < 2:
 	print("Command Line Argument Is Missing, Taking 0 As Default Argument:")
 else:
-	flag = int(sys.argv[1]) #1 is argument when we have queries to add and delete points
+	flag = int(sys.argv[1]) # 1 is argument when we have queries to add and delete points
 
 l = []
 noise = []
@@ -26,7 +25,6 @@ else:
 	filename_p = "Files/new_points.txt"
 	filename_c = "Files/new_clusters.txt"
 
-print(filename_c)
 points_file = open(filename_p, "r")
 x = points_file.readline()
 a = x.split()
@@ -63,18 +61,13 @@ for i in range(n):
 	points_id = x.split(' ')
 	for i in range(m):
 		pt_id = int(points_id[i])
-		if not points_type.__contains__(pt_id) or not points.__contains__(pt_id):
-			continue
 		pt_type = points_type[pt_id]
 		pt_coordinates = points[pt_id]
 		if pt_type != "noise":
 			lst.append(pt_coordinates)
 	l.append(lst)
 
-colours = ["green", "blue", "red", "orange", "yellow", "violet", "pink", "grey", "cyan", "darkgreen"]
-
-#for name, hex in matplotlib.colors.cnames.items():
-#	colours.append(name)
+colours = ["blue", "red", "orange", "gold", "violet", "pink", "orchid", "indigo", "sienna", "lavender"]
 
 
 if dimension == 2:
@@ -86,10 +79,10 @@ if dimension == 2:
 	    for point in cluster:
 	        x.append(point[0])
 	        y.append(point[1])
-	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 30)
+	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 15)
 	    i = (i + 1) % 10
 	for item in noise:
-		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 30)
+		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 15)
 
 elif dimension == 3:
 	ax = plt.axes(projection='3d')
@@ -102,10 +95,10 @@ elif dimension == 3:
 	        x.append(point[0])
 	        y.append(point[1])
 	        z.append(point[2])
-	    ax.scatter3D(x, y, z, zdir='z', s = 30, c = colours[i], marker= ".")
+	    ax.scatter3D(x, y, z, zdir='z', s = 15, c = colours[i], marker= ".")
 	    i = (i + 1) % 10
 	for item in noise:
-		ax.scatter3D(item[0], item[1], item[2], zdir='z', s = 30, c = "black", marker = ".")
+		ax.scatter3D(item[0], item[1], item[2], zdir='z', s = 15, c = "black", marker = ".")
 
 # x-axis label 
 plt.xlabel('x - axis') 
@@ -118,3 +111,4 @@ plt.title('Clusters plot!')
 
 # function to show the plot 
 plt.show()
+
