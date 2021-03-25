@@ -7,13 +7,7 @@ void store_in_map(int flag)
 	fstream f_points;
 	string filename = "";
 
-	if(flag){
-		filename = "../Files/new_points.txt";
-	}
-	else {
-		filename = "../Files/old_points.txt";
-	}
-
+	filename = "../Files/new_points.txt";
 	f_points.open(filename, ios::in);
 	int pt_id, t = 0; 
 	string pt_type;	
@@ -41,13 +35,7 @@ void store_clusters(int flag)
 	fstream f_clusters;
 	string filename = "";
 
-	if(flag){
-		filename = "../Files/new_clusters.txt";
-	}
-	else {
-		filename = "../Files/old_clusters.txt";
-	}
-
+	filename = "../Files/new_clusters.txt";
 	f_clusters.open(filename, ios::in);
 	f_clusters >> n_clusters;
 	clusters.resize(n_clusters);

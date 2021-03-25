@@ -61,13 +61,15 @@ for i in range(n):
 	points_id = x.split(' ')
 	for i in range(m):
 		pt_id = int(points_id[i])
+		if not points_type.__contains__(pt_id) and not points.__contains__(pt_id):
+			continue
 		pt_type = points_type[pt_id]
 		pt_coordinates = points[pt_id]
 		if pt_type != "noise":
 			lst.append(pt_coordinates)
 	l.append(lst)
 
-colours = ["blue", "red", "orange", "gold", "violet", "pink", "orchid", "indigo", "sienna", "lavender"]
+colours = ["green", "blue", "red", "orange", "gold", "violet", "pink", "orchid", "indigo", "sienna", "magenta"]
 
 
 if dimension == 2:
@@ -80,7 +82,7 @@ if dimension == 2:
 	        x.append(point[0])
 	        y.append(point[1])
 	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 15)
-	    i = (i + 1) % 10
+	    i = (i + 1) % 11
 	for item in noise:
 		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 15)
 
@@ -96,7 +98,7 @@ elif dimension == 3:
 	        y.append(point[1])
 	        z.append(point[2])
 	    ax.scatter3D(x, y, z, zdir='z', s = 15, c = colours[i], marker= ".")
-	    i = (i + 1) % 10
+	    i = (i + 1) % 11
 	for item in noise:
 		ax.scatter3D(item[0], item[1], item[2], zdir='z', s = 15, c = "black", marker = ".")
 

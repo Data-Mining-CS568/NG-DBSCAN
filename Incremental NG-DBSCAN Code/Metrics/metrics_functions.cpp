@@ -27,6 +27,7 @@ double calculate_compactness(int n)
 	double ans = 0.0; 
 	int cnt = 0;
 	int size = clusters[n].size();
+	if(size == 1) return 1.0;
 	for(int i = 0; i < size; ++i){
 		for(int j = i+1; j < size; ++j){
 			double temp1 = inner_product(clusters[n][i].begin(), clusters[n][i].end(), clusters[n][j].begin(), 0.0);
@@ -68,7 +69,7 @@ void Compactness(int flag)
 		filename = "Compactness/compactness_incr.txt";
 	}
 	else {
-		filename = "Compactness/compactness_static.txt";
+		filename = "Compactness/compactness_new_static.txt";
 	}
 	fstream fout;
 	fout.open(filename, ios::app);
@@ -115,13 +116,13 @@ void Separation(int flag)
 			}
 		}
 	}
-
+	mean /= ((n_clusters*(n_clusters-1))/2);
 	string filename;
 	if(flag){
 		filename = "Seperation/separation_incr.txt";
 	}
 	else {
-		filename = "Seperation/separation_static.txt";
+		filename = "Seperation/separation_new_static.txt";
 	}
 
 	fstream fout;
@@ -131,7 +132,7 @@ void Separation(int flag)
 			standard_deviation += (mean - separation[i][j])*(mean - separation[i][j]);
 		}
 	}
-	standard_deviation /= (n_clusters*(n_clusters-1))/2;
+	standard_deviation /= ((n_clusters*(n_clusters-1))/2);
 
 	cout << "Mean seperation of all clusters: " << mean << "\n";
 	cout << "Standard Deviation of seperation all clusters: " << standard_deviation << "\n";

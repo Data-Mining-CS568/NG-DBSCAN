@@ -2,15 +2,15 @@
 
 
 static_ngdbscan.cpp:
-	iter = 40;
+	iter = 60;
 	xTn = 0.001;		// limits number of nodes in NG for termination
 	xTr = 0.0001;		// limits number of removed nodes in current iteration in NG
 	k = 15;				// represents degree of each node in neighbour graph
 	Mmax = 30;			// used to reduce NG in phase-1 to reduce computation
 	p = 2;				// limits nodes for which 2 hop distance is calculated in NG
-	epsilon = 0.01;		// minimum distance b/w nodes 
+	epsilon = 0.015;		// minimum distance b/w nodes 
 	Minpts  = 10; 
 
 incr_classes.h:
 
-int k = 15, int Mmax = 30, int iter = 40, double epsilon = 0.01, int Minpts = 10, int threshold = 1000
+int k = 15, int Mmax = 30, int iter = 60, double epsilon = 0.015, int Minpts = 10, int threshold = 1000
