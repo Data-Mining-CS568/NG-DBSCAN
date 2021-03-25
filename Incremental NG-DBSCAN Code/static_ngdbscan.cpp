@@ -2,23 +2,23 @@
 #include "Metrics/resources_calculation.cpp"
 
 // --------------------------------- DECIDING PARAMETERS ---------------------------------------------------------------------------------
-int noise_cnt = 0;
+
 void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, int& p, int& iter, double& epsilon, int& Minpts, int parameterChange)
 {
 	// Change the default parameters if parameterChange == 1
 	
-	iter = 60;
+	iter = 20;
 	xTn = 0.001;		// limits number of nodes in NG for termination
 	xTr = 0.0001;		// limits number of removed nodes in current iteration in NG
-	k = 15;				// represents degree of each node in neighbour graph
-	Mmax = 30;			// used to reduce NG in phase-1 to reduce computation
-	p = 2;				// limits nodes for which 2 hop distance is calculated in NG
-	epsilon = 0.01;		// minimum distance b/w nodes 
-	Minpts  = 10; 		// each core node is having degree at least Minpts − 1
+	k = 11;				// represents degree of each node in neighbour graph
+	Mmax = 22;			// used to reduce NG in phase-1 to reduce computation
+	p = 3;				// limits nodes for which 2 hop distance is calculated in NG
+	epsilon = 1;		// minimum distance b/w nodes 
+	Minpts  = 6; 		// each core node is having degree at least Minpts − 1
 
 	if(parameterChange == 1)
 	{
-		cout << "Enter Parameters \n";
+		cout << "Enter Parameters (If you want to keep default value then enter -1)\n";
 		cout << "Enter x for Tn (Tn = x*n)\n"; 	cin >> xTn; 
 		cout << "Enter x for Tr (Tr = x*n)\n"; 	cin >> xTr;
 		cout << "Enter k\n"; 					cin >> k;
@@ -81,7 +81,6 @@ void save_points_info(Graph& G, int flag)
 
 	for(int i = 0; i < G.N; i++){
 		f << i << " " << node_from_id[i]->type << " ";
-		if(node_from_id[i]->type == "noise") noise_cnt++;
 		for(int j = 0; j < dimensions; j++){
 			f << fixed << setprecision(3) << coordinates[i][j] << " ";
 		}
@@ -279,7 +278,6 @@ int main(int argc, char* argv[])
 
 	// saving data in files
 	save_data(G, flag);
-	cout<<"Number Of Noise Points: "<<noise_cnt<<endl;
 
 	return 0;
 }

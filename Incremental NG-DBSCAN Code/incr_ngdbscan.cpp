@@ -29,6 +29,7 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 	fstream f;
 	f.open("Files/queries.txt",ios::in);
 	f >> total_queries;
+	
 	for(int i = 0; i < total_queries; i++)
 	{
 		f >> type;
@@ -134,9 +135,10 @@ void random_neighbour_search(Graph& G, vector<int>& S, vector<int>& A, int type_
 		int i = 0;
 		set<int> temp;
 		map<int, int> visited;
+		bool f = 0;
 
 		// run for constant number of iterations
-		while(i < parameter.iter)
+		while(i < parameter.iter && mp[u].size())
 		{
 			// going through list of u
 			for(int v : mp[u])
@@ -212,6 +214,12 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameters& paramete
 				if(distance(u, v, G) <= parameter.epsilon){
 					G.add_edge(u, v);
 					G.add_edge(v, u);
+					if(G.edges[u].size() == parameter.Minpts){
+						upd_ins.push_back(u);
+					}
+					if(G.edges[v].size() == parameter.Minpts){
+						upd_ins.push_back(v);
+					}
 				}
 			}
 		}
@@ -221,7 +229,7 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameters& paramete
 		for(auto v : G.noncore) S.push_back(v);
 		random_neighbour_search(G, S, A, 0, parameter, upd_ins, 'A');
 	}
-	// cout << A.size() << " " << G.noncore.size() << " " << upd_ins.size() << endl;
+	cout << A.size() << " " << G.noncore.size() << " " << upd_ins.size() << endl;
 }
 
 void node_identification_deletion(Graph& G, vector<int>& D, Parameters& parameter, vector<int>& upd_del)
@@ -255,6 +263,8 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 		}
 	}
 	random_neighbour_search(G, I, dataset, 1, parameter, upd_del, 'D');
+
+	cout << D.size() << " " << G.noncore.size() << " " << upd_del.size() << endl;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
