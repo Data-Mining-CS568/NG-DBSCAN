@@ -104,6 +104,15 @@ for x in range(1000):
     add.append(point)
     data.append(point)
 
+
+X, y = make_blobs(n_samples = 800, centers = [(3,3,1.5)], n_features = 3)
+for point in X:
+    l = []
+    for x in point:
+        l.append(x)
+    add.append(l)
+    
+    
 fig = plt.figure()
 # syntax for 3-D projection 
 ax = plt.axes(projection ='3d')
