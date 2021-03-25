@@ -54,7 +54,7 @@ file = open("ndim_points.txt","w")
 file.write(str(total)+' 3\n')
 ndim(n,n1,[1,1,1],3)
 ndim(n,n2,[5,5,3],3)
-blobs(b,[(-1,-2,-2),(0,4,9),(2,-2,-3)],n)
+blobs(b,[(-1,-2,-2),(2,-2,-3)],n)
 file.close()
 
 datafile = open("ndim_points.txt","r")
@@ -103,11 +103,36 @@ plt.show()
 queries = []
 #file = open("ndim_queries.txt","w")
 centre = [3,3,1.5]
-for x in range(200):
+for x in range(500):
     q = "A "
     point = []
     for y in range(3):
         k = centre[y]+4*random.random()
+        point.append(k)
+        s = str(round(k,3))
+        d=0
+        f=0
+        for i in range(len(s)):
+            if f==1:
+                d=d+1
+            if s[i]=='.':
+                f=1
+        if d==1:
+            s=s+"00"
+        if d==2:
+            s=s+"0"
+        q = q+s+' '
+    data.append(point)
+    queries.append(q)
+    
+#(0,4,9)
+X, y = make_blobs(n_samples = 400, centers = [(0,4,9)], n_features = 3)
+
+for b in X:
+    q = "A "
+    point = []
+    for y in range(3):
+        k = b[y]
         point.append(k)
         s = str(round(k,3))
         d=0
