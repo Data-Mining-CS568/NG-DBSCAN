@@ -39,7 +39,7 @@ def generate():
 			continue
 
 		#point which will be deleted from our dataset
-		if float(x_cor[1]) <=42.81 and float(x_cor[1]) >= 42.79 and float(y_cor[0]) <= -78.70 and float(y_cor[0]) >= -78.90:
+		if float(x_cor[1]) <=42.81 and float(x_cor[1]) >= 42.74 and float(y_cor[0]) <= -78.70 and float(y_cor[0]) >= -78.90:
 			del_x.append(float(x_cor[1]))
 			del_y.append(float(y_cor[0]))
 			
