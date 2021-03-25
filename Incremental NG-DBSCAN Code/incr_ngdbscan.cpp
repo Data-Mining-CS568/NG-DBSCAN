@@ -242,11 +242,21 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 	vector<int> I;
 
 	set<int> deleted;
+	set<int> neighbours_of_delete;
+
 	for(auto u : D){
 		deleted.insert(u);
+	}
+	for(auto u : D){
+		for(auto v : G.edges[u]){
+			if(deleted.find(v) == deleted.end()){
+				neighbours_of_delete.insert(v);
+			}
+		}
 		G.delete_entries(u);
 	}
 	// checking which core nodes can change to non-core
+
 	for(auto u : R){
 		vector<int> affected;
 		for(auto v : G.edges[u]){
@@ -263,6 +273,11 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 		}
 	}
 	random_neighbour_search(G, I, dataset, 1, parameter, upd_del, 'D');
+	
+	upd_del.clear();
+	for(auto it : neighbours_of_delete){
+		upd_del.push_back(it);
+	}
 
 	cout << D.size() << " " << G.noncore.size() << " " << upd_del.size() << endl;
 }
