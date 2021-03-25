@@ -40,6 +40,7 @@ colorlinks=true,linkcolor=red,citecolor=green,filecolor=magenta,urlcolor=cyan
 
 \usepackage{fancyhdr}
 \usepackage{textgreek}
+\usepackage{multirow}
 \usepackage{fixltx2e}
 \usepackage[linesnumbered,ruled]{algorithm2e}
 \settopmatter{printacmref=false}
@@ -239,7 +240,7 @@ We didn't find any incremental versions of NG-DBSCAN. But we have found some oth
     It is also a scalable, density based algorithm to find clusters of arbitrary shapes, size, and as well as filter out noise like NG-DBSCAN does. It also uses the Map Reduce method which NG-DBSCAN follows. 
     \begin{itemize}
         \item \textbf{Intuition of proposed solution:} In this algorithm, new data points which intersect with old data points are determined. For each intersection point, the new dataset uses an incremental DBSCAN algorithm to determine new cluster membership. Cluster memberships of the remaining points are then updated. R*- tree data structure is used in this algorithm.
-        \item \textbf{Results:} Time complexity of this algorithm is less than the original DBSCAN	algorithm and it has also dealt with fault tolerance which makes it to compete with NG-DBSCAN.
+        \item \textbf{Results:} Time complexity of this algorithm is less than the original DBSCAN  algorithm and it has also dealt with fault tolerance which makes it to compete with NG-DBSCAN.
         \item \textbf{Limitations:} In this algorithm it is difficult to delete clusters incrementally from an existing set of clusters.
     \end{itemize}
     \vspace{5pt}
@@ -313,19 +314,19 @@ class Node {
     degree          -   represents number of edges connected to this node
     coreness        -   represents (id, type) of node
     coordinates     -   represents the data point from our dataset
-    type            - 	represent whether Node is core, border or noise
-    Node(id){       - 	constructor to initialize Node
+    type            -   represent whether Node is core, border or noise
+    Node(id){       -   constructor to initialize Node
         this.id = id
         this.type = none
     }
 }
 class Graph { 
-    int N 					              -	Total number of nodes
-    set<Node> active 			        - 	List of active nodes
-    vector<Node,int> edges[N] 	     -	Adjacency List
+    int N                         - Total number of nodes
+    set<Node> active              -   List of active nodes
+    vector<Node,int> edges[N]        -  Adjacency List
     Graph(int total_nodes) {
-    	this.active = {$u  \forall u \in N$}                // make all nodes as active
-    	this.N = total_nodes
+      this.active = {$u  \forall u \in N$}                // make all nodes as active
+      this.N = total_nodes
     }
     void remove_node(Node ID)       // removes node from graph
     void add_node(Node ID)          // adds node in graph
@@ -336,15 +337,15 @@ class Graph {
     vector<Node> neighbours(x)      // returns all neighbours of node x
 }
 class Parameters {
-	$k$		     -	represents degree of each node in neighbour graph
-	$Minpts$           -   each core node is having degree at least $Minpts-1$
+  $k$        -  represents degree of each node in neighbour graph
+  $Minpts$           -   each core node is having degree at least $Minpts-1$
     T$\textsubscript{n}$         -   limits number of nodes in NG for termination
-    T$\textsubscript{r}$	        -   limits number of removed nodes in current iteration in NG
-    M$\textsubscript{max}$         -	used to reduce NG in phase-1 to reduce computation
+    T$\textsubscript{r}$          -   limits number of removed nodes in current iteration in NG
+    M$\textsubscript{max}$         -  used to reduce NG in phase-1 to reduce computation
     $\rho$          -   limits nodes for which 2 hop distance is calculated in NG
-    $iter$          -	used to achieve convergence condition
-	Parameters() {
-	    // initialise all with default values unless explicit values are given
+    $iter$          - used to achieve convergence condition
+  Parameters() {
+      // initialise all with default values unless explicit values are given
     }
 }
 \end{lstlisting}
@@ -357,56 +358,56 @@ In Phase 1, the main function to be called is \textit{$\epsilon$-graph\_construc
 
 // creating $\epsilon$-graph
 Graph $\epsilon$-graph_construction(int total_points){
-	Graph $\epsilon G$(total_points), NG(total_points)
-	Random_Initialisation(NG)       // initialising each node with k random edges
-	delta = 0                       // number of nodes removed in current iteration
-	while(i < iter and not Terminate(NG, delta)){
-	    Reverse_Map(u, NG)  $\forall u \in NG$
-	    Check_Neighborhood(u, NG, $\epsilon G$)  $\forall u \in NG$
-	    Reduce_NG(u, NG, $\epsilon G$)  $\forall u \in NG$
+  Graph $\epsilon G$(total_points), NG(total_points)
+  Random_Initialisation(NG)       // initialising each node with k random edges
+  delta = 0                       // number of nodes removed in current iteration
+  while(i < iter and not Terminate(NG, delta)){
+      Reverse_Map(u, NG)  $\forall u \in NG$
+      Check_Neighborhood(u, NG, $\epsilon G$)  $\forall u \in NG$
+      Reduce_NG(u, NG, $\epsilon G$)  $\forall u \in NG$
         i++
     }
     return $\epsilon G$
 }
 void Reverse_Map(Node n, Graph G) {
     // Making the graph undirected
-	for each u in G.neighbours(G) {
-		w = distance(v, u)
-		G.add_edge(u, v, w)
-	}
+  for each u in G.neighbours(G) {
+    w = distance(v, u)
+    G.add_edge(u, v, w)
+  }
 }
 // checking neighbour graph and updating $\epsilon$ graph
 void Check_Neighborhood(Node n, Graph NG, Graph $\epsilon G$) {
     N = Random selection of at most $\rho k$ nodes from NG.neighbours(n) 
-	for each vertex v in N {
-		for each vertex u in N$\setminus${v} {
-			w = distance(u, v)
-			NG.add_edge(u, v, w)
-			if(w <= $\epsilon$)
-		        $\epsilon G$.add_edge(u, v, w)
+  for each vertex v in N {
+    for each vertex u in N$\setminus${v} {
+      w = distance(u, v)
+      NG.add_edge(u, v, w)
+      if(w <= $\epsilon$)
+            $\epsilon G$.add_edge(u, v, w)
         }
     }
 }
 // checking termination condition
 bool Terminate(Graph NG, int delta){
-	if(|NG.nodes| < $T\textsubscript{n}$ and delta < $T\textsubscript{r}$){
-		return 1
-	} 
-	else {
-		return 0
-	}
+  if(|NG.nodes| < $T\textsubscript{n}$ and delta < $T\textsubscript{r}$){
+    return 1
+  } 
+  else {
+    return 0
+  }
 }
 // reducing neighbour graph
 void Reduce_NG(Node u, Graph NG, Graph $\epsilon G$){
-	if(|$\epsilon G$.neighbours(u)| >= M$\textsubscript{max}$){
-	    NG.remove_node(u)
-	    delta = delta + 1
-	}
-	vector<Node> l = NG.neighbours(u) 
-	remove from l the k edges with smallest weights using priority queue
+  if(|$\epsilon G$.neighbours(u)| >= M$\textsubscript{max}$){
+      NG.remove_node(u)
+      delta = delta + 1
+  }
+  vector<Node> l = NG.neighbours(u) 
+  remove from l the k edges with smallest weights using priority queue
     for(u, v, w) in l {
         NG.delete_edge(u, v, w)
-	}
+  }
 }
 \end{lstlisting}
 
@@ -416,76 +417,76 @@ In Phase 2, main function to be called is \textit{Discovering\_Dense\_Regions} w
 \begin{lstlisting}
 // finding all the clusters
 Graph Discovering_Dense_Regions(Graph $\epsilon$-NN, int total_nodes){
-	// Make all nodes active
-	Graph T(total_nodes)
-	G = Coreness_Dissemination($\epsilon$-NN, total_nodes)
-	while G has active nodes { 
-		Graph H(total_nodes) 
-		// Seed identification process
-		Max_Selection_Step(n, G, H) $\forall n \in G$
-		Pruning_Step(n, T, H, G) $\forall n \in H$
-	}
-	return Seed_Propagation(T)
+  // Make all nodes active
+  Graph T(total_nodes)
+  G = Coreness_Dissemination($\epsilon$-NN, total_nodes)
+  while G has active nodes { 
+    Graph H(total_nodes) 
+    // Seed identification process
+    Max_Selection_Step(n, G, H) $\forall n \in G$
+    Pruning_Step(n, T, H, G) $\forall n \in H$
+  }
+  return Seed_Propagation(T)
 }
 // return maximum core node from the list
 int Max_Core_Node(vector<Node> list){
-	// returns node from list having maximum coreness value
+  // returns node from list having maximum coreness value
 }
 void Max_Selection_Step(Node u, Graph G, Graph H){
-	vector<Node> NNg = G.neighbours(u)
-	int u$\textsubscript{max}$ = Max_Core_Node(NNg $\cup$ {u})
-	if(u.type != core){
-	    H.add_edge(u, u$\textsubscript{max}$)
+  vector<Node> NNg = G.neighbours(u)
+  int u$\textsubscript{max}$ = Max_Core_Node(NNg $\cup$ {u})
+  if(u.type != core){
+      H.add_edge(u, u$\textsubscript{max}$)
     } 
     else {
-    	for each node v in NNg 
+      for each node v in NNg 
             H.add_edge(v, u$\textsubscript{max}$)
     }
     H.add_edge(u$\textsubscript{max}$, u$\textsubscript{max}$)
 }
 // in pruning, nodes not proposed as seeds(those with no incoming edges) are deactivated
 void Pruning_Step(Node u, Propagation_Tree T, Graph H, Graph G){
-	vector<Node> NNh = H.neighbours(u)
-	int u$\textsubscript{max}$ = Max_Core_Node(NNh)
-	if(u.type != core){
-	    G.remove_node(u)
-	    T.add_edge(u$\textsubscript{max}$,u)
+  vector<Node> NNh = H.neighbours(u)
+  int u$\textsubscript{max}$ = Max_Core_Node(NNh)
+  if(u.type != core){
+      G.remove_node(u)
+      T.add_edge(u$\textsubscript{max}$,u)
     } 
     else {
-    	for each node v in (NNh \ {u$\textsubscript{max}$}){
-    	    G.add_edge(v, u$\textsubscript{max}$)
-    	    G.add_edge(u$\textsubscript{max}$, v)
+      for each node v in (NNh \ {u$\textsubscript{max}$}){
+          G.add_edge(v, u$\textsubscript{max}$)
+          G.add_edge(u$\textsubscript{max}$, v)
         }
         if u not present in NNh {
-    	    G.remove_node(u)
-    	    T.add_edge(u$\textsubscript{max}$,u)
+          G.remove_node(u)
+          T.add_edge(u$\textsubscript{max}$,u)
         }
     }
 }
 // convert graph to identify all nodes and return it
 Graph Coreness_Dissemination(Graph $\epsilon$-NN, int total_nodes) {
-	// Here we identify the core, boundary and noise points of the input ε-graph.
-	Graph G(total_nodes)
-	G = $\epsilon$-NN
+  // Here we identify the core, boundary and noise points of the input ε-graph.
+  Graph G(total_nodes)
+  G = $\epsilon$-NN
     for each node v in G.nodes {
-		if(|G.neighbours(v)| >= $Minpts-1$)
-			v.type = core   // Make it a core node
-	}
+    if(|G.neighbours(v)| >= $Minpts-1$)
+      v.type = core   // Make it a core node
+  }
     for each node v in G.nodes \ {core nodes} {
-		if there is at least one core node in G.neighbours(v)
-			v.type = border // Make it a border node
-	}
+    if there is at least one core node in G.neighbours(v)
+      v.type = border // Make it a border node
+  }
     for each node v in G.nodes \ {core nodes} \ {border nodes} {
-		v.type = noise      // Mark them as noise points
-		G.remove_node(v)    // We need to remove all the noise points from G
-	}
+    v.type = noise      // Mark them as noise points
+    G.remove_node(v)    // We need to remove all the noise points from G
+  }
     return G;
 }
 Graph Seed_Propagation(Graph T) {
     a = List of all seeds 
     for all nodes v in a {
-    	Perform Depth First Search on graph T with v as input. 
-    	// Here we will get all the nodes belonging to the cluster of v
+      Perform Depth First Search on graph T with v as input. 
+      // Here we will get all the nodes belonging to the cluster of v
     }
     // The final output will be a list of lists where each list corresponds to a separate cluster
 }
@@ -1104,4 +1105,119 @@ For static, we have formed new dataset D' by adding and deleting the correspondi
 \section*{Further Work}
 In the further week, we will implement the incremental version with n-dimensional dataset and with more number of add and delete queries and more number of points in the dataset. We will also evaluate our algorithm with recall metric to calculate accuracy. We will also try to tune our parameters to make our incremental algorithm more accurate.
 
+\newpage
+\section* {\centerline{Section 8: Experimental Results, Iteration 2} \newline}
+\addcontentsline{toc}{section}{\large Section 8: Experimental Results, Iteration 2}
+
+\section*{Introduction}
+This week we have run our Incremental NG-DBSCAN algorithm over one 3-dimensional dataset and one real dataset. \\ We also modified the metrics (compactness and seperation) comparison by restricting to calculating Mean and Standard Deviation of all the clusters of Incremental and Static Version seperately. \\ We have also plotted the graphs of time and memory of both static and incremental versions and have plotted the table of compactness, seperation and CPU usage. \\ Apart from this, we have renamed the files appropriately and in well organised manner in different directories. \\ We have also inserted a \textit{parameters.txt} file for each dataset separately (for both static and incremental version) which should be used while running that dataset. \\ We have also created a readme file to help the user understand how to run the code. 
+\section*{New Code Files}
+Here is the description of the new folders and the files:
+\begin{enumerate}
+    \item \textbf{Datasets: }This folder contains all the used datasets. Each dataset folder contains the code to generate that dataset, points.txt, queries.txt and parameters.txt.
+    \begin{itemize}
+        \item \textit{parameters.txt: }The parameters used for each dataset for static and incremental versions are present in parameters.txt.
+    \end{itemize}
+    \item \textbf{Metrics: }It contains the code to run the metrics, folders of each metric seperately which contains the dataset results of that metric.
+\end{enumerate}
+\section*{New Datasets}
+We have added one synthetic and one real dataset to our existing datasets. Here is the description of newly added datasets:
+\begin{enumerate}
+    \item \textbf{Synthetic Dataset: }It is a 3-dimensional dataset covering all the cases: Merging of 2 clusters, creation of a new cluster, deletion of points from a cluster and division of 2 clusters. It has 2800 points already in the dataset and 2600 points for addition and deletion.
+    \item \textbf{Real Dataset: }It is a 2-dimensional dataset related to Traffic Signals. We found it \href{https://data.world/buffalony/y93c-u65y/workspace/project-summary?agentid=buffalony&datasetid=y93c-u65y}{\textcolor{blue}{here}}.
+    
+    Traffic volumes are collected by manual and mechanical means and are hosted at an independent site. They represent typical volumes likely to be found at a location. 
+    
+    This data set contains information of traffic vehicles on the road. Our \textbf{aim was to discover traffic hotspots in the city} using our clustering algorithm and traffic volume data set.
+    
+    We pruned the main data to extract the coordinates of the location and removed duplicate coordinates. We extracted some data points from the same data set for the incremental queries. (Using code file \textit{prune$\_$data$.$py})
+
+\end{enumerate}
+
+\section*{Plots}
+
+\begin{figure} [H]
+    \includegraphics[width = \textwidth, keepaspectratio]{dataset_3_old_static.png}
+    \caption{Static on 3-D Data set} 
+\end{figure}
+                    
+\begin{figure} [H]
+    \includegraphics[width = \textwidth, keepaspectratio]{dataset_3_new_static.png}
+\caption{Static on 3-D Data set, After addition/deletion of Points} 
+\end{figure}
+            
+\begin{figure} [H]
+\includegraphics[width = \textwidth, keepaspectratio]{dataset_3_incr.png}
+\caption{Incremental on 3-D Data set} 
+\end{figure}
+                    
+\begin{figure} [H]
+\includegraphics[scale = 0.5]{traffic_data_old_static.png}
+\caption{Static on Traffic Volume Data set} 
+\end{figure}
+            
+\begin{figure} [H]
+\includegraphics[scale = 0.5]{traffic_data_new_static.png}
+\caption{Static on Traffic Volume Dataset, After addition/deletion of Points} 
+\end{figure}
+            
+\begin{figure} [H]
+\includegraphics[scale = 0.5]{traffic_data_incr.png}
+\caption{Incremental on Traffic Volume Dataset} 
+\end{figure}
+
+\section*{Tabular Results}
+Here are the results for each dataset on compactness of clusters. \vspace{2pt} 
+\begin{center}
+ \begin{tabular}{|c||c||c|c|c|c||}
+ \hline
+ \multicolumn{6}{|c|}{Compactness Measure} \\
+ \hline
+ Algorithm & Value & Dataset 1 & Dataset 2 & Dataset 3 & Real Dataset \\ [0.5ex] 
+ \hline
+ \multirow{2}{5em}{Static} & Mean & 0.802748 & 0.981389 & 0.929485 & 1.00000 \\
+ & S.D. & 0.116906 & 0.000109194 & 0.00244034 & 1.71786e-14 \\ 
+ \hline
+ \multirow{2}{5em}{Incremental} & Mean & 0.894894 & 0.992028 & 0.974308 & 1.00000 \\
+ & S.D. & 0.0305777 & 0.000135987 & 0.00214696 & 1.62239e-14 \\ 
+ \hline
+\end{tabular}
+\end{center}
+The mean should be close to 1 while the standard deviation (S.D.) should be close to 0 for better accuracy. \newline \newline 
+Here are the results for each dataset on seperation of clusters.
+\begin{center}
+ \begin{tabular}{|c||c||c|c|c|c||}
+ \hline
+ \multicolumn{6}{|c|}{Seperation Measure} \\
+ \hline
+ Algorithm & Value & Dataset 1 & Dataset 2 & Dataset 3 & Real Dataset \\ [0.5ex] 
+ \hline
+ \multirow{2}{5em}{Static} & Mean & -0.107518 & 0.71244 & -0.251028 & 0.999997 \\
+ & S.D. & 0.274237 & 0.0000 & 0.292897 & 8.802e-12 \\ 
+ \hline
+ \multirow{2}{5em}{Incremental} & Mean & 0.0127214 & 0.899173 & 0.264705 & 0.999997 \\
+ & S.D. & 0.466167 & 0.0135617 & 0.334339 & 1.07101e-11 \\ 
+ \hline
+\end{tabular}
+\end{center}
+\vspace{2pt}
+The mean should be close to -1 while the standard deviation (S.D.) should be close to 0 for better accuracy. \newline 
+
+\section*{Graphical Metric Plots}
+    
+    \begin{figure} [H]
+        \includegraphics[width = 0.6\textwidth, keepaspectratio]{time_plot.png}
+        \caption{Time Comparison}    
+    \end{figure}  
+
+    \begin{figure} [H]
+        \includegraphics[width = 0.6\textwidth, keepaspectratio]{memory_plot.png}
+        \caption{Memory Comparison}    
+    \end{figure}  
+
+    \begin{figure} [H]
+        \includegraphics[width = 0.6\textwidth, keepaspectratio]{cpu_usage_plot.png}
+        \caption{CPU Usage Comparison}    
+    \end{figure}  
+    
 \end{document}
