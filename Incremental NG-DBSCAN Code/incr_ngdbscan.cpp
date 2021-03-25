@@ -29,7 +29,6 @@ void reading_queries(Graph& G, vector<int>& to_add, vector<int>& to_remove)
 	fstream f;
 	f.open("Files/queries.txt",ios::in);
 	f >> total_queries;
-	
 	for(int i = 0; i < total_queries; i++)
 	{
 		f >> type;

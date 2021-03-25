@@ -1,6 +1,8 @@
 import sys
 import math
+import random
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 
@@ -24,7 +26,7 @@ else:
 	filename_p = "Files/new_points.txt"
 	filename_c = "Files/new_clusters.txt"
 
-
+print(filename_c)
 points_file = open(filename_p, "r")
 x = points_file.readline()
 a = x.split()
@@ -69,6 +71,10 @@ for i in range(n):
 
 colours = ["green", "blue", "red", "orange", "yellow", "violet", "pink", "grey", "cyan", "darkgreen"]
 
+for name, hex in matplotlib.colors.cnames.items():
+	colours.append(name)
+
+
 if dimension == 2:
 	fig, ax = plt.subplots()
 	i = 0
@@ -80,10 +86,7 @@ if dimension == 2:
 	        y.append(point[1])
 	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 30)
 	    i = (i + 1) % 10
-	cnt = 0
 	for item in noise:
-		cnt = cnt + 1
-		print(cnt)
 		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 30)
 
 elif dimension == 3:

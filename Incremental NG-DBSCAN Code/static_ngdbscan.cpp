@@ -7,18 +7,18 @@ void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, 
 {
 	// Change the default parameters if parameterChange == 1
 	
-	iter = 15;
+	iter = 60;
 	xTn = 0.001;		// limits number of nodes in NG for termination
 	xTr = 0.0001;		// limits number of removed nodes in current iteration in NG
 	k = 15;				// represents degree of each node in neighbour graph
-	Mmax = 20;			// used to reduce NG in phase-1 to reduce computation
+	Mmax = 30;			// used to reduce NG in phase-1 to reduce computation
 	p = 2;				// limits nodes for which 2 hop distance is calculated in NG
-	epsilon = 0.5;		// minimum distance b/w nodes 
+	epsilon = 0.01;		// minimum distance b/w nodes 
 	Minpts  = 10; 		// each core node is having degree at least Minpts − 1
 
 	if(parameterChange == 1)
 	{
-		cout << "Enter Parameters (If you want to keep default value then enter -1)\n";
+		cout << "Enter Parameters \n";
 		cout << "Enter x for Tn (Tn = x*n)\n"; 	cin >> xTn; 
 		cout << "Enter x for Tr (Tr = x*n)\n"; 	cin >> xTr;
 		cout << "Enter k\n"; 					cin >> k;
