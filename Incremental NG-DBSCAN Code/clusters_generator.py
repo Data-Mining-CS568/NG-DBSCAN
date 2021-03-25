@@ -71,8 +71,8 @@ for i in range(n):
 
 colours = ["green", "blue", "red", "orange", "yellow", "violet", "pink", "grey", "cyan", "darkgreen"]
 
-for name, hex in matplotlib.colors.cnames.items():
-	colours.append(name)
+#for name, hex in matplotlib.colors.cnames.items():
+#	colours.append(name)
 
 
 if dimension == 2:

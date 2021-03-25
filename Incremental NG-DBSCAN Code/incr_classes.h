@@ -114,14 +114,14 @@ class Graph {
 
 class Parameters {
 	public:
-	int k;			
-	int Mmax;	
+	int k;
+	int Mmax;
 	int iter;
-	double epsilon;	 
-	int Minpts; 
+	double epsilon;
+	int Minpts;
 	int threshold;
 
-	Parameters(int k = 15, int Mmax = 20, int iter = 15, double epsilon = 0.5, int Minpts = 4, int threshold = 100){
+	Parameters(int k = 15, int Mmax = 30, int iter = 25, double epsilon = 1.25, int Minpts = 4, int threshold = 1000){
 		this->k = k;
 		this->Mmax = Mmax;
 		this->iter = iter;

@@ -1,6 +1,6 @@
 import random
 def ndim(n,num,centre,r):
-	file = open("ndim_points.txt","a")
+	file = open("points.txt","a")
 	for x in range(num):
 		for y in range(n):
 			k = centre[y]+r*random.random()
@@ -23,7 +23,7 @@ def ndim(n,num,centre,r):
 from sklearn.datasets import make_blobs
 def blobs(pts,centre,dim):
     X, y = make_blobs(n_samples = pts, centers = centre, n_features = dim)
-    outputfile = open("ndim_points.txt","a")
+    outputfile = open("points.txt","a")
     for l1 in X:
         for l2 in l1:
             s = str(round(l2,3))
@@ -50,14 +50,14 @@ b  = int(input("Enter no. of points of blob:"))
 
 total = 0
 total = n1+n2+b
-file = open("ndim_points.txt","w")
+file = open("points.txt","w")
 file.write(str(total)+' 3\n')
 ndim(n,n1,[1,1,1],3)
 ndim(n,n2,[5,5,3],3)
 blobs(b,[(-1,-2,-2),(2,-2,-3)],n)
 file.close()
 
-datafile = open("ndim_points.txt","r")
+datafile = open("points.txt","r")
 t=datafile.readline().split(" ")
 p = int(t[0])
 #n = int(t[1])
@@ -103,7 +103,7 @@ plt.show()
 queries = []
 #file = open("ndim_queries.txt","w")
 centre = [3,3,1.5]
-for x in range(500):
+for x in range(1000):
     q = "A "
     point = []
     for y in range(3):
@@ -126,7 +126,7 @@ for x in range(500):
     queries.append(q)
     
 #(0,4,9)
-X, y = make_blobs(n_samples = 400, centers = [(0,4,9)], n_features = 3)
+X, y = make_blobs(n_samples = 800, centers = [(0,4,9)], n_features = 3)
 
 for b in X:
     q = "A "
@@ -151,7 +151,7 @@ for b in X:
     queries.append(q)
     
 for point in data:
-    if -0.5<=point[0]<=0.5:
+    if -1<=point[0]<=1 or -1<=point[1]<=1 or -1<=point[2]<=1:
         q = "D "
         data.remove(point)
         for i in range(3):
@@ -170,7 +170,7 @@ for point in data:
             q = q + s + ' '
         queries.append(q)
 random.shuffle(queries)
-file = open("ndim_queries.txt","w")
+file = open("queries.txt","w")
 file.write(str(len(queries))+'\n')
 for query in queries:
     file.write(query+'\n')
