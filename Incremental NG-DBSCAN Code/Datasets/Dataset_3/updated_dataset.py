@@ -105,12 +105,13 @@ for x in range(1000):
     data.append(point)
 
 
-X, y = make_blobs(n_samples = 800, centers = [(3,3,1.5)], n_features = 3)
+X, y = make_blobs(n_samples = 800, centers = [(0,4,9)], n_features = 3)
 for point in X:
     l = []
     for x in point:
         l.append(x)
     add.append(l)
+    data.append(l)
     
     
 fig = plt.figure()
