@@ -63,6 +63,8 @@ for i in range(n):
 	points_id = x.split(' ')
 	for i in range(m):
 		pt_id = int(points_id[i])
+		if not points_type.__contains__(pt_id) or not points.__contains__(pt_id):
+			continue
 		pt_type = points_type[pt_id]
 		pt_coordinates = points[pt_id]
 		if pt_type != "noise":
