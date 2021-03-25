@@ -46,30 +46,33 @@ def blobs(pts,centre,dim):
 n = int(input("Enter the dimension:"))
 n1 = int(input("Enter no. of points of 1st cube:"))
 n2 = int(input("Enter no. of points of 2nd cube:"))
-#n3 = int(input("Enter no. of points of 3rd cube:"))
 b  = int(input("Enter no. of points of blob:"))
 
-file = open("ndim_points.txt","w")
 total = 0
 total = n1+n2+b
-file.write(str(total)+' '+str(n)+'\n')
+file = open("ndim_points.txt","w")
+file.write(str(total)+' 3\n')
 ndim(n,n1,[1,1,1],3)
 ndim(n,n2,[5,5,3],3)
-#ndim(n,n3,[3,3,1.5],4)
 blobs(b,[(-1,-2,-2),(0,4,9),(2,-2,-3)],n)
+file.close()
 
 datafile = open("ndim_points.txt","r")
 t=datafile.readline().split(" ")
 p = int(t[0])
-n = int(t[1])
+#n = int(t[1])
 data = []
 while p:
     p=p-1
     line = datafile.readline().split(" ")
     point = []
     for i in range(n):
-        point.append(float(line[i]))
-    data.append(point)
+        try:
+            point.append(float(line[i]))
+        except:
+            pass
+    if len(point)==3:
+        data.append(point)
 datafile.close()
 
 # importing mplot3d toolkits, numpy and matplotlib 
@@ -102,8 +105,10 @@ queries = []
 centre = [3,3,1.5]
 for x in range(200):
     q = "A "
+    point = []
     for y in range(3):
         k = centre[y]+4*random.random()
+        point.append(k)
         s = str(round(k,3))
         d=0
         f=0
@@ -117,11 +122,13 @@ for x in range(200):
         if d==2:
             s=s+"0"
         q = q+s+' '
+    data.append(point)
     queries.append(q)
     
 for point in data:
     if -0.5<=point[0]<=0.5:
         q = "D "
+        data.remove(point)
         for i in range(3):
             s = str(round(point[i],3))
             d=0
@@ -143,3 +150,23 @@ file.write(str(len(queries))+'\n')
 for query in queries:
     file.write(query+'\n')
 file.close()
+
+
+
+fig = plt.figure() 
+  
+# syntax for 3-D projection 
+ax = plt.axes(projection ='3d')
+x=[]
+y=[]
+z=[]
+for point in data:
+    x.append(point[0])
+    y.append(point[1])
+    z.append(point[2])
+ax.scatter(x, y, z,'black',s=1)
+
+# plotting  
+ax.set_title('3D plot') 
+plt.show()
+#print(data)
