@@ -352,8 +352,8 @@ void points_info(Graph& G)
 	string type;
 	f >> n >> dimension;
 	G.dimension = dimension;
-
-	while(!f.eof())
+	int itr = 0;
+	while(itr++ < n)
 	{
 		vector<double> v(dimension);
 		f >> id >> type;
