@@ -54,7 +54,7 @@ file = open("points.txt","w")
 file.write(str(total+400)+' 3\n')
 ndim(n,n1,[1,1,1],3)
 ndim(n,n2,[5,5,3],3)
-blobs(b,[(-1,-2,-2),(4,-2,-3)],n)
+blobs(b,[(-2,-2,-2),(4,-2,-3)],n)
 file.close()
 
 
