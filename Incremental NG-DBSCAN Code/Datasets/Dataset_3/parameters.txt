@@ -1,5 +1,5 @@
 Incremental:
-Parameters(int k = 15, int Mmax = 30, int iter = 25, double epsilon = 1.25, int Minpts = 4, int threshold = 1000)
+Parameters(int k = 15, int Mmax = 30, int iter = 25, double epsilon = 1.15, int Minpts = 4, int threshold = 1000)
 
 Static:
 iter = 20;
@@ -8,5 +8,5 @@ xTr = 0.0001;		// limits number of removed nodes in current iteration in NG
 k = 20;				// represents degree of each node in neighbour graph
 Mmax = 40;			// used to reduce NG in phase-1 to reduce computation
 p = 3;				// limits nodes for which 2 hop distance is calculated in NG
-epsilon = 1.25;		// minimum distance b/w nodes 
+epsilon = 1;		// minimum distance b/w nodes 
 Minpts  = 6; 
