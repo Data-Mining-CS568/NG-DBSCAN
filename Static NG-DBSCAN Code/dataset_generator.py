@@ -5,7 +5,7 @@ from pandas import DataFrame
 def moon_dataset(no_of_points):
 	# generate 2d classification dataset
 	X, y = make_moons(n_samples = no_of_points, noise = 0.1)
-	outputfile = open("points.txt","w")
+	outputfile = open("Files/points.txt","w")
 	outputfile.write(str("non_text") + " " + str(no_of_points) + " " + str(2) + "\n")
 	for l1 in X:
 		for l2 in l1:
@@ -15,7 +15,7 @@ def moon_dataset(no_of_points):
 def blob_dataset(no_of_points, dimension = 2):
 	# generate 2d classification dataset
 	X, y = make_blobs(n_samples = no_of_points, centers = 3, n_features = dimension)
-	outputfile = open("points.txt","w")
+	outputfile = open("Files/points.txt","w")
 	outputfile.write(str("non_text") + " " + str(no_of_points) + " " + str(dimension) + "\n")
 	for l1 in X:
 		for l2 in l1:
@@ -25,7 +25,7 @@ def blob_dataset(no_of_points, dimension = 2):
 def circle_dataset(no_of_points):
 	# generate 2d classification dataset
 	X, y = make_circles(n_samples = no_of_points, noise = 0.05, factor=0.7)
-	outputfile = open("points.txt","w")
+	outputfile = open("Files/points.txt","w")
 	outputfile.write(str("non_text") + " " + str(no_of_points) + " " + str(2) + "\n")
 	for l1 in X:
 		for l2 in l1:
@@ -34,8 +34,8 @@ def circle_dataset(no_of_points):
 
 def text_dataset(no_of_sentences):
 	# generate 2d classification dataset
-	inputfile  = open("health_twitter.txt", "r")
-	outputfile = open("points.txt","w")
+	inputfile  = open("Real Datasets/Textual_Datasets/health_twitter.txt", "r")
+	outputfile = open("Files/points.txt","w")
 	outputfile.write(str("text") + " " + str(no_of_sentences) + " " + str(0) + "\n") 
 	
 	for i in range(no_of_sentences):			

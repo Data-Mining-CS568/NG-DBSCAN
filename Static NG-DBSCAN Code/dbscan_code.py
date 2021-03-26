@@ -6,8 +6,8 @@ from sklearn.datasets import make_blobs
 from sklearn.preprocessing import StandardScaler
 
 l = []
-input_file = open("Real_Life_Traffic _Dataset/points.txt","r")
-output_file = open("numbered_dbscan_clusters.txt","w")
+input_file = open("Files/points.txt","r")
+output_file = open("DBSCAN/numbered_dbscan_clusters.txt","w")
 x = input_file.readline()
 a = x.split()
 n = int(a[1])
@@ -17,7 +17,6 @@ for j in range(n):
 	x = x.strip()
 	x = x.split(' ')
 	p = []
-	print(x)
 	for item in x:
 		if item == '':
 			continue
@@ -25,8 +24,9 @@ for j in range(n):
 	l.append(p)
 l = StandardScaler().fit_transform(l)
 X = l
+
 # Compute DBSCAN
-db = DBSCAN(eps=0.1, min_samples=10).fit(l)
+db = DBSCAN(eps=1, min_samples=10).fit(l)
 core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
 core_samples_mask[db.core_sample_indices_] = True
 labels = db.labels_

@@ -6,7 +6,7 @@ from mpl_toolkits import mplot3d
 l = []
 noise = []
 
-input_file = open("clusters.txt","r")
+input_file = open("Files/clusters.txt","r")
 x = input_file.readline()
 a = x.split()
 n = int(a[0])
@@ -55,10 +55,10 @@ if dimensions == 2:
 	    for point in cluster:
 	        x.append(point[0])
 	        y.append(point[1])
-	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 100)
+	    plt.scatter(x, y, label = "dots", color = colours[i], marker= ".", s = 15)
 	    i = (i + 1) % 11
 	for item in noise:
-		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 100)
+		plt.scatter(item[0], item[1], label = "dots", color = "black", marker = ".", s = 15)
 
 elif dimensions == 3:
 	ax = plt.axes(projection='3d')
@@ -71,10 +71,10 @@ elif dimensions == 3:
 	        x.append(point[0])
 	        y.append(point[1])
 	        z.append(point[2])
-	    ax.scatter3D(x, y, z, zdir='z', s = 30, c = colours[i], marker= ".")
+	    ax.scatter3D(x, y, z, zdir='z', s = 15, c = colours[i], marker= ".")
 	    i = (i + 1) % 11
 	for item in noise:
-		ax.scatter3D(item[0], item[1], item[2], zdir='z', s = 30, c = "black", marker = ".")
+		ax.scatter3D(item[0], item[1], item[2], zdir='z', s = 15, c = "black", marker = ".")
 
 # x-axis label 
 plt.xlabel('x - axis') 

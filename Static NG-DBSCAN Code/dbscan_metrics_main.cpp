@@ -1,11 +1,11 @@
-#include "metrics_calculate.cpp"
+#include "Metrics/metrics_functions.cpp"
 
 int main()
 {
 	int total_points, dim = 0, n_clusters = 0;
 
 	fstream f;
-	f.open("numbered_dbscan_clusters.txt", ios::in);
+	f.open("DBSCAN/numbered_dbscan_clusters.txt", ios::in);
 	map<int, vector<int>> mp;
 	f >> total_points;
 	for(int i = 0; i < total_points; i++){
@@ -22,7 +22,7 @@ int main()
 	
 	fstream f1;
 	string temp;
-	f1.open("points.txt", ios::in);
+	f1.open("Files/points.txt", ios::in);
 	f1 >> temp >> total_points >> dim;
 
 	vector<vector<double>> coordinates(total_points,vector<double>(dim));

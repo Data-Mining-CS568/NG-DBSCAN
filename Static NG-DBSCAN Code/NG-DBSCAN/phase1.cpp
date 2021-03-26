@@ -1,9 +1,3 @@
-#pragma GCC optimize("Ofast")
-#pragma GCC optimization("unroll-loops")
-#pragma GCC optimize("unroll-loops")
-#pragma GCC optimize("fast-math")
-#pragma GCC optimize("no-stack-protector")
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -22,7 +16,7 @@ double distance(int u, int v)
 		for(int j = 0; j < dimensions; j++){
 			ans += (coordinates[u][j] - coordinates[v][j]) * (coordinates[u][j] - coordinates[v][j]);
 		}
-		return sqrtf(ans);
+		return sqrt(ans);
 	}
 	return 0.0;
 }

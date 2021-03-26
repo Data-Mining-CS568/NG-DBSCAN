@@ -1,6 +1,5 @@
-#include "phase1.cpp"
+#include "NG-DBSCAN/phase1.cpp"
 
-// phase 1
 // return maximum core node from the list
 int Max_Core_Node(vector<int> list, Graph& G)
 {
@@ -116,8 +115,8 @@ Graph Seed_Propagation(set<int> seeds, Graph T, Parameters parameter)
 	}
 
 	fstream out, f;
-	out.open("clusters.txt",ios::out);
-	f.open("numbered_clusters.txt",ios::out);
+	out.open("Files/clusters.txt",ios::out);
+	f.open("Files/numbered_clusters.txt",ios::out);
 
 	// printing clusters using numbering only
 	f << list.size() << " " << parameter.epsilon << '\n';
@@ -139,8 +138,8 @@ Graph Seed_Propagation(set<int> seeds, Graph T, Parameters parameter)
 		}
 	}
 	
-	if(dataset_type == "non_text"){
-
+	if(dataset_type == "non_text")
+	{
 		for(int i = 0; i < list.size(); i++){
 			out << list[i].size() << "\n";
 			for(auto it:list[i]){ 
@@ -161,8 +160,8 @@ Graph Seed_Propagation(set<int> seeds, Graph T, Parameters parameter)
 		}
 
 	}
-	else if(dataset_type == "text"){
-
+	else if(dataset_type == "text")
+	{
 		for(int i = 0; i < list.size(); i++){
 			out << list[i].size() << "\n";
 			for(auto it:list[i]){ 
@@ -190,9 +189,9 @@ void initialize_nodes(int total_nodes){
 
 void print_node_type(int total_nodes){
 	for(int i = 0; i < total_nodes; i++){
-		cout<<node_from_id[i]->type<<" ";
+		cout << node_from_id[i]->type << " ";
 	}
-	cout<<'\n';
+	cout << '\n';
 }
 
 // finding all the clusters
@@ -200,7 +199,7 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes, Parameters parameter)
 {
 	// writing epsilong graph in file epsilon_graph.txt
 	fstream f;
-	f.open("epsilon_graph.txt",ios::out);
+	f.open("Files/epsilon_graph.txt",ios::out);
 	print_graph(EG, total_nodes, f);
 	f.close();
 
@@ -234,7 +233,7 @@ Graph Discovering_Dense_Regions(Graph EG, int total_nodes, Parameters parameter)
 	}
 
 	// printing propagation tree in file propagation_tree.txt
-	f.open("propagation_tree.txt",ios::out);
+	f.open("Files/propagation_tree.txt",ios::out);
 	print_graph(T, total_nodes, f);
 	f.close();
 	
@@ -256,7 +255,8 @@ int main()
 	double epsilon = 1.0;		// minimum distance b/w nodes 
 	int Minpts  = 10; 			// each core node is having degree at least Minpts − 1
 	
-	if(parameterChange == 1){
+	if(parameterChange == 1)
+	{
 		cout << "Enter Parameters(If you want to keep default value then enter -1\n";
 		cout << "Enter x for Tn(Tn = x*n)\n"; 	cin >> xTn; 
 		cout << "Enter x for Tr(Tr = x*n)\n"; 	cin >> xTr;
@@ -269,7 +269,7 @@ int main()
 	}
 
 	fstream f;
-	f.open("points.txt",ios::in);
+	f.open("Files/points.txt",ios::in);
 	int n; 
 	
 	f >> dataset_type >> n >> dimensions;

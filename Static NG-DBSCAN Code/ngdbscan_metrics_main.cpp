@@ -1,11 +1,11 @@
-#include "metrics_calculate.cpp"
+#include "Metrics/metrics_functions.cpp"
 
 int main()
 {
 	int total_points, dim = 0, n_clusters;
 
 	fstream f;
-	f.open("clusters.txt", ios::in);
+	f.open("Files/clusters.txt", ios::in);
 
 	f >> n_clusters >> dim;
 	clusters.resize(n_clusters);
@@ -13,7 +13,7 @@ int main()
 	vector<double> compactness(n_clusters);
 	vector<vector<double>> separation(n_clusters,vector<double>(n_clusters,0));
 
-	// Storing Clusters in an array
+	// Storing clusters in an array
 	for(int i = 0; i < n_clusters; ++i){
 		int size;
 		f >> size;
