@@ -112,5 +112,7 @@ plt.ylabel('y - axis')
 plt.title('Clusters plot!') 
 
 # function to show the plot 
-plt.show()
+plt.show(block = False)
+plt.pause(5)
+plt.close()
 
