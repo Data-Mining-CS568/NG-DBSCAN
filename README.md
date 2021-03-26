@@ -215,6 +215,8 @@
 
 	- clusters_generator.py - used to plot the clusters of static and incremental NG-DBSCAN versions.
 
+	- plot_metric.py - used to plot the graphs of the used metrics.
+
 </details>
 
 <details>
@@ -250,3 +252,13 @@
 
 </details>
 
+#### Clusters Generated With 3-D Points
+
+- Initial clustering of dataset points:
+![Initial Dataset](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Report%20Images/dataset_3_old_static.png)
+
+- Final clustering after applying queries through static version:
+![Final Dataset](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Report%20Images/dataset_3_new_static.png)
+
+- Final clustering after applying queries through incremental version:
+![Final Dataset](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Report%20Images/dataset_3_new_incr.png)
