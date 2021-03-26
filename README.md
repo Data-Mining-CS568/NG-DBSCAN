@@ -37,7 +37,7 @@
 <summary> Calculate metrics and compare results of NG-DBSCAN and DBSCAN </summary>
 
 	- We calculated these NG-DBSCAN metrics for comparison with DBSCAN: compactness, separation, recall. Use the following command for calculating NG-DBSCAN metrics. 
-		- g++ metrics_main.cpp
+		- g++ ngdbscan_metrics_main.cpp
 		- ./a.out
 
 	- Run DBSCAN algorithm (for comparison with NG-DBSCAN) over points.txt using dbscan_code.py using the following command:
@@ -70,9 +70,9 @@
 
 	- phase2.cpp - used to create the propagation tree and list of clusters.
 
-	- metric_main.cpp - main method to calculate metrics for NG-DBSCAN.
+	- ngdbscan_metric_main.cpp - main method to calculate metrics for NG-DBSCAN.
 
-	- metric_calculate.cpp - contains Functions to contain metrics.
+	- metric_functions.cpp - contains Functions to contain metrics.
 
 	- dbscan_metrics_main.cpp - main method to calculate metrics for DBSCAN.
 
@@ -106,7 +106,9 @@
 
 	- numbered_dbscan_clusters.txt - contains all the points of DBSCAN, where ith point represents in which cluster number it lies.
 
-	- health_twitter.txt & sms_spam_collection.txt: text datasets
+	- health_twitter.txt & sms_spam_collection.txt - text datasets
+
+	- Traffic_Dataset/points.txt - real dataset
 
 </details>
   
