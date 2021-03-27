@@ -18,15 +18,20 @@ void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, 
 
 	if(parameterChange == 1)
 	{
-		cout << "Enter Parameters (If you want to keep default value then enter -1)\n";
-		cout << "Enter x for Tn (Tn = x*n)\n"; 	cin >> xTn; 
-		cout << "Enter x for Tr (Tr = x*n)\n"; 	cin >> xTr;
-		cout << "Enter k\n"; 					cin >> k;
-		cout << "Enter Mmax\n"; 				cin >> Mmax;
-		cout << "Enter p\n"; 					cin >> p;
-		cout << "Enter iter\n"; 				cin >> iter;
-		cout << "Enter epsilon\n"; 				cin >> epsilon;
-		cout << "Enter Minpts\n"; 				cin >> Minpts;
+		fstream fin; 
+		fin.open("Files/parameters_static", ios::in);
+		int x;
+		fin>>iter;
+		fin>>xTn;
+		fin>>xTr;
+		fin>>k;
+		fin>>Mmax;
+		fin>>p;
+		fin>>epsilon;
+		fin>>Minpts;
+		fin.close();
+
+
 	}
 }
 

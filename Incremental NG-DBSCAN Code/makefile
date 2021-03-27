@@ -3,8 +3,7 @@
 #Folders
 Files = ./Files
 Metrics = ./Metrics
-Datasets = ./Datasets/Dataset_1 ./Datasets/Dataset_2 
-#./Datasets/Dataset_3 ./Datasets/Traffic_Data  
+Datasets = ./Datasets/Dataset_1 ./Datasets/Dataset_2 ./Datasets/Dataset_3 ./Datasets/Traffic_Data  
 
 metrics = ./Metrics/Compactness ./Metrics/Seperation ./Metrics/Time  ./Metrics/Memory  ./Metrics/CPU
 dataset = ./Datasets/Dataset_1/points.txt ./Datasets/Dataset_1/queries.txt
@@ -19,37 +18,42 @@ clean_metrics:
 
 main: 
 	for d in $(Datasets) ; do\
+		echo " " ;\
+		echo "*******Dataset Folder Contains*******" ;\
 		ls $$d/ ;\
 		rm -f  $(Files)/*.txt ;\
 		cp -f $$d/points.txt  $(Files) ;\
 		cp -f $$d/queries.txt  $(Files) ;\
+		cp -f $$d/parameters_static  $(Files) ;\
+		cp -f $$d/parameters_incr  $(Files) ;\
+		echo " " ;\
+		echo "*******Running Static On Old Dataset*******" ;\
 		g++ static_ngdbscan.cpp ;\
-		./a.out 0 0 ;\
+		./a.out 1 0 ;\
+		echo " "  ;\
+		echo "*******Plotting Clusters*******" ;\
 		python3 clusters_generator.py 0; \
-		./a.out 0 1 ;\
+		echo " " ;\
+		echo "*******Running Static On Modified Dataset*******" ;\
+		./a.out 1 1 ;\
+		echo " " ;\
+		echo "*******Calculating Metrics*******" ;\
 		g++ -o ./Metrics/a.out ./Metrics/metrics_main.cpp ;\
 		cd ./Metrics && ./a.out 0 && cd ..;\
+		echo " " ;\
+		echo "*******Plotting Clusters*******";\
 		python3 clusters_generator.py 1 ;\
+		echo " " ;\
+		echo "*******Running Incremental*******" ;\
 		g++ incr_ngdbscan.cpp ;\
-		./a.out ;\
+		./a.out 1;\
+		echo " " ;\
+		echo "*******Plotting Clusters*******" ;\
 		python3 clusters_generator.py 1 ;\
+		echo " " ;\
+		echo "*******Calculating Metrics*******"  ;\
 		g++ -o ./Metrics/a.out ./Metrics/metrics_main.cpp ;\
 		cd ./Metrics && ./a.out 1  && cd ..;\
 	done
-
-# clean_files:
-# 	rm -f  $(Files)/*.txt
-	
-# copy: $(dataset)
-# 	for u in $(dataset); do echo $$uu; cp -f $$u $(Files); done
-
-# execute: a.out
-# 	./a.out 0 0
-
-# a.out: static_ngdbscan.cpp
-# 	g++ static_ngdbscan.cpp
-
-# plot: clusters_generator.py
-# 	python3 clusters_generator.py
 
 

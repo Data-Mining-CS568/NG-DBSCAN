@@ -571,18 +571,49 @@ void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::
 	fout.close();
 }
 
+
+void parameter_decision_for_incr(Parameters &parameter, int parameterChange){
+
+	if(parameterChange == 1){
+
+		fstream fin; 
+		fin.open("Files/parameters_incr", ios::in);
+		string s;
+		
+		fin>>s; parameter.k  = stoi(s);   s = "";
+		fin>>s; parameter.Mmax  = stoi(s);s = "";
+		fin>>s; parameter.iter = stoi(s); s = "";
+		fin>>s; parameter.epsilon = stod(s); s = "";
+		fin>>s; parameter.Minpts  = stoi(s); s = "";
+		fin>>s; parameter.threshold  = stoi(s);   s = "";
+		fin.close();
+
+
+	
+	}
+
+
+return;
+}
 // ---------------------------------------------------------------------------------------------------------------------------------------
 
 
 // ---------------------------------- MAIN FUNCTION CALLING ALL OTHER FUNCTIONS ----------------------------------------------------------
 
-int main()
+int main(int argc, char* argv[])
 {
 	Graph G(0);
 	Parameters parameter;
 	vector<int> to_delete, to_add;
 	vector<int> upd_ins, upd_del;
 
+	if(argc < 2){
+		cout << "Command Line Argument(s) is/are missing\n";
+		return 0;
+	}
+		// deciding parameters
+	int parameterChange = atoi(argv[1]);
+	parameter_decision_for_incr(parameter, parameterChange);
 	// storing unused indices in G	
 	set_unused_indices(G);
 
