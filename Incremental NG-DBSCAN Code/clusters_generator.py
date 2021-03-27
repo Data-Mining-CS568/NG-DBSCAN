@@ -8,14 +8,14 @@ from mpl_toolkits import mplot3d
 
 argc = len(sys.argv)
 flag = 0
-if argc < 2:
+if argc < 3:
 	print("Command Line Argument Is Missing, Taking 0 As Default Argument:")
 else:
 	flag = int(sys.argv[1]) # 1 is argument when we have queries to add and delete points
 
 l = []
 noise = []
-
+plot_image_name = sys.argv[2]
 filename_p = ""
 filename_c = ""
 if flag == 0:
@@ -110,10 +110,10 @@ plt.ylabel('y - axis')
 
 # plot title 
 plt.title('Clusters plot!') 
-
+plt.savefig(plot_image_name, dpi = 50, bbox_inches='tight')
 # function to show the plot 
-plt.show()
-# plt.show(block = False)
-# plt.pause(5)
-# plt.close()
+# plt.show()
+plt.show(block = False)
+plt.pause(5)
+plt.close()
 
