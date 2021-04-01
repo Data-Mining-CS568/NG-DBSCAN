@@ -21,17 +21,15 @@ void parameter_decision_for_static(double& xTn, double& xTr, int& k, int& Mmax, 
 		fstream fin; 
 		fin.open("Files/parameters_static", ios::in);
 		int x;
-		fin>>iter;
-		fin>>xTn;
-		fin>>xTr;
-		fin>>k;
-		fin>>Mmax;
-		fin>>p;
-		fin>>epsilon;
-		fin>>Minpts;
+		fin >> iter;
+		fin >> xTn;
+		fin >> xTr;
+		fin >> k;
+		fin >> Mmax;
+		fin >> p;
+		fin >> epsilon;
+		fin >> Minpts;
 		fin.close();
-
-
 	}
 }
 

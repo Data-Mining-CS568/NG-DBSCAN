@@ -131,11 +131,11 @@
 <details>
 <summary> Generate and Plot the already existing dataset (which is considered as database in real life) </summary>
 	
-	- First put the points.txt and queries.txt for the dataset you want the algorithm to run on.
+	- First put the points.txt, queries.txt, parameters_incr, parameters_static for the dataset you want the algorithm to run on.
 
-	- Then first run the static version without considering the queries.txt using the following command. <first_argument> = 0 if you want to change the value of parameters and 1 otherwise. Second command line argument will be 0 here. 
+	- Then first run the static version without considering the queries.txt using the following command. Here first argument = 1 to copy the value of parameters. Second command line argument will be 0 here. 
 		- g++ static_ngdbscan.cpp 
-		- ./a.out <first_argument> 0
+		- ./a.out 1 0
 
 	- It will create old_epsilon_graph.txt, old_clusters.txt, old_points.txt and this will constitute our database.
 
@@ -144,13 +144,13 @@
 
 </details>
 
-<details>
+<details> 
 <summary> Run and Plot the Incremental NG-DBSCAN algorithm over the existing dataset </summary>
 
 	- Now to run the queries.txt over incremental version, use the following command. 
 		- g++ incr_ngdbscan.cpp 
-		- ./a.out 
-	
+		- ./a.out 1
+
 	- After this, new_epsilon_graph.txt, new_clusters.txt, new_points.txt will be generated.
 
 	- To plot the clusters for the points after considering queries.txt, we will run the following command:
@@ -161,9 +161,9 @@
 <details>
 <summary> Run and Plot the Static NG-DBSCAN algorithm over the existing dataset (for comparison with incremental version) </summary>
 
-	- Now to run the queries.txt over incremental version (for comparison with incremental version), use the following command. <first_argument> = 0 if you want to change the value of parameters and 1 otherwise. Second command line argument will be 1 here. 
-		- g++ static_ngdbscan.cpp  
-		- ./a.out <first_argument> 1
+	- Now to run the queries.txt over incremental version (for comparison with incremental version), use the following command. Here first argument = 1 to copy the value of parameters. Second command line argument will be 1 here. 
+		- g++ static_ngdbscan.cpp
+		- ./a.out 1 1
 
 	- After this, new_epsilon_graph.txt, new_clusters.txt, new_points.txt will be generated.
 
@@ -171,15 +171,15 @@
 		- python3 clusters_generator.py 1
 
 </details>
-	 
+
 <details>
 <summary> Calculate metrics on Incremental and Static Versions for comparison </summary>
 	
-	- To use metrics on the database (only considering points.txt), we will use the following command:
+	- To calculate and store metrics on the static version, we will use the following command:
 		- g++ metrics_main.cpp 
 		- ./a.out 0
 
-	- To use metrics on the updated dataset (after considering queries.txt), we will use the following command:
+	- To calculate and store metrics on the incremental version, we will use the following command:
 		- g++ metrics_main.cpp 
 		- ./a.out 1
 
@@ -187,7 +187,7 @@
 
 <details>
 <summary> Code Files for Incremental NG-DBSCAN </summary>
-	
+
 	- Here are the different types of files used in incremental NG-DBSCAN:	
 
 <details>
@@ -239,6 +239,12 @@
 	- old_clusters.txt - contains the clusters for the old dataset.
 
 	- new_clusters.txt - contains the clusters for the new dataset (after considering queries.txt).
+
+	- parameters.txt - contains the parameters for the respective dataset for both static & incremental algorithm in readable format.
+
+	- parameters_incr - contains the parameters for the respective dataset for the incremental NG-DBSCAN algorithm.
+
+	- parameters_static - contains the parameters for the respective dataset for the static NG-DBSCAN algorithm.
 
 	- memory*.txt - Files of this format contains in each line: <no_of_points> <virtual_memory_used> <physical_memory_used>.
 

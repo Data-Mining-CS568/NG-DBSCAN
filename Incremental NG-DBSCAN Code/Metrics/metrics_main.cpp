@@ -2,7 +2,7 @@
 
 // -------------------------------------------- STORING IN MAP -------------------------------------------------------------------------
 
-void store_in_map(int flag)
+void store_in_map()
 {
 	fstream f_points;
 	string filename = "";
@@ -30,7 +30,7 @@ void store_in_map(int flag)
 
 // --------------------------------------------- STORE CLUSTERS -------------------------------------------------------------------------
 
-void store_clusters(int flag)
+void store_clusters()
 {
 	fstream f_clusters;
 	string filename = "";
@@ -68,10 +68,10 @@ int main(int argc, char* argv[])
 	} 
 	
 	int flag = 0;
-	flag = atoi(argv[1]); 	// flag == 1, if there are queries to add or delete points
+	flag = atoi(argv[1]); 	// flag == 1, if we want to calculate for incremental version
 
-	store_in_map(flag); 	// store points coordinate in map
-	store_clusters(flag);
+	store_in_map(); 	// store points coordinate in map
+	store_clusters();
 
 	compactness.resize(n_clusters,0);
 	separation.resize(n_clusters,vector<double>(n_clusters,0));
