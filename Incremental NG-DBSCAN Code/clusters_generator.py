@@ -11,13 +11,14 @@ flag = 0
 if argc < 3:
 	print("Command Line Argument Is Missing, Taking 0 As Default Argument:")
 else:
-	flag = int(sys.argv[1]) # 1 is argument when we have queries to add and delete points
+	flag = int(sys.argv[1]) 	# 1 is argument when we have queries to add and delete points
 
 l = []
 noise = []
 plot_image_name = sys.argv[2]
 filename_p = ""
 filename_c = ""
+
 if flag == 0:
 	filename_p = "Files/old_points.txt"
 	filename_c = "Files/old_clusters.txt"
@@ -28,8 +29,8 @@ else:
 points_file = open(filename_p, "r")
 x = points_file.readline()
 a = x.split()
-n = int(a[0])			 # number of points
-dimension = int(a[1]) 	 # dimension of points
+n = int(a[0])			 		# number of points
+dimension = int(a[1]) 	 		# dimension of points
 
 points = {}
 points_type = {}
@@ -49,14 +50,14 @@ for i in range(n):
 cluster_file = open(filename_c,"r")
 x = cluster_file.readline()
 a = x.split()
-n = int(a[0]) 			# number of clusters
+n = int(a[0]) 					# number of clusters
 
 for i in range(n):
 	lst = []
 	x = cluster_file.readline()
 	a = x.split()
 	cluster_id = int(a[0])
-	m = int(a[1]) 		# number of points in cluster i
+	m = int(a[1]) 				# number of points in cluster i
 	x = cluster_file.readline()
 	points_id = x.split(' ')
 	for i in range(m):
@@ -70,7 +71,6 @@ for i in range(n):
 	l.append(lst)
 
 colours = ["green", "blue", "red", "orange", "gold", "violet", "pink", "orchid", "indigo", "sienna", "magenta"]
-
 
 if dimension == 2:
 	fig, ax = plt.subplots()
@@ -111,9 +111,8 @@ plt.ylabel('y - axis')
 # plot title 
 plt.title('Clusters plot!') 
 plt.savefig(plot_image_name, dpi = 50, bbox_inches='tight')
-# function to show the plot 
-# plt.show()
-plt.show(block = False)
-plt.pause(5)
-plt.close()
 
+# function to show the plot
+plt.show(block = False)
+plt.pause(4)
+plt.close()

@@ -3,7 +3,6 @@
 
 static clock_t lastCPU, lastSysCPU, lastUserCPU;
 static int numProcessors;
-
 static unsigned long long lastTotalUser, lastTotalUserLow, lastTotalSys, lastTotalIdle;
 
 int GetCPULoad() 
@@ -65,5 +64,3 @@ int getValue_physical_memory()
     fclose(file);
     return result;
 }
-
-

@@ -229,7 +229,6 @@ void node_identification_addition(Graph& G, vector<int>& A, Parameters& paramete
 		for(auto v : G.noncore) S.push_back(v);
 		random_neighbour_search(G, S, A, 0, parameter, upd_ins, 'A');
 	}
-	cout << A.size() << " " << G.noncore.size() << " " << upd_ins.size() << endl;
 }
 
 void node_identification_deletion(Graph& G, vector<int>& D, Parameters& parameter, vector<int>& upd_del)
@@ -265,21 +264,23 @@ void node_identification_deletion(Graph& G, vector<int>& D, Parameters& paramete
 				break;
 			}
 		}
-		// for(auto v : affected){
-		// 	G.edges[u].erase(v);
-		// }
 		if(G.edges[u].size() < parameter.Minpts && G.edges[u].size() + affected.size() >= parameter.Minpts){
 			I.push_back(u);
 		}
 	}
 	random_neighbour_search(G, I, dataset, 1, parameter, upd_del, 'D');
 	
-	upd_del.clear();
-	for(auto it : neighbours_of_delete){
-		upd_del.push_back(it);
+	// inserting neighbours of deleted nodes also inside upd_del
+	map<int, int> check;
+	for(auto it : upd_del){
+		check[it] = 1;
 	}
-
-	cout << D.size() << " " << G.noncore.size() << " " << upd_del.size() << endl;
+	for(auto it : neighbours_of_delete){
+		if(!check.count(it)){
+			upd_del.push_back(it);
+			check[it] = 1;	
+		}
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
@@ -544,7 +545,7 @@ void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::
 	chrono::duration<double> elapsed_seconds = end-start;
     time_t end_time = chrono::system_clock::to_time_t(end);
 
-    cout << "Finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << " seconds\n";
+    cout << "Finished computation at " << std::ctime(&end_time) << "Elapsed Time: " << elapsed_seconds.count() << " seconds\n";
 	
 	cout << "Virtual Memory Used: " << getValue_virtual_memory() << " KB\n";
 	cout << "Physical Memory Used: " << getValue_physical_memory() << " KB\n";
@@ -571,30 +572,28 @@ void resources_usage(Graph & G, chrono::system_clock::time_point start, chrono::
 	fout.close();
 }
 
+// ---------------------------------------------------------------------------------------------------------------------------------------
 
-void parameter_decision_for_incr(Parameters &parameter, int parameterChange){
 
-	if(parameterChange == 1){
+// ------------------------------------ DECIDING PARAMETERS ------------------------------------------------------------------------------
 
+void parameter_decision_for_incr(Parameters &parameter, int parameterChange)
+{
+	if(parameterChange == 1)
+	{
 		fstream fin; 
 		fin.open("Files/parameters_incr", ios::in);
 		string s;
-		
-		fin>>s; parameter.k  = stoi(s);   s = "";
-		fin>>s; parameter.Mmax  = stoi(s);s = "";
-		fin>>s; parameter.iter = stoi(s); s = "";
-		fin>>s; parameter.epsilon = stod(s); s = "";
-		fin>>s; parameter.Minpts  = stoi(s); s = "";
-		fin>>s; parameter.threshold  = stoi(s);   s = "";
-		fin.close();
-
-
-	
+		fin >> s; 	parameter.k  = stoi(s);   			s = "";
+		fin >> s; 	parameter.Mmax  = stoi(s);			s = "";
+		fin >> s; 	parameter.iter = stoi(s); 			s = "";
+		fin >> s; 	parameter.epsilon = stod(s); 		s = "";
+		fin >> s; 	parameter.Minpts  = stoi(s); 		s = "";
+		fin >> s; 	parameter.threshold  = stoi(s);   	s = "";
+		fin.close();	
 	}
-
-
-return;
 }
+
 // ---------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -611,9 +610,12 @@ int main(int argc, char* argv[])
 		cout << "Command Line Argument(s) is/are missing\n";
 		return 0;
 	}
-		// deciding parameters
+
+	// deciding parameters
 	int parameterChange = atoi(argv[1]);
+	
 	parameter_decision_for_incr(parameter, parameterChange);
+	
 	// storing unused indices in G	
 	set_unused_indices(G);
 

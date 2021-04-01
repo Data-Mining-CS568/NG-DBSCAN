@@ -1,5 +1,3 @@
-
-
 #Folders
 Files = ./Files
 Metrics = ./Metrics
@@ -19,7 +17,7 @@ clean_metrics:
 main: 
 	for d in $(Datasets) ; do\
 		echo " " ;\
-		echo "*******Dataset Folder Contains*******" ;\
+		echo "----------------- DATASET FOLDER CONTAINS -----------------------------\n" ;\
 		ls $$d/ ;\
 		rm -f  $(Files)/*.txt ;\
 		cp -f $$d/points.txt  $(Files) ;\
@@ -27,31 +25,31 @@ main:
 		cp -f $$d/parameters_static  $(Files) ;\
 		cp -f $$d/parameters_incr  $(Files) ;\
 		echo " " ;\
-		echo "*******Running Static On Old Dataset*******" ;\
+		echo "----------------- RUNNING STATIC ON OLD DATASET -----------------------\n" ;\
 		g++ static_ngdbscan.cpp ;\
 		./a.out 1 0 ;\
 		echo " "  ;\
-		echo "*******Plotting Clusters*******" ;\
+		echo "----------------- PLOTTING CLUSTERS -----------------------------------\n" ;\
 		python3 clusters_generator.py 0 $$d/Plot_Images/old_static.png ; \
 		echo " " ;\
-		echo "*******Running Static On Modified Dataset*******" ;\
+		echo "----------------- RUNNING STATIC ON MODIFIED DATASET ------------------\n" ;\
 		./a.out 1 1 ;\
 		echo " " ;\
-		echo "*******Calculating Metrics*******" ;\
+		echo "----------------- CALCULATING METRICS ---------------------------------\n" ;\
 		g++ -o ./Metrics/a.out ./Metrics/metrics_main.cpp ;\
 		cd ./Metrics && ./a.out 0 && cd ..;\
 		echo " " ;\
-		echo "*******Plotting Clusters*******";\
+		echo "----------------- PLOTTING CLUSTERS -----------------------------------\n";\
 		python3 clusters_generator.py 1 $$d/Plot_Images/new_static.png ;\
 		echo " " ;\
-		echo "*******Running Incremental*******" ;\
+		echo "----------------- RUNNING INCREMENTAL ---------------------------------\n" ;\
 		g++ incr_ngdbscan.cpp ;\
 		./a.out 1;\
 		echo " " ;\
-		echo "*******Plotting Clusters*******" ;\
+		echo "----------------- PLOTTING CLUSTERS -----------------------------------\n" ;\
 		python3 clusters_generator.py 1 $$d/Plot_Images/incr.png;\
 		echo " " ;\
-		echo "*******Calculating Metrics*******"  ;\
+		echo "----------------- CALCULATING METRICS ---------------------------------\n"  ;\
 		g++ -o ./Metrics/a.out ./Metrics/metrics_main.cpp ;\
 		cd ./Metrics && ./a.out 1  && cd ..;\
 	done
