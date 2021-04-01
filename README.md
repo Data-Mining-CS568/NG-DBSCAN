@@ -142,6 +142,8 @@
 
 ### To run each dataset seperately:
 
+- Follow the below rules step wise for each dataset to get the results.
+
 <details>
 <summary> Generate and Plot the already existing dataset (which is considered as database in real life) </summary>
 	
@@ -153,8 +155,8 @@
 
 	- It will create old_epsilon_graph.txt, old_clusters.txt, old_points.txt and this will constitute our database.
 
-	- To plot the clusters for the points present in database, we will run the following command:
-		- python3 clusters_generator.py 0
+	- To plot the clusters for the points present in database, we will run the following command. Here <image_name> refers to the image name for saving that image.
+		- python3 clusters_generator.py 0 <image_name>
 
 </details>
 
@@ -167,8 +169,8 @@
 
 	- After this, new_epsilon_graph.txt, new_clusters.txt, new_points.txt will be generated.
 
-	- To plot the clusters for the points after considering queries.txt, we will run the following command:
-		- python3 clusters_generator.py 1
+	- To plot the clusters for the points after considering queries.txt, we will run the following command. Here <image_name> refers to the image name for saving that image.
+		- python3 clusters_generator.py 1 <image_name>
 
 </details>
 
