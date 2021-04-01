@@ -125,15 +125,26 @@
 - Try to tune the parameters while running on different datasets to get more accuracy.
 - Inside each dataset of 2 dimension, images of cluster plotting are also present. 
 - For synthetic datasets, we used moon, blob and circular datasets.
+- For clusters generation wait for 4 seconds for the image to disappear.
 
 ### Instructions to run the Incremental NG-DBSCAN Code:
+
+## To run all datasets in automated version:
+
+<details>
+	- Run the following command in terminal:
+		- make
+</details>
+
+
+## To run each dataset seperately:
 
 <details>
 <summary> Generate and Plot the already existing dataset (which is considered as database in real life) </summary>
 	
 	- First put the points.txt, queries.txt, parameters_incr, parameters_static for the dataset you want the algorithm to run on.
 
-	- Then first run the static version without considering the queries.txt using the following command. Here first argument = 1 to copy the value of parameters. Second command line argument will be 0 here. 
+	- Then first run the static version without considering the queries.txt using the following command. Here First argument = 1 to copy the value of parameters. Second argument = 0 to indicate that it will not use queries.txt. 
 		- g++ static_ngdbscan.cpp 
 		- ./a.out 1 0
 
@@ -147,7 +158,7 @@
 <details> 
 <summary> Run and Plot the Incremental NG-DBSCAN algorithm over the existing dataset </summary>
 
-	- Now to run the queries.txt over incremental version, use the following command. 
+	- Now to run the queries.txt over incremental version, use the following command. Here First argument = 1 to copy the value of parameters.
 		- g++ incr_ngdbscan.cpp 
 		- ./a.out 1
 
@@ -161,7 +172,7 @@
 <details>
 <summary> Run and Plot the Static NG-DBSCAN algorithm over the existing dataset (for comparison with incremental version) </summary>
 
-	- Now to run the queries.txt over incremental version (for comparison with incremental version), use the following command. Here first argument = 1 to copy the value of parameters. Second command line argument will be 1 here. 
+	- Now to run the queries.txt over incremental version (for comparison with incremental version), use the following command. Here First argument = 1 to copy the value of parameters. Second argument = 1 to indicate that it will use queries.txt. 
 		- g++ static_ngdbscan.cpp
 		- ./a.out 1 1
 
