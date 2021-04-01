@@ -127,17 +127,20 @@
 - For synthetic datasets, we used moon, blob and circular datasets.
 - For clusters generation wait for 4 seconds for the image to disappear.
 
-### Instructions to run the Incremental NG-DBSCAN Code:
+## Instructions to run the Incremental NG-DBSCAN Code:
 
-## To run all datasets in automated version:
+#### To run all datasets in automated version:
 
 <details>
+<summary>Automated Running</summary>
+	
 	- Run the following command in terminal:
 		- make
+
 </details>
 
 
-## To run each dataset seperately:
+#### To run each dataset seperately:
 
 <details>
 <summary> Generate and Plot the already existing dataset (which is considered as database in real life) </summary>
