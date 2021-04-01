@@ -5,7 +5,7 @@
 - Images folder contains some of the clusters generated. 
 - For synthetic datasets, we used moon, blob and circular datasets.
 
-### Instructions to run the Static NG-DBSCAN Code:
+## Instructions to run the Static NG-DBSCAN Code:
 
 <details>
 <summary> Generate Synthetic Datasets </summary>
@@ -114,7 +114,7 @@
   
 </details>
 
-#### Clusters Generated With 3-D Points
+### Clusters Generated With 3-D Points
 ![Image of 3D Plot](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Report%20Images/3d_dataset.png)
 	
 
@@ -129,7 +129,7 @@
 
 ## Instructions to run the Incremental NG-DBSCAN Code:
 
-#### To run all datasets in automated version:
+### To run all datasets in automated version:
 
 <details>
 <summary>Automated Running</summary>
@@ -140,7 +140,7 @@
 </details>
 
 
-#### To run each dataset seperately:
+### To run each dataset seperately:
 
 <details>
 <summary> Generate and Plot the already existing dataset (which is considered as database in real life) </summary>
@@ -274,7 +274,7 @@
 
 </details>
 
-#### Clusters Generated With 3-D Points
+### Clusters Generated With 3-D Points
 
 - Initial clustering of dataset points:
 ![Initial Dataset](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Report%20Images/dataset_3_old_static.png)
