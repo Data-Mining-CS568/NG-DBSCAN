@@ -8,14 +8,20 @@ from mpl_toolkits import mplot3d
 
 argc = len(sys.argv)
 flag = 0
-if argc < 3:
+plot_image_name = ""
+if argc == 1:
 	print("Command Line Argument Is Missing, Taking 0 As Default Argument:")
+elif argc == 2:
+	print('Taking "plot.png" as default filename')
+	flag = int(sys.argv[1])
+	plot_image_name = "plot.png"
 else:
 	flag = int(sys.argv[1]) 	# 1 is argument when we have queries to add and delete points
+	plot_image_name = sys.argv[2]
+
 
 l = []
 noise = []
-plot_image_name = sys.argv[2]
 filename_p = ""
 filename_c = ""
 
@@ -113,6 +119,7 @@ plt.title('Clusters plot!')
 plt.savefig(plot_image_name, dpi = 50, bbox_inches='tight')
 
 # function to show the plot
-plt.show(block = False)
-plt.pause(4)
-plt.close()
+# plt.show(block = False)
+# plt.pause(4)
+# plt.close()
+plt.show();
