@@ -115,7 +115,7 @@
 </details>
 
 ### Clusters Generated With 3-D Points
-![Image of 3D Plot](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Report%20Images/3d_dataset.png)
+![Image of 3D Plot](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Course%20Reports/Report%20Images/3d_dataset.png)
 	
 
 
@@ -279,10 +279,10 @@
 ### Clusters Generated With 3-D Points
 
 - Initial clustering of dataset points:
-![Initial Dataset](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Report%20Images/dataset_3_old_static.png)
+![Initial Dataset](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Course%20Reports/Report%20Images/dataset_3_old_static.png)
 
 - Final clustering after applying queries through static version:
-![Final Dataset](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Report%20Images/dataset_3_new_static.png)
+![Final Dataset](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Course%20Reports/Report%20Images/dataset_3_new_static.png)
 
 - Final clustering after applying queries through incremental version:
-![Final Dataset](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Report%20Images/dataset_3_new_incr.png)
+![Final Dataset](https://github.com/Data-Mining-CS568/NG-DBSCAN/blob/main/Course%20Reports/Report%20Images/dataset_3_new_incr.png)
